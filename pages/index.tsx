@@ -1,6 +1,6 @@
-import { IconCalendar, IconEvent, IconHouse } from '@sberdevices/plasma-icons'
+import { IconEvent, IconHouse } from '@sberdevices/plasma-icons'
 import { Container, TabItem, Tabs } from '@sberdevices/plasma-ui'
-import React, { useReducer, useState } from 'react'
+import React, { useReducer } from 'react'
 import { Schedule } from '../components/Schedule'
 import { GlobalStyles } from '../GlobalStyle'
 import { actions, initialState, reducer } from '../store'
@@ -11,7 +11,7 @@ export default function Home() {
   const tabs = ['Расписание', 'Домашка'] as const
   const selectTab = () => {
     switch(state.tabPage){
-      case 'Расписание': return <Schedule day={state.day} dispatch={dispatch} />
+      case 'Расписание': return <Schedule day={state.day} dispatch={dispatch} subjects={state.schedule[state.day]} />
       case 'Домашка': return <></>
     }
   }
