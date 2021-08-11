@@ -1,0 +1,8 @@
+.tabContent{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.icon{
+    margin-right: 0.5rem;
+}
