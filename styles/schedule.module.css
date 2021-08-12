@@ -1,9 +1,14 @@
 .schedule{
     margin: 0 auto;
-    padding-top: 2rem;
+    padding-top: 3rem;
+    text-align: center;
 }
 .subjectList{
   margin: 3rem auto;
+  text-align: center;
+}
+.emptyList{
+  margin: 5rem auto;
   text-align: center;
 }
 .warningIcon{
@@ -13,4 +18,50 @@
 .headline{
   margin-top: 1rem;
   margin-bottom: 0.5rem;
+}
+.editButton{
+  margin-top: 2rem;
+}
+.subjectItem{
+  display: flex;
+  height: 3.3rem;
+  align-items: center;
+  margin-top: 0.3rem;
+  border: 1px solid gray;
+  border-radius: 10px;
+  padding-left: 1rem;
+}
+.subjectText{
+  text-align: start;
+  margin-left: 1rem;
+}
+.subjectFooter{
+  color: gray;
+}
+.teacherInput, .cabinetInput, .subjectFormButton{
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  text-align: start;
+}
+.subjectFormButton{
+  margin-bottom: 1rem;
+}
+.subjectButton{
+  /* width: 100%; */
+  height: 1rem;
+  margin: 0.25rem;
+  text-align: right;
+}
+.subjectsSelect{
+  margin-top: 2rem;
+}
+.dayTabs{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin: 0 auto; */
+}
+.subjectIcon{
+  margin-left: 1rem;
 }
