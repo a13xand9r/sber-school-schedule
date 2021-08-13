@@ -6,7 +6,6 @@ import style from '../styles/schedule.module.css'
 import React from 'react'
 
 export const SubjectList = ({ list }: { list: SubjectType[] | null }) => {
-  console.log(list)
   return <>
     {(!list || !list.length) ?
       <div className={style.emptyList}>

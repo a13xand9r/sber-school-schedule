@@ -81,7 +81,7 @@ export const allSubjects = [
 type InferActionType<T> = T extends { [key: string]: (...args: any[]) => infer U } ? U : never
 type InferSubjectType<T> = T extends { subject: infer U } ? U : never
 export type ActionsType = InferActionType<typeof actions>
-type StateType = typeof initialState
+export type StateType = typeof initialState
 type TabsType = 'Расписание' | 'Домашка'
 export type DayType = 'Понедельник' | 'Вторник' | 'Среда' | 'Четверг' | 'Пятница' | 'Суббота'
 export type SubjectConstType = InferSubjectType<typeof allSubjects[number]>

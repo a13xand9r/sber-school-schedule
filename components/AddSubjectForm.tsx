@@ -29,15 +29,15 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
     setSelectedIcon(subject.icon)
   }
   return <>
+    <Button
+      className={style.subjectFormButton}
+      onClick={() => setIsSubjectListMode(prev => !prev)}
+      view='secondary'
+      contentRight={<IconChevronDown />}
+      text={<Body1>{selectedSubject ? selectedSubject : 'Предмет'}</Body1>}
+    />
     {!isSubjectListMode ?
       <form onSubmit={(e) => onFormSubmit(e)}>
-        <Button
-          className={style.subjectFormButton}
-          onClick={() => setIsSubjectListMode(true)}
-          view='secondary'
-          contentRight={<IconChevronDown />}
-          text={<Body1>{selectedSubject ? selectedSubject : 'Предмет'}</Body1>}
-        />
         <TextField
           className={style.teacherInput}
           value={teacherInput}
@@ -67,8 +67,8 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
             onClick={() => onSubjectClick(subj)}
           >
             <>
-            <Image  src={subj.icon} alt='' layout='fixed' width={25} height={25} />
-            <Body1 className={style.subjectText}>{subj.subject}</Body1>
+              <Image src={subj.icon} alt='' layout='fixed' width={25} height={25} />
+              <Body1 className={style.subjectText}>{subj.subject}</Body1>
             </>
           </Button>
         ))}

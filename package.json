@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@salutejs/recognizer-smartapp-brain": "^0.14.0",
+    "@salutejs/scenario": "^0.14.0",
+    "@salutejs/storage-adapter-memory": "^0.14.0",
     "@sberdevices/assistant-client": "^4.0.0",
     "@sberdevices/plasma-icons": "^1.32.0",
     "@sberdevices/plasma-tokens": "^1.10.1",
