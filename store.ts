@@ -1,15 +1,16 @@
 
 export const initialState = {
+  userId: null as null | string,
   tabPage: 'Расписание' as TabsType,
   day: 'Понедельник' as DayType,
   schedule: {
-    'Понедельник': null as null | SubjectType[],
-    'Вторник': null as null | SubjectType[],
-    'Среда': null as null | SubjectType[],
-    'Четверг': null as null | SubjectType[],
-    'Пятница': null as null | SubjectType[],
-    'Суббота': null as null | SubjectType[],
-  }
+    'Понедельник': null,
+    'Вторник': null,
+    'Среда': null,
+    'Четверг': null,
+    'Пятница': null,
+    'Суббота': null,
+  } as ScheduleType
 }
 
 
@@ -25,6 +26,11 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
         [...state.schedule[state.day] as Array<SubjectType>, action.newSubject] :
         [action.newSubject]
       return returnObj
+    case 'SET_SCHEDULE':
+      return {...state, schedule: action.schedule}
+    case 'SET_USER_ID':
+      return {...state, userId: action.id}
+    default: return state
   }
 }
 
@@ -32,6 +38,8 @@ export const actions = {
   changeDay: (day: DayType) => ({ type: 'CHANGE_DAY', day } as const),
   changeTab: (tab: TabsType) => ({ type: 'CHANGE_TAB', tab } as const),
   addSubject: (newSubject: SubjectType) => ({ type: 'ADD_SUBJECT', newSubject } as const),
+  setSchedule: (schedule: ScheduleType) => ({ type: 'SET_SCHEDULE', schedule } as const),
+  setUserId: (id: string) => ({ type: 'SET_USER_ID', id } as const),
 }
 export const allSubjects = [
   { subject: 'Алгебра', icon: '/algebra.png' as string },
@@ -78,6 +86,8 @@ export const allSubjects = [
   { subject: 'Экология', icon: '/ecology.png' as string },
 ] as const
 
+
+
 type InferActionType<T> = T extends { [key: string]: (...args: any[]) => infer U } ? U : never
 type InferSubjectType<T> = T extends { subject: infer U } ? U : never
 export type ActionsType = InferActionType<typeof actions>
@@ -90,4 +100,12 @@ export type SubjectType = {
   icon: string
   teacher: string
   cabinet: string
+}
+export type ScheduleType = {
+  'Понедельник': null | SubjectType[],
+  'Вторник': null | SubjectType[],
+  'Среда': null | SubjectType[],
+  'Четверг': null | SubjectType[],
+  'Пятница': null | SubjectType[],
+  'Суббота': null | SubjectType[],
 }

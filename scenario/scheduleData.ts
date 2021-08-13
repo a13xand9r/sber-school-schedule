@@ -1,49 +1,53 @@
 // import fs from 'fs'
 const fs = require('fs')
 import scheduleData from '../scheduleData.json'
-import { SubjectType } from '../store'
+import { ScheduleType } from '../store'
 
 export const writeJSON = (usersData: Array<UserSchedule>) => {
   let data = JSON.stringify(usersData)
-  console.log('read: ', scheduleData)
-  // fs.writeFileSync('scheduleData.json', data, (err: any) => {
-  //   if (err){
-  //     throw err
-  //   }
-  //   console.log("JSON data is saved.")
-  // })
   fs.writeFile('scheduleData.json', data, (err: any) => {
     if (err) {
-      throw err;
+      throw err
     }
-    console.log("JSON data is saved.");
+    console.log("JSON data is saved.")
   })
 }
 
-export const changeSchedule = (id: string) => {
-  // const user = scheduleData.find(u => u.id === id)
-  const newSchedule = [...scheduleData, {
-    id, schedule: {
+export const getSchedule = (userId: string): ScheduleType => {
+  const user = scheduleData.find(u => u.userId === userId)
+  if (user) {
+     //@ts-ignore
+    return user.schedule
+  } else return {
       'Понедельник': null,
       'Вторник': null,
       'Среда': null,
       'Четверг': null,
       'Пятница': null,
       'Суббота': null,
-    }
-  }]
-  writeJSON(newSchedule)
+  }
+}
+export const changeSchedule = (userId: string, newSchedule: ScheduleType): ScheduleType => {
+  const userIndex = scheduleData.findIndex(u => u.userId === userId)
+  if (userIndex === -1){
+     //@ts-ignore
+    writeJSON([...scheduleData, {
+      userId,
+       //@ts-ignore
+      schedule: newSchedule
+    }])
+  } else {
+    const changedSchedule = scheduleData
+    //@ts-ignore
+    changedSchedule[userIndex].schedule = newSchedule
+     //@ts-ignore
+    writeJSON(changedSchedule)
+  }
+  return newSchedule
 }
 
 
 type UserSchedule = {
-  id: string
-  schedule: {
-    'Понедельник': null | SubjectType[],
-    'Вторник': null | SubjectType[],
-    'Среда': null | SubjectType[],
-    'Четверг': null | SubjectType[],
-    'Пятница': null | SubjectType[],
-    'Суббота': null | SubjectType[],
-  }
+  userId: string
+  schedule: ScheduleType
 }
