@@ -9,14 +9,14 @@ import style from '../styles/index.module.css'
 import { changeSchedule, requestSchedule } from '../apiReuests'
 
 const initializeAssistant = (getState: () => StateType) => {
-  if (process.env.NODE_ENV === 'development') {
+  // if (process.env.NODE_ENV === 'development') {
     return createSmartappDebugger({
       token: process.env.NEXT_PUBLIC_ASSISTANT_TOKEN ?? '',
       initPhrase: 'Запусти школьное расписание',
       getState
     })
-  }
-  return createAssistant({ getState })
+  // }
+  // return createAssistant({ getState })
 }
 const tabs = ['Расписание', 'Домашка'] as const
 
