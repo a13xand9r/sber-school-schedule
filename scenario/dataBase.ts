@@ -11,7 +11,6 @@ export const start = async () => {
     console.log(err)
   }
 }
-start()
 
 const scheduleDB = client.db().collection('schedule')
 const emptySchedule = {
