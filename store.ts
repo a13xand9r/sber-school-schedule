@@ -2,6 +2,7 @@
 export const initialState = {
   userId: null as null | string,
   tabPage: 'Расписание' as TabsType,
+  isEditMode: false,
   day: 'Понедельник' as DayType,
   schedule: {
     'Понедельник': null,
@@ -30,6 +31,8 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
       return {...state, schedule: action.schedule}
     case 'SET_USER_ID':
       return {...state, userId: action.id}
+    case 'SET_EDIT_MODE':
+      return {...state, isEditMode: action.flag}
     default: return state
   }
 }
@@ -40,6 +43,7 @@ export const actions = {
   addSubject: (newSubject: SubjectType) => ({ type: 'ADD_SUBJECT', newSubject } as const),
   setSchedule: (schedule: ScheduleType) => ({ type: 'SET_SCHEDULE', schedule } as const),
   setUserId: (id: string) => ({ type: 'SET_USER_ID', id } as const),
+  setEditMode: (flag: boolean) => ({ type: 'SET_EDIT_MODE', flag } as const),
 }
 export const allSubjects = [
   { subject: 'Алгебра', icon: '/algebra.png' as string },

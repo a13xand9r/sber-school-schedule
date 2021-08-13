@@ -24,6 +24,8 @@
   margin-top: 2rem;
 }
 .subjectItem{
+  margin: 0 auto;
+  max-width: 38rem;
   display: flex;
   height: 3.3rem;
   align-items: center;
@@ -67,4 +69,13 @@
 }
 .subjectIcon{
   margin-left: 1rem;
+}
+.spinner{
+  position: absolute;
+  left: 45%;
+  top: 45%;
+}
+.form{
+  max-width: 38rem;
+  margin: 0 auto;
 }

@@ -1,3 +1,6 @@
+.appContainer{
+  margin-top: 2rem;
+}
 .tabContent{
     display: flex;
     justify-content: space-between;

@@ -2,10 +2,11 @@ import { MongoClient } from 'mongodb'
 import { ScheduleType } from '../store'
 
 const client = new MongoClient('mongodb+srv://school_schedule:123qwerty@cluster0.siwn0.mongodb.net/schedule')
-
+let isMongoConnected = false
 export const start = async () => {
   try {
     await client.connect()
+    isMongoConnected = true
     console.log('MongoDB connected')
   } catch (err) {
     console.log(err)
@@ -24,8 +25,8 @@ const emptySchedule = {
 
 export const getSchedule = async (userId: string): Promise<ScheduleType> => {
   try {
+    if (!isMongoConnected) await client.connect()
     const user = await scheduleDB.findOne({ userId })
-    console.log(user)
     if (user) {
       return user.schedule
     } else {
@@ -39,8 +40,8 @@ export const getSchedule = async (userId: string): Promise<ScheduleType> => {
 
 export const changeSchedule = async (userId: string, newSchedule: ScheduleType): Promise<ScheduleType> => {
   const user = await scheduleDB.findOne({ userId })
-  console.log(user)
   try {
+    if (!isMongoConnected) await client.connect()
     if (user) {
       await scheduleDB.updateOne({ userId }, {
         $set: { userId, schedule: newSchedule }

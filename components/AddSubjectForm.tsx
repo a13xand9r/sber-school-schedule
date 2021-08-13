@@ -37,7 +37,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
       text={<Body1>{selectedSubject ? selectedSubject : 'Предмет'}</Body1>}
     />
     {!isSubjectListMode ?
-      <form onSubmit={(e) => onFormSubmit(e)}>
+      <form className={style.form} onSubmit={(e) => onFormSubmit(e)}>
         <TextField
           className={style.teacherInput}
           value={teacherInput}

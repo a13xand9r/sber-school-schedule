@@ -7,6 +7,7 @@ import { actions, initialState, reducer, StateType } from '../store'
 import { createAssistant, createSmartappDebugger } from '@sberdevices/assistant-client'
 import style from '../styles/index.module.css'
 import { changeSchedule, requestSchedule } from '../apiReuests'
+import { CustomHeader } from '../components/Header'
 
 const initializeAssistant = (getState: () => StateType) => {
   if (process.env.NODE_ENV === 'development') {
@@ -40,51 +41,60 @@ export default function Home() {
   const saveData = async () => {
     const newSchedule = await changeSchedule(state.userId as string, state.schedule)
     dispatch(actions.setSchedule(newSchedule))
+    dispatch(actions.setEditMode(false))
   }
   const selectTab = () => {
-    switch(state.tabPage){
-      case 'Расписание': return <Schedule day={state.day} dispatch={dispatch} subjects={state.schedule[state.day]} />
+    switch (state.tabPage) {
+      case 'Расписание':
+        return <Schedule
+          saveData={saveData}
+          isEditMode={state.isEditMode}
+          userId={state.userId}
+          day={state.day}
+          dispatch={dispatch}
+          subjects={state.schedule[state.day]}
+        />
       case 'Домашка': return <></>
     }
+  }
+  const setEditMode = (flag: boolean) => {
+    dispatch(actions.setEditMode(flag))
   }
   return (
     <>
       <GlobalStyles character={'sber'} />
       <Container>
-        <Tabs
-          size={'l'}
-          view={'secondary'}
-          stretch={true}
-          pilled={true}
-          scaleOnPress={true}
-          outlined={true}
-          disabled={false}
-        >
-          {tabs.map(tab => (
-            <TabItem
-              key={tab}
-              isActive={tab === state.tabPage}
-              tabIndex={1}
-              onClick={() => dispatch(actions.changeTab(tab))}
-            >
-              <div className={style.tabContent}>
-                {
-                  tab === 'Расписание' ?
-                  <IconEvent className={style.icon} /> :
-                  <IconHouse className={style.icon} />
-                }
-                {tab}
-              </div>
-            </TabItem>
-          ))}
-        </Tabs>
-        {selectTab()}
-        <Button
-          className={style.subjectFormButton}
-          onClick={saveData}
-          view='accent'
-          text={<Body1>Сохранить</Body1>}
-        />
+        <CustomHeader setEditMode={setEditMode} isEditMode={state.isEditMode} />
+        <div className={style.appContainer}>
+          <Tabs
+            size={'m'}
+            view={'secondary'}
+            stretch={true}
+            pilled={true}
+            scaleOnPress={true}
+            outlined={true}
+            disabled={false}
+          >
+            {tabs.map(tab => (
+              <TabItem
+                key={tab}
+                isActive={tab === state.tabPage}
+                tabIndex={1}
+                onClick={() => dispatch(actions.changeTab(tab))}
+              >
+                <div className={style.tabContent}>
+                  {
+                    tab === 'Расписание' ?
+                      <IconEvent className={style.icon} /> :
+                      <IconHouse className={style.icon} />
+                  }
+                  {tab}
+                </div>
+              </TabItem>
+            ))}
+          </Tabs>
+          {selectTab()}
+        </div>
       </Container>
     </>
   )
