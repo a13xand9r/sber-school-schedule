@@ -42,7 +42,9 @@ export const changeSchedule = async (userId: string, newSchedule: ScheduleType):
   console.log(user)
   try {
     if (user) {
-      await scheduleDB.updateOne({ userId }, { userId, schedule: newSchedule })
+      await scheduleDB.updateOne({ userId }, {
+        $set: { userId, schedule: newSchedule }
+      })
     } else {
       scheduleDB.insertOne({ userId, schedule: newSchedule })
     }
