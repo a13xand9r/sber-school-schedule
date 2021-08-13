@@ -4,6 +4,7 @@ import React, { Dispatch, FC, FormEvent, useState } from 'react'
 import { actions, ActionsType, allSubjects, SubjectConstType, SubjectType } from '../store'
 import Image from 'next/image'
 import style from '../styles/schedule.module.css'
+import { pushSchedule } from '../apiReuests';
 
 export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
   const [isSubjectListMode, setIsSubjectListMode] = useState(false)
@@ -13,6 +14,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
   const [cabinetInput, setCabinetInput] = useState<string>('')
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    pushSchedule()
     if (selectedSubject && selectedIcon) {
       dispatch(actions.addSubject({
         cabinet: cabinetInput,
