@@ -59,13 +59,14 @@
   width: 100%;
 }
 .submitChangeButtonContainer{
-  position: fixed;
+  /* position: fixed; */
   margin: 0 auto;
+  margin-top: 3rem;
   max-width: 38rem;
   padding: 1rem;
-  bottom: 0;
+  /* bottom: 0;
   left: 0;
-  right: 0;
+  right: 0; */
 }
 .subjectButton{
   /* width: 100%; */
