@@ -6,10 +6,12 @@
 }
 .subjectList{
   margin: 3rem auto;
+  margin-bottom: 0.5rem;
   text-align: center;
 }
 .emptyList{
-  margin: 5rem auto;
+  margin: 3rem auto;
+  margin-bottom: 1rem;
   text-align: center;
 }
 .warningIcon{
@@ -23,8 +25,12 @@
 .editButton{
   margin-top: 2rem;
 }
+.addButton{
+  margin-top: 0.5rem;
+}
 .subjectItem{
   margin: 0 auto;
+  position: relative;
   max-width: 38rem;
   display: flex;
   height: 3.3rem;
@@ -48,8 +54,18 @@
   text-align: start;
   max-width: 38rem;
 }
-.subjectFormButton{
-  margin-bottom: 1rem;
+.submitChangeButton{
+  margin: auto;
+  width: 100%;
+}
+.submitChangeButtonContainer{
+  position: fixed;
+  margin: 0 auto;
+  max-width: 38rem;
+  padding: 1rem;
+  bottom: 10rem;
+  left: 0;
+  right: 0;
 }
 .subjectButton{
   /* width: 100%; */
@@ -65,17 +81,53 @@
   justify-content: center;
   align-items: center;
   max-width: 100vw;
-  /* margin: 0 auto; */
+  /* width: 100px; */
+  margin: 0 auto;
+}
+.tabItem{
+  /* max-width: 30px; */
+  max-width: 5rem;
+  padding: 0;
 }
 .subjectIcon{
   margin-left: 1rem;
 }
 .spinner{
   position: absolute;
-  left: 45%;
-  top: 45%;
+  left: 47%;
+  top: 47%;
 }
 .form{
   max-width: 38rem;
   margin: 0 auto;
+}
+.deleteItem{
+  display: block;
+  width: 15px;
+  height: 15px;
+  opacity: 0.3;
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+}
+.deleteItem:hover {
+  opacity: 1;
+}
+.deleteItem:active:before, .deleteItem:active:after {
+  background-color: rgb(250, 250, 250);
+  opacity: 0.7;
+}
+.deleteItem:before, .deleteItem:after {
+  position: absolute;
+  right: 15px;
+  content: ' ';
+  height: 15px;
+  width: 2px;
+  background-color: rgb(192, 192, 192);
+}
+.deleteItem:before {
+  transform: rotate(45deg);
+}
+.deleteItem:after {
+  transform: rotate(-45deg);
 }

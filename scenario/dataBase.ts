@@ -2,18 +2,20 @@ import { MongoClient } from 'mongodb'
 import { ScheduleType } from '../store'
 
 const client = new MongoClient('mongodb+srv://school_schedule:123qwerty@cluster0.siwn0.mongodb.net/schedule')
+// const client = new MongoClient('mongodb+srv://school_schedule:123qwerty@cluster0.siwn0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+let scheduleDB: any
 let isMongoConnected = false
 export const start = async () => {
   try {
     await client.connect()
     isMongoConnected = true
     console.log('MongoDB connected')
+    scheduleDB = client.db().collection('schedule')
   } catch (err) {
     console.log(err)
   }
 }
 
-const scheduleDB = client.db().collection('schedule')
 const emptySchedule = {
   'Понедельник': null,
   'Вторник': null,
@@ -25,7 +27,10 @@ const emptySchedule = {
 
 export const getSchedule = async (userId: string): Promise<ScheduleType> => {
   try {
-    if (!isMongoConnected) await client.connect()
+    if (!isMongoConnected){
+      await client.connect()
+      scheduleDB = client.db().collection('schedule')
+    }
     const user = await scheduleDB.findOne({ userId })
     if (user) {
       return user.schedule
@@ -41,7 +46,10 @@ export const getSchedule = async (userId: string): Promise<ScheduleType> => {
 export const changeSchedule = async (userId: string, newSchedule: ScheduleType): Promise<ScheduleType> => {
   const user = await scheduleDB.findOne({ userId })
   try {
-    if (!isMongoConnected) await client.connect()
+    if (!isMongoConnected){
+      await client.connect()
+      scheduleDB = client.db().collection('schedule')
+    }
     if (user) {
       await scheduleDB.updateOne({ userId }, {
         $set: { userId, schedule: newSchedule }

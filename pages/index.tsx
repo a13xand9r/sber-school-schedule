@@ -4,9 +4,9 @@ import React, { useEffect, useReducer, useRef } from 'react'
 import { Schedule } from '../components/Schedule'
 import { GlobalStyles } from '../GlobalStyle'
 import { actions, initialState, reducer, StateType } from '../store'
-import { createAssistant, createSmartappDebugger } from '@sberdevices/assistant-client'
+import { createAssistant, createSmartappDebugger, AppInfo } from '@sberdevices/assistant-client'
 import style from '../styles/index.module.css'
-import { changeSchedule, requestSchedule } from '../apiReuests'
+import { changeSchedule, requestSchedule } from '../apiRequests'
 import { CustomHeader } from '../components/Header'
 
 const initializeAssistant = (getState: () => StateType) => {
@@ -30,10 +30,16 @@ export default function Home() {
       console.log('action ', smart_app_data)
       if (smart_app_data) dispatch(smart_app_data)
     })
+    const detectDeviceCallback = () =>(
+      window.navigator.userAgent.toLowerCase().includes('sberbox') ? 'sberbox' : 'mobile'
+    )
+    console.log(window.navigator.userAgent.toLowerCase())
+    dispatch(actions.setSurface(detectDeviceCallback()))
   }, [])
   useEffect(() => {
     const getSchedule = async () => {
       const newSchedule = await requestSchedule(state.userId as string)
+      dispatch(actions.setIsFetching(false))
       dispatch(actions.setSchedule(newSchedule))
     }
     if (state.userId) getSchedule()
@@ -47,9 +53,10 @@ export default function Home() {
     switch (state.tabPage) {
       case 'Расписание':
         return <Schedule
+          surface={state.surface}
           saveData={saveData}
           isEditMode={state.isEditMode}
-          userId={state.userId}
+          isFetching={state.isFetching}
           day={state.day}
           dispatch={dispatch}
           subjects={state.schedule[state.day]}

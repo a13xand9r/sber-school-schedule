@@ -2,8 +2,10 @@
 export const initialState = {
   userId: null as null | string,
   tabPage: 'Расписание' as TabsType,
+  surface: 'sberbox' as SurfaceType,
   isEditMode: false,
   day: 'Понедельник' as DayType,
+  isFetching: true,
   schedule: {
     'Понедельник': null,
     'Вторник': null,
@@ -24,15 +26,24 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
     case 'ADD_SUBJECT':
       const returnObj = { ...state, schedule: { ...state.schedule } }
       returnObj.schedule[state.day] = state.schedule[state.day] !== null ?
-        [...state.schedule[state.day] as Array<SubjectType>, action.newSubject] :
+        [...state.schedule[state.day] as SubjectType[], action.newSubject] :
         [action.newSubject]
       return returnObj
     case 'SET_SCHEDULE':
       return {...state, schedule: action.schedule}
+    case 'DELETE_SUBJECT': {
+      const returnObj = { ...state, schedule: { ...state.schedule } }
+      returnObj.schedule[state.day] = state.schedule[state.day]?.filter((_, i) => i !== action.index) as SubjectType[]
+      return returnObj
+    }
     case 'SET_USER_ID':
       return {...state, userId: action.id}
     case 'SET_EDIT_MODE':
       return {...state, isEditMode: action.flag}
+    case 'SET_IS_DATA_FETCHING':
+      return {...state, isFetching: action.flag}
+    case 'SET_SURFACE':
+      return {...state, surface: action.surface}
     default: return state
   }
 }
@@ -44,6 +55,9 @@ export const actions = {
   setSchedule: (schedule: ScheduleType) => ({ type: 'SET_SCHEDULE', schedule } as const),
   setUserId: (id: string) => ({ type: 'SET_USER_ID', id } as const),
   setEditMode: (flag: boolean) => ({ type: 'SET_EDIT_MODE', flag } as const),
+  setIsFetching: (flag: boolean) => ({ type: 'SET_IS_DATA_FETCHING', flag } as const),
+  deleteSubject: (index: number) => ({ type: 'DELETE_SUBJECT', index } as const),
+  setSurface: (surface: SurfaceType) => ({ type: 'SET_SURFACE', surface } as const),
 }
 export const allSubjects = [
   { subject: 'Алгебра', icon: '/algebra.png' as string },
@@ -113,3 +127,4 @@ export type ScheduleType = {
   'Пятница': null | SubjectType[],
   'Суббота': null | SubjectType[],
 }
+export type SurfaceType = 'sberbox' | 'mobile'
