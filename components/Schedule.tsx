@@ -23,7 +23,6 @@ export const Schedule: FC<PropsType> = ({ day, subjects, isFetching, dispatch, i
   const deleteItem = (index: number) => {
     dispatch(actions.deleteSubject(index))
   }
-  
   return <div className={style.schedule}>
     <div className={style.dayTabs}>
       <Tabs
