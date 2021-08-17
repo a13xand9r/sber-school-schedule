@@ -1,13 +1,14 @@
 import { IconEvent, IconHouse } from '@sberdevices/plasma-icons'
 import { Body1, Button, Container, TabItem, Tabs } from '@sberdevices/plasma-ui'
 import React, { useEffect, useReducer, useRef } from 'react'
-import { Schedule } from '../components/Schedule'
+import { Schedule } from '../src/client/components/Schedule'
 import { GlobalStyles } from '../GlobalStyle'
 import { actions, initialState, reducer, StateType } from '../store'
 import { createAssistant, createSmartappDebugger, AppInfo } from '@sberdevices/assistant-client'
 import style from '../styles/index.module.css'
-import { changeSchedule, requestSchedule } from '../apiRequests'
-import { CustomHeader } from '../components/Header'
+import { changeSchedule, requestSchedule } from '../src/client/apiRequests'
+import { CustomHeader } from '../src/client/components/CutomHeader'
+import { HomeTasks } from '../src/client/components/HomeTasks'
 
 const initializeAssistant = (getState: () => StateType) => {
   if (process.env.NODE_ENV === 'development') {
@@ -30,10 +31,9 @@ export default function Home() {
       console.log('action ', smart_app_data)
       if (smart_app_data) dispatch(smart_app_data)
     })
-    const detectDeviceCallback = () =>(
+    const detectDeviceCallback = () => (
       window.navigator.userAgent.toLowerCase().includes('sberbox') ? 'sberbox' : 'mobile'
     )
-    console.log(window.navigator.userAgent.toLowerCase())
     dispatch(actions.setSurface(detectDeviceCallback()))
   }, [])
   useEffect(() => {
@@ -61,7 +61,12 @@ export default function Home() {
           dispatch={dispatch}
           subjects={state.schedule[state.day]}
         />
-      case 'Домашка': return <></>
+      case 'Домашка': return <HomeTasks
+        isAddTaskMode={state.isAddTaskMode}
+        homeTasks={state.homeTasks}
+        showTaskMode={state.showTaskMode}
+        dispatch={dispatch}
+      />
     }
   }
   const setEditMode = (flag: boolean) => {
@@ -71,7 +76,15 @@ export default function Home() {
     <>
       <GlobalStyles character={'sber'} />
       <Container>
-        <CustomHeader setEditMode={setEditMode} isEditMode={state.isEditMode} />
+        <CustomHeader
+          homeTask={state.showTaskMode}
+          setEditMode={setEditMode}
+          isEditMode={state.isEditMode}
+          tab={state.tabPage}
+          setIsAddTaskMode={(flag: boolean) => dispatch(actions.setIsAddTaskMode(flag))}
+          isAddTaskMode={state.isAddTaskMode}
+          setShowTaskMode={(index: number | null) => dispatch(actions.setShowTaskMode(index))}
+        />
         <div className={style.appContainer}>
           <Tabs
             size={'m'}

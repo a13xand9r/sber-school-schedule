@@ -1,8 +1,7 @@
 import { MongoClient } from 'mongodb'
-import { ScheduleType } from '../store'
+import { ScheduleType } from '../../store'
 
 const client = new MongoClient('mongodb+srv://school_schedule:123qwerty@cluster0.siwn0.mongodb.net/schedule')
-// const client = new MongoClient('mongodb+srv://school_schedule:123qwerty@cluster0.siwn0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
 let scheduleDB: any
 let isMongoConnected = false
 export const start = async () => {

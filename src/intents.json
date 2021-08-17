@@ -1,0 +1,85 @@
+{
+  "intents": {
+    "/Расписание на день": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "Какое расписание на @weekDay"
+        },
+        {
+          "type": "phrase",
+          "rule": "какие уроки в @weekDay"
+        },
+        {
+          "type": "phrase",
+          "rule": "какие уроки во @weekDay"
+        },
+        {
+          "type": "phrase",
+          "rule": "какое расписание в @weekDay"
+        }
+      ],
+      "variables": {
+        "day": {
+          "required": true,
+          "questions": [
+            "На какой день?",
+            "Какой день недели?"
+          ]
+        }
+      }
+    }
+  },
+  "entities": {
+    "weekDay": {
+      "noMorph": true,
+      "matchers": [
+        {
+          "type": "synonyms",
+          "rule": [
+            "Понедельник"
+          ],
+          "value": ""
+        },
+        {
+          "type": "synonyms",
+          "rule": [
+            "Вторник"
+          ],
+          "value": ""
+        },
+        {
+          "type": "synonyms",
+          "rule": [
+            "четверг"
+          ],
+          "value": ""
+        },
+        {
+          "type": "synonyms",
+          "rule": [
+            "среда",
+            "среду"
+          ],
+          "value": ""
+        },
+        {
+          "type": "synonyms",
+          "rule": [
+            "пятница",
+            "пятницу"
+          ],
+          "value": ""
+        },
+        {
+          "type": "synonyms",
+          "rule": [
+            "суббота",
+            "субботу"
+          ],
+          "value": ""
+        }
+      ]
+    }
+  }
+}

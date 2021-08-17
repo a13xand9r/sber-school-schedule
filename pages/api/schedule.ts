@@ -1,5 +1,5 @@
 import { ScheduleType } from './../../store';
-import { changeSchedule, getSchedule, start } from '../../scenario/dataBase';
+import { changeSchedule, getSchedule, start } from '../../src/scenario/dataBase';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 start()

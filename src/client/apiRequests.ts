@@ -1,4 +1,4 @@
-import { ScheduleType } from './store';
+import { ScheduleType } from '../../store';
 import axios from 'axios'
 
 const axiosInstance = axios.create({

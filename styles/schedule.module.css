@@ -1,6 +1,6 @@
 .schedule{
     margin: 0 auto;
-    padding-top: 3rem;
+    padding-top: 1.5rem;
     text-align: center;
     /* max-width: 38rem; */
 }
@@ -26,6 +26,8 @@
   margin-top: 2rem;
 }
 .addButton{
+  margin: 0 auto;
+  text-align: center;
   margin-top: 0.5rem;
 }
 .subjectItem{
@@ -47,12 +49,24 @@
 .subjectFooter{
   color: gray;
 }
-.teacherInput, .cabinetInput, .subjectFormButton{
+.teacherInput, .cabinetInput, .subjectFormButton, .datePicker{
   width: 100%;
+  margin: auto;
   margin-top: 2rem;
   margin-bottom: 2rem;
   text-align: start;
   max-width: 38rem;
+}
+.subjectFormButton{
+  margin-top: 1rem;
+}
+.datePicker{
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.taskText{
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
 }
 .submitChangeButton{
   margin: auto;
@@ -99,8 +113,13 @@
   top: 47%;
 }
 .form{
+  text-align: start;
   max-width: 38rem;
   margin: 0 auto;
+}
+.label{
+  margin-left: 1rem;
+  color: rgb(199, 199, 199);
 }
 .deleteItem{
   display: block;

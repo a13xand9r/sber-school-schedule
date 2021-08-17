@@ -1,9 +1,11 @@
 import { IconChevronDown, IconHouseSbol, IconPersone, IconSleep } from '@sberdevices/plasma-icons';
 import { Body1, Button, TextField } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, FormEvent, useState } from 'react'
-import { actions, ActionsType, allSubjects, SubjectConstType, SubjectType } from '../store'
+import { actions, ActionsType, allSubjects, SubjectConstType, SubjectType, SubjectWithIconsType } from '../../../store'
 import Image from 'next/image'
-import style from '../styles/schedule.module.css'
+import style from '../../../styles/schedule.module.css'
+import { SubjectSelectButton } from './SubjectsSelectButton';
+import { SubjectListMode } from './SubjectListMode';
 
 export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
   const [isSubjectListMode, setIsSubjectListMode] = useState(false)
@@ -28,13 +30,13 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
     setSelectedSubject(subject.subject)
     setSelectedIcon(subject.icon)
   }
+  const changeSubjectListMode = () => {
+    setIsSubjectListMode(prev => !prev)
+  }
   return <>
-    <Button
-      className={style.subjectFormButton}
-      onClick={() => setIsSubjectListMode(prev => !prev)}
-      view='secondary'
-      contentRight={<IconChevronDown />}
-      text={<Body1>{selectedSubject ? selectedSubject : 'Предмет'}</Body1>}
+    <SubjectSelectButton
+      changeSubjectListMode={changeSubjectListMode}
+      selectedSubject={selectedSubject}
     />
     {!isSubjectListMode ?
       <form className={style.form} onSubmit={(e) => onFormSubmit(e)}>
@@ -57,22 +59,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
         />
         <Button text='Добавить' />
       </form> :
-      <div className={style.subjectsSelect}>
-        {allSubjects.map(subj => (
-          <Button
-            size='s'
-            className={style.subjectButton}
-            key={subj.subject}
-            view='secondary'
-            onClick={() => onSubjectClick(subj)}
-          >
-            <>
-              <Image src={subj.icon} alt='' layout='fixed' width={25} height={25} />
-              <Body1 className={style.subjectText}>{subj.subject}</Body1>
-            </>
-          </Button>
-        ))}
-      </div>
+      <SubjectListMode onSubjectClick={onSubjectClick} />
     }
   </>
 }
@@ -80,8 +67,4 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
 type PropsType = {
   dispatch: Dispatch<ActionsType>
   finishAdding: () => void
-}
-type SubjectWithIconsType = {
-  subject: SubjectConstType
-  icon: string
 }

@@ -1,25 +1,20 @@
 import { Body1, Button, Button1, Button2, Footnote2, Spinner, TabItem, Tabs, Underline } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, useEffect, useState } from 'react'
-import { actions, ActionsType, DayType, SubjectType, SurfaceType } from '../store'
-import style from '../styles/schedule.module.css'
+import { actions, ActionsType, daysArray, DayType, SubjectType, SurfaceType } from '../../../store'
+import style from '../../../styles/schedule.module.css'
 import { AddSubjectForm } from './AddSubjectForm'
 import { SubjectList } from './SubjectList'
-
-// const daysArray = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'] as const
-const daysArray = [
-  ['Понедельник', 'Пн'],
-  ['Вторник', 'Вт'],
-  ['Среда', 'Ср'],
-  ['Четверг', 'Чт'],
-  ['Пятница', 'Пт'],
-  ['Суббота', 'Сб'],
-] as const
 
 export const Schedule: FC<PropsType> = ({ day, subjects, isFetching, dispatch, isEditMode, saveData, surface }) => {
   const [isAddSubjectMode, setIsAddSubjectMode] = useState(false)
   useEffect(() => {
     setIsAddSubjectMode(false)
   }, [day])
+  useEffect(() => {
+    return () => {
+      dispatch(actions.setEditMode(false))
+    }
+  }, [])
   const deleteItem = (index: number) => {
     dispatch(actions.deleteSubject(index))
   }
