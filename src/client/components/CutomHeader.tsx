@@ -66,3 +66,54 @@ type PropsType = {
   setShowTaskMode: (index: number | null) => void
   setIsAddTaskMode: (flag: boolean) => void
 }
+
+{/* <HeaderRoot>
+<IconEdit
+// onClick={() => {
+//   action('onBackClick')();
+//   setIsBack(false);
+// }}
+/>
+
+<HeaderTitleWrapper>
+  <>
+    <HeaderTitle>{
+      homeTask ? `Д/З на ${homeTask.date.getDate()} ${monthsArray[homeTask.date.getMonth() - 1]}, ${homeTask.date.getFullYear()} (${daysArray[homeTask.date.getDay()][1].toLocaleLowerCase()})` :
+        'Школьное распиcание'}</HeaderTitle>
+    {!!homeTask && <HeaderSubtitle >{`по ${homeTask.subSubject.toLowerCase()}`}</HeaderSubtitle>}
+  </>
+</HeaderTitleWrapper>
+<HeaderContent>
+  {
+    tab === 'Домашка' ?
+      !!homeTask ?
+        <Button
+          view='clear'
+          onClick={() => setShowTaskMode(null)}
+        ><IconClose />
+        </Button> :
+        isAddTaskMode ?
+          <Button
+            view='clear'
+            onClick={() => setIsAddTaskMode(false)}
+          ><IconClose />
+          </Button> :
+          <Button
+            view='clear'
+            onClick={() => setIsAddTaskMode(true)}
+          ><IconPlus />
+          </Button> :
+      isEditMode ?
+        <Button
+          view='clear'
+          onClick={() => setEditMode(false)}
+        ><IconClose />
+        </Button> :
+        <Button
+          view='clear'
+          onClick={() => setEditMode(true)}
+        ><IconEdit />
+        </Button>
+  }
+</HeaderContent>
+</HeaderRoot> */}

@@ -53,10 +53,16 @@
   border-radius: 10px;
   padding-left: 1rem;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
   transition: 0.2s;
 }
-.taskItem:active{
+.taskItem:active, .taskItem:visited{
   transform: scale(0.98);
+  outline: none;
+}
+.taskItem:focus-visible {
+  border: rgba(47, 199, 47, 0.63) solid 2px;
+  border-radius: 10px;
   outline: none;
 }
 .subjectText{
