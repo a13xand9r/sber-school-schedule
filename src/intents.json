@@ -32,7 +32,7 @@
   },
   "entities": {
     "weekDay": {
-      "noMorph": true,
+      "noMorph": false,
       "matchers": [
         {
           "type": "synonyms",
@@ -51,31 +51,28 @@
         {
           "type": "synonyms",
           "rule": [
-            "четверг"
+            "Четверг"
           ],
           "value": ""
         },
         {
           "type": "synonyms",
           "rule": [
-            "среда",
-            "среду"
+            "среда"
           ],
           "value": ""
         },
         {
           "type": "synonyms",
           "rule": [
-            "пятница",
-            "пятницу"
+            "пятница"
           ],
           "value": ""
         },
         {
           "type": "synonyms",
           "rule": [
-            "суббота",
-            "субботу"
+            "суббота"
           ],
           "value": ""
         }

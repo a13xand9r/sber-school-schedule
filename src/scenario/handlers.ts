@@ -15,17 +15,26 @@ export const noMatchHandler: SaluteHandler = ({ res }) => {
   res.appendBubble('непонятное что-то')
 }
 export const getDailyScheduleHandler: SaluteHandler = async ({ req, res }) => {
-  const {day} = req.variables
-  console.log(day)
-  
+  const { day } = req.variables
   const dailySchedule = await getSchedule(req.request.uuid.sub)
-  //@ts-ignore
-  const dailyScheduleText = dailySchedule[day]?.map(el => el.subject).join(', ')
-  console.log('day response: ', dailyScheduleText)
+  const dailyScheduleText = dailySchedule[objectWord(day as string) as DayType]?.map(el => el.subject).join(', ')
+  console.log('day: ', day)
+  console.log('normalize_day: ', objectWord(day as string))
   res.appendCommand({
     type: 'CHANGE_DAY',
-    day
+    day: objectWord(day as string)
   })
-  res.setPronounceText(`В ${day} следующие уроки: ${dailyScheduleText}`)
-  res.appendBubble(`${dailyScheduleText}`)
+  if (dailyScheduleText) {
+    res.setPronounceText(`В ${day} следующие уроки: ${dailyScheduleText}`)
+    res.appendBubble(`${dailyScheduleText}`)
+  } else {
+    res.setPronounceText(`В ${day} нет уроков`)
+    res.appendBubble(`В ${day} нет уроков`)
+  }
+}
+
+function objectWord(str: string) {
+  if (!str) return str
+  const lastLetter = str[str.length-1] === 'у' ? 'а' : str[str.length-1]
+  return str[0].toUpperCase() + str.slice(1, str.length-1) + lastLetter
 }

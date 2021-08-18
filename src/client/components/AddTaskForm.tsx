@@ -3,24 +3,28 @@ import { Body1, Button, DatePicker, Headline3, TextArea } from '@sberdevices/pla
 import React, { Dispatch, FC, FormEvent, useState } from 'react'
 import { actions, ActionsType, SubjectConstType, SubjectWithIconsType, SubSubjectConstType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
+import { changeHomeTasks } from '../apiRequests'
 import { SubjectListMode } from './SubjectListMode'
 import { SubjectSelectButton } from './SubjectsSelectButton'
 
-export const AddTaskForm: FC<PropsType> = ({dispatch, finishAdding}) => {
+export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) => {
   const [isSubjectListMode, setIsSubjectListMode] = useState(false)
-  const [selectedSubject, setSelectedSubject] = useState<{subject: SubjectConstType, subSubject: SubSubjectConstType, icon: string} | null>(null)
+  const [selectedSubject, setSelectedSubject] = useState<{ subject: SubjectConstType, subSubject: SubSubjectConstType, icon: string } | null>(null)
   const [dateValue, setDateValue] = useState<Date>(() => new Date())
   const [taskText, setTaskText] = useState<string>('')
-  const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (selectedSubject && taskText) {
-      dispatch(actions.addHomeTask({
+    if (selectedSubject && taskText && userId) {
+      console.log(dateValue)
+      const newHomeTask = {
         subject: selectedSubject.subject,
         icon: selectedSubject.icon,
         date: dateValue,
         task: taskText,
         subSubject: selectedSubject.subSubject
-      }))
+      }
+      changeHomeTasks(userId, newHomeTask)
+      dispatch(actions.addHomeTask(newHomeTask))
       finishAdding()
     }
   }
@@ -81,4 +85,5 @@ export const AddTaskForm: FC<PropsType> = ({dispatch, finishAdding}) => {
 type PropsType = {
   dispatch: Dispatch<ActionsType>
   finishAdding: () => void
+  userId: string | null
 }

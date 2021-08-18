@@ -6,7 +6,7 @@ import { GlobalStyles } from '../GlobalStyle'
 import { actions, initialState, reducer, StateType } from '../store'
 import { createAssistant, createSmartappDebugger, AppInfo } from '@sberdevices/assistant-client'
 import style from '../styles/index.module.css'
-import { changeSchedule, requestSchedule } from '../src/client/apiRequests'
+import { changeSchedule, requestHomeTasks, requestSchedule } from '../src/client/apiRequests'
 import { CustomHeader } from '../src/client/components/CutomHeader'
 import { HomeTasks } from '../src/client/components/HomeTasks'
 
@@ -42,7 +42,14 @@ export default function Home() {
       dispatch(actions.setIsFetching(false))
       dispatch(actions.setSchedule(newSchedule))
     }
-    if (state.userId) getSchedule()
+    const getHomeTasks = async () => {
+      const requestedHomeTasks = await requestHomeTasks(state.userId as string)
+      dispatch(actions.setHomeTasks(requestedHomeTasks))
+    }
+    if (state.userId){
+      getSchedule()
+      getHomeTasks()
+    }
   }, [state.userId])
   const saveData = async () => {
     const newSchedule = await changeSchedule(state.userId as string, state.schedule)
@@ -62,6 +69,7 @@ export default function Home() {
           subjects={state.schedule[state.day]}
         />
       case 'Домашка': return <HomeTasks
+        userId={state.userId}
         isAddTaskMode={state.isAddTaskMode}
         homeTasks={state.homeTasks}
         showTaskMode={state.showTaskMode}

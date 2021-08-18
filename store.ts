@@ -47,8 +47,10 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
       return {...state, isFetching: action.flag}
     case 'SET_SURFACE':
       return {...state, surface: action.surface}
+    case 'SET_HOME_TASKS':
+      return {...state, homeTasks: action.tasks.map(el => ({...el, date: new Date(el.date)}))}
     case 'ADD_HOME_TASK':
-      return {...state, homeTasks: [...state.homeTasks, action.task]}
+      return {...state, homeTasks: [...state.homeTasks, {...action.task, date: new Date(action.task.date)}]}
     case 'SET_IS_ADD_TASK_MODE':
       return {...state, isAddTaskMode: action.flag}
     case 'SET_TASK_MODE':
@@ -67,6 +69,7 @@ export const actions = {
   setIsFetching: (flag: boolean) => ({ type: 'SET_IS_DATA_FETCHING', flag } as const),
   deleteSubject: (index: number) => ({ type: 'DELETE_SUBJECT', index } as const),
   setSurface: (surface: SurfaceType) => ({ type: 'SET_SURFACE', surface } as const),
+  setHomeTasks: (tasks: HomeTaskType[]) => ({ type: 'SET_HOME_TASKS', tasks } as const),
   addHomeTask: (task: HomeTaskType) => ({ type: 'ADD_HOME_TASK', task } as const),
   setShowTaskMode: (index: number | null) => ({ type: 'SET_TASK_MODE', index } as const),
   setIsAddTaskMode: (flag: boolean) => ({ type: 'SET_IS_ADD_TASK_MODE', flag } as const),

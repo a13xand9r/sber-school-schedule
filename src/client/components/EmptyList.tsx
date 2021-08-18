@@ -5,7 +5,6 @@ import { TabsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 
 export const EmptyList: FC<PropsType> = ({ isEditMode, tab }) => {
-  console.log(tab)
   return <div className={style.emptyList}>
     <IconWarning className={style.warningIcon} />
     <br />

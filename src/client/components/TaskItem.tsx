@@ -6,19 +6,28 @@ import style from '../../../styles/schedule.module.css'
 
 export const TaskItem: FC<PropsType> = (props) => {
   const { icon, subject, cabinet, isEditMode, teacher, deleteItem, index, date, onClick } = props
-  return <Button
-    view='clear'
-    onClick={() => onClick(index)}
-    className={style.taskButton}
-    contentLeft={<Image src={icon} alt='' layout='fixed' width={35} height={35} />}
-    text={
-      <div className={style.subjectText}>
-        <Body1>{subject}</Body1>
-        <Footnote1 className={style.subjectFooter}>
-          На {`${date.getDate()} ${monthsArray[date.getMonth() - 1]}, ${date.getFullYear()} (${daysArray[date.getDay()][0].toLocaleLowerCase()})`}
-        </Footnote1>
-      </div>}
-  />
+  return <div tabIndex={1} onClick={() => onClick(index)} className={style.taskItem}>
+    <Image src={icon} alt='' layout='fixed' width={35} height={35} />
+    <div className={style.subjectText}>
+      <Body1>{subject}</Body1>
+      <Footnote1 className={style.subjectFooter}>
+        На {`${date.getDate()} ${monthsArray[date.getMonth()]}, ${date.getFullYear()} (${daysArray[date.getDay()][0].toLowerCase()})`}
+      </Footnote1>
+    </div>
+  </div>
+  // <Button
+  //   view='secondary'
+  //   onClick={() => onClick(index)}
+  //   className={style.taskButton}
+  //   contentLeft={<Image src={icon} alt='' layout='fixed' width={35} height={35} />}
+  //   text={
+  //     <div className={style.subjectText}>
+  //       <Body1>{subject}</Body1>
+  //       <Footnote1 className={style.subjectFooter}>
+  //         На {`${date.getDate()} ${monthsArray[date.getMonth()]}, ${date.getFullYear()} (${daysArray[date.getDay()][0].toLowerCase()})`}
+  //       </Footnote1>
+  //     </div>}
+  // />
 }
 
 type PropsType = {

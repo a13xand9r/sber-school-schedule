@@ -6,7 +6,7 @@ import { TaskItem } from './TaskItem'
 import style from '../../../styles/schedule.module.css'
 import { AddTaskForm } from './AddTaskForm'
 
-export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, isAddTaskMode }) => {
+export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, isAddTaskMode, userId }) => {
   const onTaskClickHandler = (index: number) => {
     dispatch(actions.setShowTaskMode(index))
   }
@@ -20,6 +20,7 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
     {showTaskMode ? <Body1>{showTaskMode.task}</Body1> :
       isAddTaskMode ? <AddTaskForm
         dispatch={dispatch}
+        userId={userId}
         finishAdding={() => dispatch(actions.setIsAddTaskMode(false))}
       /> :
         homeTasks.length === 0 ? <>
@@ -48,4 +49,5 @@ type PropsType = {
   dispatch: Dispatch<ActionsType>
   showTaskMode: null | HomeTaskType
   isAddTaskMode: boolean
+  userId: string | null
 }
