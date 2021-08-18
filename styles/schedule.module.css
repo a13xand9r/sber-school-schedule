@@ -49,13 +49,16 @@
 .subjectFooter{
   color: gray;
 }
-.teacherInput, .cabinetInput, .subjectFormButton, .datePicker{
+.teacherInput, .cabinetInput, .subjectFormButton, .datePicker, .taskButton{
   width: 100%;
   margin: auto;
   margin-top: 2rem;
   margin-bottom: 2rem;
   text-align: start;
   max-width: 38rem;
+}
+.taskButton{
+  margin: 0.5rem auto;
 }
 .subjectFormButton{
   margin-top: 1rem;

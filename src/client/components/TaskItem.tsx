@@ -9,6 +9,7 @@ export const TaskItem: FC<PropsType> = (props) => {
   return <Button
     view='clear'
     onClick={() => onClick(index)}
+    className={style.taskButton}
     contentLeft={<Image src={icon} alt='' layout='fixed' width={35} height={35} />}
     text={
       <div className={style.subjectText}>
