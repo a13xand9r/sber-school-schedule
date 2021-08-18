@@ -1,5 +1,5 @@
 import { IconEvent, IconHouse } from '@sberdevices/plasma-icons'
-import { Body1, Button, Container, TabItem, Tabs } from '@sberdevices/plasma-ui'
+import { Body1, Button, Container, Spinner, TabItem, Tabs } from '@sberdevices/plasma-ui'
 import React, { useEffect, useReducer, useRef } from 'react'
 import { Schedule } from '../src/client/components/Schedule'
 import { GlobalStyles } from '../GlobalStyle'
@@ -39,16 +39,21 @@ export default function Home() {
   useEffect(() => {
     const getSchedule = async () => {
       const newSchedule = await requestSchedule(state.userId as string)
-      dispatch(actions.setIsFetching(false))
       dispatch(actions.setSchedule(newSchedule))
     }
     const getHomeTasks = async () => {
       const requestedHomeTasks = await requestHomeTasks(state.userId as string)
       dispatch(actions.setHomeTasks(requestedHomeTasks))
     }
-    if (state.userId){
-      getSchedule()
-      getHomeTasks()
+    const initialRequests = async () => {
+      await Promise.all([
+        getHomeTasks(),
+        getSchedule()
+      ])
+      dispatch(actions.setIsFetching(false))
+    }
+    if (state.userId) {
+      initialRequests()
     }
   }, [state.userId])
   const saveData = async () => {
@@ -63,7 +68,6 @@ export default function Home() {
           surface={state.surface}
           saveData={saveData}
           isEditMode={state.isEditMode}
-          isFetching={state.isFetching}
           day={state.day}
           dispatch={dispatch}
           subjects={state.schedule[state.day]}
@@ -121,7 +125,10 @@ export default function Home() {
               </TabItem>
             ))}
           </Tabs>
-          {selectTab()}
+          {
+            state.isFetching ? <div className={style.spinner}><Spinner /></div> :
+            selectTab()
+          }
         </div>
       </Container>
     </>

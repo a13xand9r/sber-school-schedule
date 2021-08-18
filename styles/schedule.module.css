@@ -60,6 +60,9 @@
   transform: scale(0.98);
   outline: none;
 }
+.taskItem:hover{
+  background-color: rgba(7, 7, 7, 0.24);
+}
 .taskItem:focus-visible {
   border: rgba(47, 199, 47, 0.63) solid 2px;
   border-radius: 10px;
@@ -133,11 +136,6 @@
 }
 .subjectIcon{
   margin-left: 1rem;
-}
-.spinner{
-  position: absolute;
-  left: 47%;
-  top: 47%;
 }
 .form{
   text-align: start;

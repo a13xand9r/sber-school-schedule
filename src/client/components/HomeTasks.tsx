@@ -33,7 +33,8 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
         </> :
           homeTasks.map((task, i) =>
             <TaskItem
-              key={task.task}
+              key={i}
+              tab='Домашка'
               date={task.date}
               icon={task.icon}
               index={i}

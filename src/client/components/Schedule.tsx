@@ -5,7 +5,7 @@ import style from '../../../styles/schedule.module.css'
 import { AddSubjectForm } from './AddSubjectForm'
 import { SubjectList } from './SubjectList'
 
-export const Schedule: FC<PropsType> = ({ day, subjects, isFetching, dispatch, isEditMode, saveData, surface }) => {
+export const Schedule: FC<PropsType> = ({ day, subjects, dispatch, isEditMode, saveData, surface }) => {
   const [isAddSubjectMode, setIsAddSubjectMode] = useState(false)
   useEffect(() => {
     setIsAddSubjectMode(false)
@@ -42,15 +42,15 @@ export const Schedule: FC<PropsType> = ({ day, subjects, isFetching, dispatch, i
         ))}
       </Tabs>
     </div>
-    {isFetching ? <div className={style.spinner}><Spinner /></div> :
+    {
       !isEditMode ?
-      <>
-        <SubjectList list={subjects} isEditMode={isEditMode} deleteItem={deleteItem} />
-        {(!subjects || !subjects.length) && <Button className={style.editButton}
-          text='Редактировать расписание'
-          view='secondary'
-          onClick={() => dispatch(actions.setEditMode(true))}
-        />}
+        <>
+          <SubjectList list={subjects} isEditMode={isEditMode} deleteItem={deleteItem} />
+          {(!subjects || !subjects.length) && <Button className={style.editButton}
+            text='Редактировать расписание'
+            view='secondary'
+            onClick={() => dispatch(actions.setEditMode(true))}
+          />}
         </> :
         !isAddSubjectMode ?
           <>
@@ -82,7 +82,6 @@ export const Schedule: FC<PropsType> = ({ day, subjects, isFetching, dispatch, i
 type PropsType = {
   day: DayType
   surface: SurfaceType
-  isFetching: boolean
   subjects: SubjectType[] | null
   isEditMode: boolean
   saveData: () => void
