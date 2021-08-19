@@ -60,7 +60,9 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
           contentLeft={<IconHouseSbol color="inherit" size="s" />}
           onChange={c => setCabinetInput(c.target.value)}
         />
-        <Button text='Добавить' />
+        <div className={style.addButton}>
+          <Button text='Добавить' />
+        </div>
       </form> :
       <SubjectListMode onSubjectClick={onSubjectClick} />
     }

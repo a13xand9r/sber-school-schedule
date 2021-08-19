@@ -15,7 +15,7 @@ export const TaskItem: FC<PropsType> = (props) => {
           <Footnote1 className={style.subjectFooter}>
             На {`${date?.getDate()} ${monthsArray[date?.getMonth() as number]}, ${date?.getFullYear()} (${dateDaysArray[date?.getDay() as number].toLowerCase()})`}
           </Footnote1> :
-          <Footnote1 className={style.subjectFooter}>Кабинет {cabinet} &bull; {teacher}</Footnote1>
+          <Footnote1 className={style.subjectFooter}>{cabinet && `Кабинет ${cabinet} ${"\u2022"}`} {teacher && teacher}</Footnote1>
       }
     </div>
     {(isEditMode && deleteItem && tab === 'Расписание') &&

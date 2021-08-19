@@ -70,7 +70,7 @@ export default function Home() {
           isEditMode={state.isEditMode}
           day={state.day}
           dispatch={dispatch}
-          subjects={state.schedule[state.day]}
+          schedule={state.schedule}
         />
       case 'Домашка': return <HomeTasks
         userId={state.userId}

@@ -1,12 +1,14 @@
 import { Body1, Button, Button1, Button2, Footnote2, Spinner, TabItem, Tabs, Underline } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, useEffect, useState } from 'react'
-import { actions, ActionsType, daysArray, DayType, SubjectType, SurfaceType } from '../../../store'
+import { actions, ActionsType, daysArray, DayType, ScheduleType, SubjectType, SurfaceType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import { AddSubjectForm } from './AddSubjectForm'
 import { SubjectList } from './SubjectList'
 
-export const Schedule: FC<PropsType> = ({ day, subjects, dispatch, isEditMode, saveData, surface }) => {
+export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, surface, schedule }) => {
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const [isAddSubjectMode, setIsAddSubjectMode] = useState(false)
+  const subjects = schedule[day]
   useEffect(() => {
     setIsAddSubjectMode(false)
   }, [day])
@@ -15,6 +17,16 @@ export const Schedule: FC<PropsType> = ({ day, subjects, dispatch, isEditMode, s
       dispatch(actions.setEditMode(false))
     }
   }, [])
+  useEffect(() => {
+    if (isEditMode) {
+      setIsButtonDisabled(false)
+    }
+  }, [schedule])
+  useEffect(() => {
+    if (!isEditMode) {
+      setIsButtonDisabled(true)
+    }
+  }, [isEditMode])
   const deleteItem = (index: number) => {
     dispatch(actions.deleteSubject(index))
   }
@@ -65,9 +77,10 @@ export const Schedule: FC<PropsType> = ({ day, subjects, dispatch, isEditMode, s
             <div className={style.submitChangeButtonContainer}>
               <Button
                 className={style.submitChangeButton}
+                disabled={isButtonDisabled}
                 onClick={saveData}
                 view='accent'
-                text={<Body1>Сохранить</Body1>}
+                text='Сохранить'
               />
             </div>
           </> :
@@ -82,8 +95,8 @@ export const Schedule: FC<PropsType> = ({ day, subjects, dispatch, isEditMode, s
 type PropsType = {
   day: DayType
   surface: SurfaceType
-  subjects: SubjectType[] | null
   isEditMode: boolean
   saveData: () => void
+  schedule: ScheduleType
   dispatch: Dispatch<ActionsType>
 }
