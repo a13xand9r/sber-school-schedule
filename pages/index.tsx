@@ -4,7 +4,7 @@ import React, { useEffect, useReducer, useRef } from 'react'
 import { Schedule } from '../src/client/components/Schedule'
 import { GlobalStyles } from '../GlobalStyle'
 import { actions, initialState, reducer, StateType } from '../store'
-import { createAssistant, createSmartappDebugger, AppInfo } from '@sberdevices/assistant-client'
+import { createAssistant, createSmartappDebugger, AppInfo, AssistantClientCustomizedCommand } from '@sberdevices/assistant-client'
 import style from '../styles/index.module.css'
 import { changeSchedule, requestHomeTasks, requestSchedule } from '../src/client/apiRequests'
 import { CustomHeader } from '../src/client/components/CutomHeader'
@@ -27,9 +27,9 @@ export default function Home() {
   const assistantRef = useRef<ReturnType<typeof createAssistant>>()
   useEffect(() => {
     assistantRef.current = initializeAssistant(() => state)
-    assistantRef.current.on('data', ({ smart_app_data }: any) => {
-      console.log('action ', smart_app_data)
+    assistantRef.current.on('data', ({ smart_app_data, type, character }: any) => {
       if (smart_app_data) dispatch(smart_app_data)
+      if (type === 'character') dispatch(actions.setCharacter(character.id))
     })
     const detectDeviceCallback = () => (
       window.navigator.userAgent.toLowerCase().includes('sberbox') ? 'sberbox' : 'mobile'
@@ -86,7 +86,7 @@ export default function Home() {
   }
   return (
     <>
-      <GlobalStyles character={'sber'} />
+      <GlobalStyles character={state.character} />
       <Container>
         <CustomHeader
           homeTask={state.showTaskMode}

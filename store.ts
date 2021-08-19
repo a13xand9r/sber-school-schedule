@@ -1,6 +1,9 @@
+import { Character } from '@sberdevices/assistant-client'
+import { CharacterType } from './GlobalStyle'
 
 export const initialState = {
   userId: null as null | string,
+  character: 'sber' as CharacterType,
   tabPage: 'Расписание' as TabsType,
   surface: 'sberbox' as SurfaceType,
   isEditMode: false,
@@ -22,6 +25,8 @@ export const initialState = {
 
 export const reducer = (state: StateType, action: ActionsType): StateType => {
   switch (action.type) {
+    case 'SET_CHARACTER':
+      return { ...state, character: action.characterId }
     case 'CHANGE_DAY':
       return { ...state, day: action.day }
     case 'CHANGE_TAB':
@@ -60,6 +65,7 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
 }
 
 export const actions = {
+  setCharacter: (characterId: CharacterType) => ({ type: 'SET_CHARACTER', characterId } as const),
   changeDay: (day: DayType) => ({ type: 'CHANGE_DAY', day } as const),
   changeTab: (tab: TabsType) => ({ type: 'CHANGE_TAB', tab } as const),
   addSubject: (newSubject: SubjectType) => ({ type: 'ADD_SUBJECT', newSubject } as const),
