@@ -126,6 +126,15 @@ export const daysArray = [
   ['Пятница', 'Пт'],
   ['Суббота', 'Сб'],
 ] as const
+export const dateDaysArray = [
+  'Воскресенье',
+  'Понедельник',
+  'Вторник',
+  'Среда',
+  'Четверг',
+  'Пятница',
+  'Суббота',
+] as const
 export const monthsArray = [
   'января',
   'февраля',

@@ -1,7 +1,7 @@
 import { Body1, Button, Footnote1 } from '@sberdevices/plasma-ui'
 import Image from 'next/image'
 import React, { FC } from 'react'
-import { daysArray, monthsArray, SubjectConstType, TabsType } from '../../../store'
+import { dateDaysArray, monthsArray, SubjectConstType, TabsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 
 export const TaskItem: FC<PropsType> = (props) => {
@@ -13,7 +13,7 @@ export const TaskItem: FC<PropsType> = (props) => {
       {
         tab === 'Домашка' ?
           <Footnote1 className={style.subjectFooter}>
-            На {`${date?.getDate()} ${monthsArray[date?.getMonth() as number]}, ${date?.getFullYear()} (${daysArray[date?.getDay() as number][0].toLowerCase()})`}
+            На {`${date?.getDate()} ${monthsArray[date?.getMonth() as number]}, ${date?.getFullYear()} (${dateDaysArray[date?.getDay() as number].toLowerCase()})`}
           </Footnote1> :
           <Footnote1 className={style.subjectFooter}>Кабинет {cabinet} &bull; {teacher}</Footnote1>
       }

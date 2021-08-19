@@ -40,7 +40,8 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
               index={i}
               onClick={onTaskClickHandler}
               subject={task.subject}
-            />)
+            />
+          )
     }
   </div>
 }
