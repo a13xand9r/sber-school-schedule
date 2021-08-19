@@ -33,7 +33,6 @@ export const getSchedule = async (userId: string): Promise<ScheduleType> => {
       scheduleDB = client.db().collection('schedule')
     }
     const user = await scheduleDB.findOne({ userId })
-    console.log('user: ', user)
     if (user) {
       return user.schedule
     } else {

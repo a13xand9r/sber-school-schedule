@@ -10,7 +10,8 @@ export const runAppHandler: SaluteHandler = ({ req, res, session }) => {
   res.setPronounceText('начнем')
   res.appendBubble('Посмотри свое расписание')
 }
-export const noMatchHandler: SaluteHandler = ({ res }) => {
+export const noMatchHandler: SaluteHandler = ({ req, res }) => {
+  console.log('noMatch:',req.message.original_text)
   res.setPronounceText('Хм, не понимаю о чем вы')
   res.appendBubble('непонятное что-то')
 }

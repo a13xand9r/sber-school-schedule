@@ -28,9 +28,85 @@
           ]
         }
       }
+    },
+    "/Новое дз": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "запиши задание по @subject на @duckling.date"
+        },
+        {
+          "type": "pattern",
+          "rule": "[запиши] [домашку] [домашнее задание] по алгебре [задание] *"
+        }
+      ],
+      "variables": {
+        "subject": {
+          "required": true,
+          "questions": [
+            "какой предмет?"
+          ],
+          "array": true
+        },
+        "date": {
+          "required": true,
+          "questions": [
+            "когда сдавать?",
+            "на какой день?"
+          ],
+          "array": true
+        }
+      }
+    },
+    "/sum": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "сложи @duckling.number плюс @duckling.number"
+        }
+      ],
+      "variables": {
+        "num1": {
+          "required": true,
+          "questions": [
+            "какое первое число?",
+            "нужно больше чисел"
+          ]
+        },
+        "num2": {
+          "required": true,
+          "questions": [
+            "а второе число?"
+          ]
+        }
+      }
     }
   },
   "entities": {
+    "subject": {
+      "noMorph": false,
+      "matchers": [
+        {
+          "type": "synonyms",
+          "rule": [
+            "алгебра"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    "taskText": {
+      "noMorph": false,
+      "matchers": [
+        {
+          "type": "synonyms",
+          "rule": [
+            "решить"
+          ],
+          "value": ""
+        }
+      ]
+    },
     "weekDay": {
       "noMorph": false,
       "matchers": [

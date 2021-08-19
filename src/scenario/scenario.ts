@@ -13,6 +13,25 @@ const userScenario = createUserScenario({
     match: intent('/Расписание на день', {confidence: 0.2}),
     handle: getDailyScheduleHandler
   },
+  calc: {
+    match: intent('/sum', {confidence: 0.2}),
+    handle: ({req, res}) => {
+      const {num1, num2} = req.variables
+      res.appendBubble(`${+num1 + +num2}`)
+    }
+  },
+  addHomeTask: {
+    match: intent('/Новое дз', {confidence: 0.2}),
+    handle: ({req, res}) => {
+      console.log('variables:', req.variables)
+      console.log('original_text:', req.message.original_text)
+      console.log('normalized_text:', req.message.normalized_text)
+      console.log('entities:', req.message.entities)
+      console.log('tokenized_elements_list:', req.message.tokenized_elements_list)
+      console.log('asr_normalized_message:', req.message.asr_normalized_message)
+      console.log('human_normalized_text:', req.message.human_normalized_text)
+    }
+  },
 })
 
 const systemScenario = createSystemScenario({
