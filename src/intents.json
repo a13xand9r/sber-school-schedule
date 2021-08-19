@@ -1,5 +1,53 @@
 {
   "intents": {
+    "/Новое дз": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "задание по @subj на @date"
+        }
+      ],
+      "variables": {
+        "subj": {
+          "required": true,
+          "questions": [
+            "какой предмет?"
+          ]
+        },
+        "date": {
+          "required": true,
+          "questions": [
+            "на какое число?"
+          ]
+        }
+      }
+    },
+    "/sum": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "сложи @duckling.number плюс @duckling.number"
+        },
+        {
+          "type": "phrase",
+          "rule": "сложи @duckling.number и @duckling.number"
+        }
+      ],
+      "variables": {
+        "num1": {
+          "required": true,
+          "questions": [
+            "какое первое число?"
+          ]
+        },
+        "num2": {
+          "required": true,
+          "questions": [
+            "какое второе число?"
+          ]
+        }
+      }
+    },
     "/Расписание на день": {
       "matchers": [
         {
@@ -29,55 +77,17 @@
         }
       }
     },
-    "/Новое дз": {
+    "/Новое дз/Текст дз": {
       "matchers": [
-        {
-          "type": "phrase",
-          "rule": "запиши задание по @subject на @duckling.date"
-        },
         {
           "type": "pattern",
-          "rule": "[запиши] [домашку] [домашнее задание] по алгебре [задание] *"
+          "rule": "@taskText"
         }
       ],
       "variables": {
-        "subject": {
+        "text": {
           "required": true,
-          "questions": [
-            "какой предмет?"
-          ],
-          "array": true
-        },
-        "date": {
-          "required": true,
-          "questions": [
-            "когда сдавать?",
-            "на какой день?"
-          ],
-          "array": true
-        }
-      }
-    },
-    "/sum": {
-      "matchers": [
-        {
-          "type": "phrase",
-          "rule": "сложи @duckling.number плюс @duckling.number"
-        }
-      ],
-      "variables": {
-        "num1": {
-          "required": true,
-          "questions": [
-            "какое первое число?",
-            "нужно больше чисел"
-          ]
-        },
-        "num2": {
-          "required": true,
-          "questions": [
-            "а второе число?"
-          ]
+          "questions": []
         }
       }
     }
@@ -89,7 +99,8 @@
         {
           "type": "synonyms",
           "rule": [
-            "алгебра"
+            "алгебра",
+            "алгебре"
           ],
           "value": ""
         }
@@ -99,9 +110,9 @@
       "noMorph": false,
       "matchers": [
         {
-          "type": "synonyms",
+          "type": "pattern",
           "rule": [
-            "решить"
+            "$nonEmptyGarbage"
           ],
           "value": ""
         }

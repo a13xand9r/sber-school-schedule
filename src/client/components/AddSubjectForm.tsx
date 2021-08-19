@@ -13,6 +13,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null)
   const [teacherInput, setTeacherInput] = useState<string>('')
   const [cabinetInput, setCabinetInput] = useState<string>('')
+  const [isError, setIsError] = useState(false)
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (selectedSubject && selectedIcon) {
@@ -22,13 +23,14 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
         subject: selectedSubject,
         icon: selectedIcon
       }))
-    }
-    finishAdding()
+      finishAdding()
+    } else setIsError(true)
   }
   const onSubjectClick = (subject: SubjectWithIconsType) => {
     setIsSubjectListMode(false)
     setSelectedSubject(subject.subject)
     setSelectedIcon(subject.icon)
+    setIsError(false)
   }
   const changeSubjectListMode = () => {
     setIsSubjectListMode(prev => !prev)
@@ -37,6 +39,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
     <SubjectSelectButton
       changeSubjectListMode={changeSubjectListMode}
       selectedSubject={selectedSubject}
+      isError={isError}
     />
     {!isSubjectListMode ?
       <form className={style.form} onSubmit={(e) => onFormSubmit(e)}>

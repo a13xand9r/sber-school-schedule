@@ -12,6 +12,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
   const [selectedSubject, setSelectedSubject] = useState<{ subject: SubjectConstType, subSubject: SubSubjectConstType, icon: string } | null>(null)
   const [dateValue, setDateValue] = useState<Date>(() => new Date())
   const [taskText, setTaskText] = useState<string>('')
+  const [isError, setIsError] = useState(false)
   const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (selectedSubject && taskText && userId) {
@@ -26,7 +27,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
       changeHomeTasks(userId, newHomeTask)
       dispatch(actions.addHomeTask(newHomeTask))
       finishAdding()
-    }
+    } else setIsError(true)
   }
   const changeSubjectListMode = () => {
     setIsSubjectListMode(prev => !prev)
@@ -34,11 +35,13 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
   const onSubjectClick = (subject: SubjectWithIconsType | null) => {
     setIsSubjectListMode(false)
     setSelectedSubject(subject)
+    setIsError(false)
   }
   return <>
     <SubjectSelectButton
       changeSubjectListMode={changeSubjectListMode}
       selectedSubject={selectedSubject ? selectedSubject.subject : null}
+      isError={isError && !selectedSubject}
     />
     {
       !isSubjectListMode ?
@@ -62,10 +65,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
           <TextArea
             value={taskText}
             placeholder={'Введите задание'}
-            className={style.taskText}
-            // helperText={text('helperText', 'Helper text')}
-            // contentRight={boolean('contentRight', true) && <IconPlaceholder />}
-            // status={'success'}
+            className={`${style.taskText} ${isError && !taskText && !!selectedSubject && style.taskTextError}`}
             resize={'horizontal'}
             disabled={false}
             readOnly={false}

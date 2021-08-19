@@ -4,17 +4,18 @@ import React, { FC } from 'react'
 import { SubjectConstType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 
-export const SubjectSelectButton: FC<PropsType> = ({changeSubjectListMode, selectedSubject}) => {
+export const SubjectSelectButton: FC<PropsType> = ({ changeSubjectListMode, selectedSubject, isError }) => {
   return <Button
-  className={style.subjectFormButton}
-  onClick={changeSubjectListMode}
-  view='secondary'
-  contentRight={<IconChevronDown />}
-  text={<Body1>{selectedSubject ? selectedSubject : 'Предмет'}</Body1>}
-/>
+    className={style.subjectFormButton}
+    onClick={changeSubjectListMode}
+    view={isError ? 'critical' : 'secondary'}
+    contentRight={<IconChevronDown />}
+    text={<Body1>{selectedSubject ? selectedSubject : 'Предмет'}</Body1>}
+  />
 }
 
 type PropsType = {
   changeSubjectListMode: () => void
   selectedSubject: null | SubjectConstType
+  isError: boolean
 }
