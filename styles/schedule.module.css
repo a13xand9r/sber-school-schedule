@@ -191,8 +191,7 @@
 }
 .deleteTaskButton{
   position: fixed;
-  bottom: 8rem;
-  /* right: 50%; */
+  bottom: 2rem;
   left: 50%;
 
   transform: translate(-50%, -50%);

@@ -114,21 +114,19 @@ export default function Home() {
                 isActive={tab === state.tabPage}
                 tabIndex={1}
                 onClick={() => dispatch(actions.changeTab(tab))}
+                contentLeft={
+                  tab === 'Расписание' ?
+                    <IconEvent className={style.icon} /> :
+                    <IconHouse className={style.icon} />
+                }
               >
-                <div className={style.tabContent}>
-                  {
-                    tab === 'Расписание' ?
-                      <IconEvent className={style.icon} /> :
-                      <IconHouse className={style.icon} />
-                  }
-                  {tab}
-                </div>
+                {tab}
               </TabItem>
             ))}
           </Tabs>
           {
             state.isFetching ? <div className={style.spinner}><Spinner /></div> :
-            selectTab()
+              selectTab()
           }
         </div>
       </Container>
