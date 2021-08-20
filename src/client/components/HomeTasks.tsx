@@ -2,7 +2,7 @@ import { Body1, Button, StyledCard } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, Ref, useEffect, useState } from 'react'
 import { actions, ActionsType, HomeTaskType } from '../../../store'
 import { EmptyList } from './EmptyList'
-import { TaskItem } from './subjectItem'
+import { SubjectItem } from './SubjectItem'
 import style from '../../../styles/schedule.module.css'
 import { AddTaskForm } from './AddTaskForm'
 import { Task } from './Task'
@@ -46,7 +46,7 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
           />
         </> :
           homeTasks.map((task, i) =>
-            <TaskItem
+            <SubjectItem
               key={i}
               tab='Домашка'
               date={task.date}

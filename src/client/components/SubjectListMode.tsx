@@ -3,13 +3,13 @@ import Image from 'next/image'
 import React from 'react'
 import { allSubjects, SubjectWithIconsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
-import { TaskItem } from './subjectItem'
+import { SubjectItem } from './SubjectItem'
 
 export const SubjectListMode = ({onSubjectClick, query}: {onSubjectClick: (subject: SubjectWithIconsType) => void, query: string}) => {
   return (
     <div className={style.subjectsSelect}>
         {allSubjects.filter(subj => subj.subject.toLowerCase().includes(query.toLowerCase())).map((subj, i) => (
-          <TaskItem
+          <SubjectItem
             key={i}
             subject={subj.subject}
             icon={subj.icon}

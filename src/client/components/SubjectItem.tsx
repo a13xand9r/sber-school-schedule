@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 import { dateDaysArray, monthsArray, SubjectConstType, TabsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 
-export const TaskItem: FC<PropsType> = (props) => {
+export const SubjectItem: FC<PropsType> = (props) => {
   const { icon, subject, tab, cabinet, isEditMode, teacher, deleteItem, index, date, onClick, searchText, id } = props
   return <div tabIndex={1} onClick={() => !!onClick ? onClick(index) : null} className={style.taskItem}>
     <Image priority={true} loading='eager' src={icon} alt='' layout='fixed' width={35} height={35} />

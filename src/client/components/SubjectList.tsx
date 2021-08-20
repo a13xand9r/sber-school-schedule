@@ -5,7 +5,7 @@ import Image from 'next/image'
 import style from '../../../styles/schedule.module.css'
 import React, { FC } from 'react'
 import { EmptyList } from './EmptyList'
-import { TaskItem } from './subjectItem'
+import { SubjectItem } from './SubjectItem'
 
 export const SubjectList: FC<PropsType> = ({ list, isEditMode, deleteItem }) => {
   return <>
@@ -15,7 +15,7 @@ export const SubjectList: FC<PropsType> = ({ list, isEditMode, deleteItem }) => 
         tab={'Расписание'}
       /> :
       <div className={style.subjectList}>
-        {list.map((subj, i) => <TaskItem
+        {list.map((subj, i) => <SubjectItem
           key={i}
           tab='Расписание'
           icon={subj.icon}
