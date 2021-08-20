@@ -4,7 +4,7 @@ import React, { FC, useState } from 'react'
 import { daysArray, HomeTaskType, monthsArray, TabsType } from '../../../store'
 import style from '../../../styles/header.module.css'
 
-export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, homeTask, setIsAddTaskMode, isAddTaskMode, setShowTaskMode }) => {
+export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, homeTask, setIsAddTaskMode, isAddTaskMode, setShowTaskMode, isFetching }) => {
   const flag: boolean = !!homeTask ? true : false
   const onBackHandler = () => {
     // setEditMode(false)
@@ -14,7 +14,7 @@ export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, home
   return (
     //@ts-ignore
     <Header
-      className={style.header}
+    className={style.header}
       back={flag}
       title={
         homeTask ? `Д/З на ${homeTask.date.getDate()} ${monthsArray[homeTask.date.getMonth() - 1]}, ${homeTask.date.getFullYear()} (${daysArray[homeTask.date.getDay()][0].toLocaleLowerCase()})` :
@@ -23,6 +23,7 @@ export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, home
       onBackClick={onBackHandler}
     >
       {
+        !isFetching && (
         tab === 'Домашка' ?
           !!homeTask ?
             <Button
@@ -52,8 +53,7 @@ export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, home
               onClick={() => setEditMode(true)}
               text={<IconEdit />}
             />
-            // <IconEdit />
-            // </Button>
+        )
       }
     </Header>
   )
@@ -62,6 +62,7 @@ export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, home
 type PropsType = {
   isEditMode: boolean
   setEditMode: (flag: boolean) => void
+  isFetching: boolean
   tab: TabsType
   homeTask: HomeTaskType | null
   isAddTaskMode: boolean

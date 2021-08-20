@@ -90,6 +90,7 @@ export default function Home() {
       <GlobalStyles character={state.character} />
       <Container>
         <CustomHeader
+          isFetching={state.isFetching}
           homeTask={state.showTaskMode}
           setEditMode={setEditMode}
           isEditMode={state.isEditMode}
