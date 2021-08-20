@@ -50,8 +50,10 @@ export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, home
             <Button
               view='clear'
               onClick={() => setEditMode(true)}
-            ><IconEdit />
-            </Button>
+              text={<IconEdit />}
+            />
+            // <IconEdit />
+            // </Button>
       }
     </Header>
   )
