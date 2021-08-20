@@ -24,6 +24,7 @@ export const SubjectList: FC<PropsType> = ({ list, isEditMode, deleteItem }) => 
           index={i}
           subject={subj.subject}
           deleteItem={deleteItem}
+          isEditMode={isEditMode}
         />
         // <div key={subj.subject} className={style.subjectItem}>
         //   <Image src={subj.icon} alt='' layout='fixed' width={35} height={35} />

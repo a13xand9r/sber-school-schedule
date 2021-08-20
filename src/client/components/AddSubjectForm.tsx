@@ -1,4 +1,4 @@
-import { IconChevronDown, IconHouseSbol, IconPersone, IconSleep } from '@sberdevices/plasma-icons';
+import { IconArrowUp, IconChevronDown, IconChevronUp, IconHouseSbol, IconPersone, IconSleep } from '@sberdevices/plasma-icons';
 import { Body1, Button, TextField } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, FormEvent, useState } from 'react'
 import { actions, ActionsType, allSubjects, SubjectConstType, SubjectType, SubjectWithIconsType } from '../../../store'
@@ -11,6 +11,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
   const [isSubjectListMode, setIsSubjectListMode] = useState(false)
   const [selectedSubject, setSelectedSubject] = useState<SubjectConstType | null>(null)
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null)
+  const [subjectInput, setSubjectInput] = useState<string>('')
   const [teacherInput, setTeacherInput] = useState<string>('')
   const [cabinetInput, setCabinetInput] = useState<string>('')
   const [isError, setIsError] = useState(false)
@@ -36,13 +37,13 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
     setIsSubjectListMode(prev => !prev)
   }
   return <>
-    <SubjectSelectButton
-      changeSubjectListMode={changeSubjectListMode}
-      selectedSubject={selectedSubject}
-      isError={isError}
-    />
     {!isSubjectListMode ?
       <form className={style.form} onSubmit={(e) => onFormSubmit(e)}>
+        <SubjectSelectButton
+          changeSubjectListMode={changeSubjectListMode}
+          selectedSubject={selectedSubject}
+          isError={isError}
+        />
         <TextField
           className={style.teacherInput}
           value={teacherInput}
@@ -64,7 +65,26 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
           <Button text='Добавить' />
         </div>
       </form> :
-      <SubjectListMode onSubjectClick={onSubjectClick} />
+      <>
+        <TextField
+          className={style.subjectInput}
+          value={subjectInput}
+          label={'Предмет'}
+          contentLeft={
+            <Button
+              onClick={changeSubjectListMode}
+              view='clear'
+              size='s'
+              style={{ padding: '0', color: '#808080' }}>
+              <IconChevronUp color="inherit" size="s" />
+            </Button>
+          }
+          placeholder='Предмет'
+          disabled={false}
+          onChange={t => setSubjectInput(t.target.value)}
+        />
+        <SubjectListMode onSubjectClick={onSubjectClick} query={subjectInput} />
+      </>
     }
   </>
 }

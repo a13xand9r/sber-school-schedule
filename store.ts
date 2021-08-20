@@ -1,4 +1,3 @@
-import { Character } from '@sberdevices/assistant-client'
 import { CharacterType } from './GlobalStyle'
 
 export const initialState = {

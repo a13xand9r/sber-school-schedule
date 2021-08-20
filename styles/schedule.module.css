@@ -49,6 +49,7 @@
   height: 3.3rem;
   align-items: center;
   margin-top: 0.7rem;
+  position: relative;
   /* border: 1px solid gray; */
   border-radius: 10px;
   padding-left: 1rem;
@@ -80,7 +81,7 @@
 .subjectFooter{
   color: gray;
 }
-.teacherInput, .cabinetInput, .subjectFormButton, .datePicker, .taskButton{
+.teacherInput, .cabinetInput, .subjectFormButton, .datePicker, .taskButton, .subjectInput{
   width: 100%;
   margin: auto;
   margin-top: 2rem;
@@ -161,7 +162,7 @@
   height: 15px;
   opacity: 0.3;
   position: absolute;
-  right: 15px;
+  right: 2rem;
   cursor: pointer;
 }
 .deleteItem:hover {
@@ -184,4 +185,7 @@
 }
 .deleteItem:after {
   transform: rotate(-45deg);
+}
+.searchTerm{
+  background-color: rgba(255, 145, 0, 0.486);
 }

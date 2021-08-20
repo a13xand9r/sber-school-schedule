@@ -5,7 +5,7 @@ import { dateDaysArray, monthsArray, SubjectConstType, TabsType } from '../../..
 import style from '../../../styles/schedule.module.css'
 
 export const TaskItem: FC<PropsType> = (props) => {
-  const { icon, subject, tab, cabinet, isEditMode, teacher, deleteItem, index, date, onClick } = props
+  const { icon, subject, tab, cabinet, isEditMode, teacher, deleteItem, index, date, onClick, searchText } = props
   return <div tabIndex={1} onClick={() => !!onClick ? onClick(index) : null} className={style.taskItem}>
     <Image src={icon} alt='' layout='fixed' width={35} height={35} />
     <div className={style.subjectText}>
@@ -18,7 +18,7 @@ export const TaskItem: FC<PropsType> = (props) => {
           <Footnote1 className={style.subjectFooter}>{cabinet && `Кабинет ${cabinet} ${"\u2022"}`} {teacher && teacher}</Footnote1>
       }
     </div>
-    {(isEditMode && deleteItem && tab === 'Расписание') &&
+    {(isEditMode && !!deleteItem && tab === 'Расписание') &&
       <span onClick={() => deleteItem(index)} className={style.deleteItem}></span>}
   </div>
   // <Button
@@ -47,4 +47,5 @@ type PropsType = {
   index: number
   date?: Date
   onClick?: (index: number) => void
+  searchText?: string
 }
