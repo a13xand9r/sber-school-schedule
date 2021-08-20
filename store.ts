@@ -1,4 +1,5 @@
 import { CharacterType } from './GlobalStyle'
+import _ from 'lodash'
 
 export const initialState = {
   userId: null as null | string,
@@ -16,11 +17,11 @@ export const initialState = {
     'Пятница': null,
     'Суббота': null,
   } as ScheduleType,
+  scheduleCopy: null as null | ScheduleType,
   homeTasks: [] as HomeTaskType[],
   showTaskMode: null as null | HomeTaskType,
   isAddTaskMode: false,
 }
-
 
 export const reducer = (state: StateType, action: ActionsType): StateType => {
   switch (action.type) {
@@ -37,30 +38,37 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
         [action.newSubject]
       return returnObj
     case 'SET_SCHEDULE':
-      return {...state, schedule: action.schedule}
+      return { ...state, schedule: action.schedule }
     case 'DELETE_SUBJECT': {
       const returnObj = { ...state, schedule: { ...state.schedule } }
       returnObj.schedule[state.day] = state.schedule[state.day]?.filter(subj => subj.id !== action.id) as SubjectType[]
       return returnObj
     }
     case 'DELETE_HOME_TASK':
-      return {...state, homeTasks: state.homeTasks.filter(task => task.id !== action.id)}
+      return { ...state, homeTasks: state.homeTasks.filter(task => task.id !== action.id) }
     case 'SET_USER_ID':
-      return {...state, userId: action.id}
+      return { ...state, userId: action.id }
     case 'SET_EDIT_MODE':
-      return {...state, isEditMode: action.flag}
+      return { ...state, isEditMode: action.flag, scheduleCopy: action.flag ? _.cloneDeep(state.schedule) : state.scheduleCopy}
     case 'SET_IS_DATA_FETCHING':
-      return {...state, isFetching: action.flag}
+      return { ...state, isFetching: action.flag }
     case 'SET_SURFACE':
-      return {...state, surface: action.surface}
+      return { ...state, surface: action.surface }
     case 'SET_HOME_TASKS':
-      return {...state, homeTasks: action.tasks.map(el => ({...el, date: new Date(el.date)}))}
+      return { ...state, homeTasks: action.tasks.map(el => ({ ...el, date: new Date(el.date) })) }
     case 'ADD_HOME_TASK':
-      return {...state, homeTasks: [...state.homeTasks, {...action.task, date: new Date(action.task.date)}]}
+      return { ...state, homeTasks: [...state.homeTasks, { ...action.task, date: new Date(action.task.date) }] }
     case 'SET_IS_ADD_TASK_MODE':
-      return {...state, isAddTaskMode: action.flag}
+      return { ...state, isAddTaskMode: action.flag }
     case 'SET_TASK_MODE':
-      return {...state, showTaskMode: action.index !== null ? {...state.homeTasks[action.index]} : null}
+      return { ...state, showTaskMode: action.index !== null ? { ...state.homeTasks[action.index] } : null }
+    case 'RESET_SCHEDULE_COPY':
+      console.log(state.scheduleCopy)
+      return {
+        ...state,
+        schedule:  _.cloneDeep(state.scheduleCopy ? state.scheduleCopy : state.schedule),
+        scheduleCopy: null
+      }
     default: return state
   }
 }
@@ -81,6 +89,7 @@ export const actions = {
   addHomeTask: (task: HomeTaskType) => ({ type: 'ADD_HOME_TASK', task } as const),
   setShowTaskMode: (index: number | null) => ({ type: 'SET_TASK_MODE', index } as const),
   setIsAddTaskMode: (flag: boolean) => ({ type: 'SET_IS_ADD_TASK_MODE', flag } as const),
+  resetScheduleCopy: () => ({ type: 'RESET_SCHEDULE_COPY' } as const),
 }
 export const allSubjects = [
   { subject: 'Алгебра', subSubject: 'Алгебре', icon: '/algebra.png' as string },

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import React from 'react'
 import { allSubjects, SubjectWithIconsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
-import { TaskItem } from './TaskItem'
+import { TaskItem } from './subjectItem'
 
 export const SubjectListMode = ({onSubjectClick, query}: {onSubjectClick: (subject: SubjectWithIconsType) => void, query: string}) => {
   return (

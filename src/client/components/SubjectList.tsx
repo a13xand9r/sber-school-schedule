@@ -5,7 +5,7 @@ import Image from 'next/image'
 import style from '../../../styles/schedule.module.css'
 import React, { FC } from 'react'
 import { EmptyList } from './EmptyList'
-import { TaskItem } from './TaskItem'
+import { TaskItem } from './subjectItem'
 
 export const SubjectList: FC<PropsType> = ({ list, isEditMode, deleteItem }) => {
   return <>

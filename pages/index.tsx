@@ -82,8 +82,11 @@ export default function Home() {
       />
     }
   }
+  console.log(state.scheduleCopy !== null ? state.schedule['Понедельник'] === state.scheduleCopy['Понедельник'] : 'no')
   const setEditMode = (flag: boolean) => {
     dispatch(actions.setEditMode(flag))
+    console.log(state.scheduleCopy)
+    if (!flag) dispatch(actions.resetScheduleCopy())
   }
   return (
     <>
