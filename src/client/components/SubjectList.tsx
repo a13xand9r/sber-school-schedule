@@ -25,6 +25,7 @@ export const SubjectList: FC<PropsType> = ({ list, isEditMode, deleteItem }) => 
           subject={subj.subject}
           deleteItem={deleteItem}
           isEditMode={isEditMode}
+          id={subj.id}
         />
         // <div key={subj.subject} className={style.subjectItem}>
         //   <Image src={subj.icon} alt='' layout='fixed' width={35} height={35} />
@@ -43,5 +44,5 @@ export const SubjectList: FC<PropsType> = ({ list, isEditMode, deleteItem }) => 
 type PropsType = {
   list: SubjectType[] | null
   isEditMode: boolean
-  deleteItem: (index: number) => void
+  deleteItem: (id: string) => void
 }

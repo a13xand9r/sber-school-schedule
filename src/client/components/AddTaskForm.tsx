@@ -23,7 +23,8 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
         icon: selectedSubject.icon,
         date: dateValue,
         task: taskText,
-        subSubject: selectedSubject.subSubject
+        subSubject: selectedSubject.subSubject,
+        id: Date.now().toString()
       }
       changeHomeTasks(userId, newHomeTask)
       dispatch(actions.addHomeTask(newHomeTask))

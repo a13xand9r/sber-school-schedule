@@ -22,7 +22,8 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
         cabinet: cabinetInput,
         teacher: teacherInput,
         subject: selectedSubject,
-        icon: selectedIcon
+        icon: selectedIcon,
+        id: Date.now().toString()
       }))
       finishAdding()
     } else setIsError(true)

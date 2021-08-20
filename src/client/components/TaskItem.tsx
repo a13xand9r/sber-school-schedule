@@ -5,7 +5,7 @@ import { dateDaysArray, monthsArray, SubjectConstType, TabsType } from '../../..
 import style from '../../../styles/schedule.module.css'
 
 export const TaskItem: FC<PropsType> = (props) => {
-  const { icon, subject, tab, cabinet, isEditMode, teacher, deleteItem, index, date, onClick, searchText } = props
+  const { icon, subject, tab, cabinet, isEditMode, teacher, deleteItem, index, date, onClick, searchText, id } = props
   return <div tabIndex={1} onClick={() => !!onClick ? onClick(index) : null} className={style.taskItem}>
     <Image src={icon} alt='' layout='fixed' width={35} height={35} />
     <div className={style.subjectText}>
@@ -18,22 +18,9 @@ export const TaskItem: FC<PropsType> = (props) => {
           <Footnote1 className={style.subjectFooter}>{cabinet && `Кабинет ${cabinet} ${"\u2022"}`} {teacher && teacher}</Footnote1>
       }
     </div>
-    {(isEditMode && !!deleteItem && tab === 'Расписание') &&
-      <span onClick={() => deleteItem(index)} className={style.deleteItem}></span>}
+    {(isEditMode && !!deleteItem && tab === 'Расписание' && id) &&
+      <span onClick={() => deleteItem(id)} className={style.deleteItem}></span>}
   </div>
-  // <Button
-  //   view='secondary'
-  //   onClick={() => onClick(index)}
-  //   className={style.taskButton}
-  //   contentLeft={<Image src={icon} alt='' layout='fixed' width={35} height={35} />}
-  //   text={
-  //     <div className={style.subjectText}>
-  //       <Body1>{subject}</Body1>
-  //       <Footnote1 className={style.subjectFooter}>
-  //         На {`${date.getDate()} ${monthsArray[date.getMonth()]}, ${date.getFullYear()} (${daysArray[date.getDay()][0].toLowerCase()})`}
-  //       </Footnote1>
-  //     </div>}
-  // />
 }
 
 type PropsType = {
@@ -43,7 +30,8 @@ type PropsType = {
   teacher?: string | null
   subject: SubjectConstType
   isEditMode?: boolean
-  deleteItem?: (index: number) => void
+  deleteItem?: (id: string) => void
+  id?: string
   index: number
   date?: Date
   onClick?: (index: number) => void

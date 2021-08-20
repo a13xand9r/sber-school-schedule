@@ -1,9 +1,9 @@
 import { MongoClient } from 'mongodb'
-import { HomeTaskType, ScheduleType } from '../../store'
+import { DayType, HomeTaskType, ScheduleType, SubjectConstType, SubjectType } from '../../store'
 
 const client = new MongoClient('mongodb+srv://school_schedule:123qwerty@cluster0.siwn0.mongodb.net/schedule')
 let scheduleDB: any
-let homeTaskDB: any
+let homeTasksDB: any
 let isMongoConnected = false
 export const start = async () => {
   try {
@@ -11,7 +11,7 @@ export const start = async () => {
     isMongoConnected = true
     console.log('MongoDB connected')
     scheduleDB = client.db().collection('schedule')
-    homeTaskDB = client.db().collection('homeTask')
+    homeTasksDB = client.db().collection('homeTasks')
   } catch (err) {
     console.log(err)
   }
@@ -69,9 +69,9 @@ export const getHomeTasks = async (userId: string): Promise<HomeTaskType[]> => {
   try {
     if (!isMongoConnected){
       await client.connect()
-      homeTaskDB = client.db().collection('homeTasks')
+      homeTasksDB = client.db().collection('homeTasks')
     }
-    const user = await homeTaskDB.findOne({ userId })
+    const user = await homeTasksDB.findOne({ userId })
     if (user) {
       return user.homeTasks
     } else {
@@ -87,17 +87,36 @@ export const addHomeTask = async (userId: string, newHomeTask: HomeTaskType): Pr
   try {
     if (!isMongoConnected){
       await client.connect()
-      homeTaskDB = client.db().collection('homeTasks')
+      homeTasksDB = client.db().collection('homeTasks')
     }
-    const user = await homeTaskDB.findOne({ userId })
+    const user = await homeTasksDB.findOne({ userId })
     if (user) {
-      await homeTaskDB.updateOne({ userId }, {
+      await homeTasksDB.updateOne({ userId }, {
         $set: { userId, homeTasks: [...user.homeTasks, newHomeTask] }
       })
     } else {
-      homeTaskDB.insertOne({ userId, homeTasks: [newHomeTask] })
+      homeTasksDB.insertOne({ userId, homeTasks: [newHomeTask] })
     }
     return newHomeTask
+  } catch (err) {
+    console.log('mongoDB error: ', err)
+    return null
+  }
+}
+export const deleteHomeTask = async (userId: string, itemId: string): Promise<HomeTaskType | null> => {
+  try {
+    if (!isMongoConnected){
+      await client.connect()
+      homeTasksDB = client.db().collection('homeTasks')
+    }
+    const user = await homeTasksDB.findOne({ userId })
+    const newHomeTasks = user.homeTasks.filter((task: HomeTaskType) => task.id !== itemId)
+    if (user) {
+      await homeTasksDB.updateOne({ userId }, {
+        $set: { userId, homeTasks: newHomeTasks }
+      })
+    }
+    return newHomeTasks
   } catch (err) {
     console.log('mongoDB error: ', err)
     return null

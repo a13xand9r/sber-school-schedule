@@ -40,9 +40,11 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
       return {...state, schedule: action.schedule}
     case 'DELETE_SUBJECT': {
       const returnObj = { ...state, schedule: { ...state.schedule } }
-      returnObj.schedule[state.day] = state.schedule[state.day]?.filter((_, i) => i !== action.index) as SubjectType[]
+      returnObj.schedule[state.day] = state.schedule[state.day]?.filter(subj => subj.id !== action.id) as SubjectType[]
       return returnObj
     }
+    case 'DELETE_HOME_TASK':
+      return {...state, homeTasks: state.homeTasks.filter(task => task.id !== action.id)}
     case 'SET_USER_ID':
       return {...state, userId: action.id}
     case 'SET_EDIT_MODE':
@@ -72,7 +74,8 @@ export const actions = {
   setUserId: (id: string) => ({ type: 'SET_USER_ID', id } as const),
   setEditMode: (flag: boolean) => ({ type: 'SET_EDIT_MODE', flag } as const),
   setIsFetching: (flag: boolean) => ({ type: 'SET_IS_DATA_FETCHING', flag } as const),
-  deleteSubject: (index: number) => ({ type: 'DELETE_SUBJECT', index } as const),
+  deleteSubject: (id: string) => ({ type: 'DELETE_SUBJECT', id } as const),
+  deleteHomeTask: (id: string) => ({ type: 'DELETE_HOME_TASK', id } as const),
   setSurface: (surface: SurfaceType) => ({ type: 'SET_SURFACE', surface } as const),
   setHomeTasks: (tasks: HomeTaskType[]) => ({ type: 'SET_HOME_TASKS', tasks } as const),
   addHomeTask: (task: HomeTaskType) => ({ type: 'ADD_HOME_TASK', task } as const),
@@ -170,6 +173,7 @@ export type SubjectType = {
   icon: string
   teacher: string | null
   cabinet: string | null
+  id: string
 }
 export type ScheduleType = {
   'Понедельник': null | SubjectType[],
@@ -186,4 +190,5 @@ export type HomeTaskType = {
   date: Date
   task: string
   icon: string
+  id: string
 }

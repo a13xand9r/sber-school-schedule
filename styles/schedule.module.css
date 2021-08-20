@@ -189,3 +189,11 @@
 .searchTerm{
   background-color: rgba(255, 145, 0, 0.486);
 }
+.deleteTaskButton{
+  position: fixed;
+  bottom: 8rem;
+  /* right: 50%; */
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+}

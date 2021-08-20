@@ -5,10 +5,17 @@ import { EmptyList } from './EmptyList'
 import { TaskItem } from './TaskItem'
 import style from '../../../styles/schedule.module.css'
 import { AddTaskForm } from './AddTaskForm'
+import { Task } from './Task'
+import { deleteHomeTask } from '../apiRequests'
 
 export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, isAddTaskMode, userId }) => {
   const onTaskClickHandler = (index: number) => {
     dispatch(actions.setShowTaskMode(index))
+  }
+  const onDeleteTaskHandler = () => {
+    deleteHomeTask(userId as string, showTaskMode?.id as string)
+    dispatch(actions.deleteHomeTask(showTaskMode?.id as string))
+    dispatch(actions.setShowTaskMode(null))
   }
   useEffect(() => {
     return () => {
@@ -17,7 +24,7 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
     }
   }, [])
   return <div className={style.schedule}>
-    {showTaskMode ? <Body1>{showTaskMode.task}</Body1> :
+    {showTaskMode ? <Task showTaskMode={showTaskMode} onDelete={onDeleteTaskHandler} /> :
       isAddTaskMode ? <AddTaskForm
         dispatch={dispatch}
         userId={userId}

@@ -2,10 +2,11 @@ import { Body1, Button, Button1, Button2, Footnote2, Spinner, TabItem, Tabs, Und
 import React, { Dispatch, FC, useEffect, useState } from 'react'
 import { actions, ActionsType, daysArray, DayType, ScheduleType, SubjectType, SurfaceType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
+import { postSchedule } from '../apiRequests'
 import { AddSubjectForm } from './AddSubjectForm'
 import { SubjectList } from './SubjectList'
 
-export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, surface, schedule }) => {
+export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, surface, schedule, userId }) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const [isAddSubjectMode, setIsAddSubjectMode] = useState(false)
   const subjects = schedule[day]
@@ -27,8 +28,8 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
       setIsButtonDisabled(true)
     }
   }, [isEditMode])
-  const deleteItem = (index: number) => {
-    dispatch(actions.deleteSubject(index))
+  const deleteItem = (id: string) => {
+    dispatch(actions.deleteSubject(id))
   }
   return <div className={style.schedule}>
     <div className={style.dayTabs}>
@@ -99,4 +100,5 @@ type PropsType = {
   saveData: () => void
   schedule: ScheduleType
   dispatch: Dispatch<ActionsType>
+  userId: string | null
 }
