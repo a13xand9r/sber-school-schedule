@@ -6,7 +6,7 @@ import model from '../intents.json'
 
 const storage = new SaluteMemoryStorage()
 const intents = createIntents(model.intents)
-const { action, regexp, intent, text } = createMatchers<SaluteRequest, typeof intents>()
+const { action, regexp, intent, text, selectItem } = createMatchers<SaluteRequest, typeof intents>()
 
 const userScenario = createUserScenario({
   calc: {
@@ -20,6 +20,13 @@ const userScenario = createUserScenario({
     match: intent('/Расписание на день', {confidence: 0.2}),
     handle: getDailyScheduleHandler
   },
+  // homeTaskDone: {
+  //   match: action('task_done'),
+  //   handle: ({req, res}) => {
+  //     res.setPronounceText()
+  //     res.appendBubble()
+  //   }
+  // },
   addHomeTask: {
     match: intent('/Новое дз', {confidence: 0.2}),
     handle: ({req, res}) => {

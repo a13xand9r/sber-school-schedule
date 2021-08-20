@@ -186,10 +186,9 @@
 .deleteItem:after {
   transform: rotate(-45deg);
 }
-.searchTerm{
-  background-color: rgba(255, 145, 0, 0.486);
-}
 .deleteTaskButton{
+  display: flex;
+  justify-content: space-around;
   position: fixed;
   bottom: 2rem;
   left: 50%;

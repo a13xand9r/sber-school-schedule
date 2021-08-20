@@ -1,6 +1,6 @@
 import { IconChevronDown, IconChevronUp } from '@sberdevices/plasma-icons'
 import { Body1, Button, DatePicker, Headline3, TextArea, TextField } from '@sberdevices/plasma-ui'
-import React, { Dispatch, FC, FormEvent, useState } from 'react'
+import React, { Dispatch, FC, FormEvent, useEffect, useRef, useState } from 'react'
 import { actions, ActionsType, SubjectConstType, SubjectWithIconsType, SubSubjectConstType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import { changeHomeTasks } from '../apiRequests'
@@ -14,6 +14,10 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
   const [subjectInput, setSubjectInput] = useState<string>('')
   const [taskText, setTaskText] = useState<string>('')
   const [isError, setIsError] = useState(false)
+  const subjectInputRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    if (isSubjectListMode) subjectInputRef.current?.focus()
+  }, [isSubjectListMode])
   const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (selectedSubject && taskText && userId) {
@@ -83,6 +87,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
           <TextField
             className={style.subjectInput}
             value={subjectInput}
+            ref={subjectInputRef}
             label={'Предмет'}
             contentLeft={
               <Button

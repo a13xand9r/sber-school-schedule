@@ -63,7 +63,6 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
     case 'SET_TASK_MODE':
       return { ...state, showTaskMode: action.index !== null ? { ...state.homeTasks[action.index] } : null }
     case 'RESET_SCHEDULE_COPY':
-      console.log(state.scheduleCopy)
       return {
         ...state,
         schedule:  _.cloneDeep(state.scheduleCopy ? state.scheduleCopy : state.schedule),

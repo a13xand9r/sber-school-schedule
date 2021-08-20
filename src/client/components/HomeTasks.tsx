@@ -1,5 +1,5 @@
 import { Body1, Button, StyledCard } from '@sberdevices/plasma-ui'
-import React, { Dispatch, FC, useEffect, useState } from 'react'
+import React, { Dispatch, FC, Ref, useEffect, useState } from 'react'
 import { actions, ActionsType, HomeTaskType } from '../../../store'
 import { EmptyList } from './EmptyList'
 import { TaskItem } from './subjectItem'
@@ -7,8 +7,9 @@ import style from '../../../styles/schedule.module.css'
 import { AddTaskForm } from './AddTaskForm'
 import { Task } from './Task'
 import { deleteHomeTask } from '../apiRequests'
+import { createAssistant } from '@sberdevices/assistant-client'
 
-export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, isAddTaskMode, userId }) => {
+export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, isAddTaskMode, userId, assistantRef }) => {
   const onTaskClickHandler = (index: number) => {
     dispatch(actions.setShowTaskMode(index))
   }
@@ -17,6 +18,12 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
     dispatch(actions.deleteHomeTask(showTaskMode?.id as string))
     dispatch(actions.setShowTaskMode(null))
   }
+  const onDoneTaskHandler = () => {
+    deleteHomeTask(userId as string, showTaskMode?.id as string)
+    dispatch(actions.deleteHomeTask(showTaskMode?.id as string))
+    dispatch(actions.setShowTaskMode(null))
+    assistantRef.current?.sendAction({ type: 'task_done' })
+  }
   useEffect(() => {
     return () => {
       dispatch(actions.setShowTaskMode(null))
@@ -24,7 +31,7 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
     }
   }, [])
   return <div className={style.schedule}>
-    {showTaskMode ? <Task showTaskMode={showTaskMode} onDelete={onDeleteTaskHandler} /> :
+    {showTaskMode ? <Task showTaskMode={showTaskMode} onDelete={onDeleteTaskHandler} onDone={onDoneTaskHandler} /> :
       isAddTaskMode ? <AddTaskForm
         dispatch={dispatch}
         userId={userId}
@@ -59,4 +66,5 @@ type PropsType = {
   showTaskMode: null | HomeTaskType
   isAddTaskMode: boolean
   userId: string | null
+  assistantRef: any
 }

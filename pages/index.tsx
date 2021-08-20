@@ -79,13 +79,12 @@ export default function Home() {
         homeTasks={state.homeTasks}
         showTaskMode={state.showTaskMode}
         dispatch={dispatch}
+        assistantRef={assistantRef}
       />
     }
   }
-  console.log(state.scheduleCopy !== null ? state.schedule['Понедельник'] === state.scheduleCopy['Понедельник'] : 'no')
   const setEditMode = (flag: boolean) => {
     dispatch(actions.setEditMode(flag))
-    console.log(state.scheduleCopy)
     if (!flag) dispatch(actions.resetScheduleCopy())
   }
   return (
