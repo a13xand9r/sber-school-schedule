@@ -7,7 +7,8 @@ import style from '../../../styles/schedule.module.css'
 export const TaskItem: FC<PropsType> = (props) => {
   const { icon, subject, tab, cabinet, isEditMode, teacher, deleteItem, index, date, onClick, searchText, id } = props
   return <div tabIndex={1} onClick={() => !!onClick ? onClick(index) : null} className={style.taskItem}>
-    <Image src={icon} alt='' layout='fixed' width={35} height={35} />
+    {/* <img src={icon} alt="" /> */}
+    <Image priority={true} loading='eager' src={icon} alt='' layout='fixed' width={35} height={35} />
     <div className={style.subjectText}>
       <Body1>{subject}</Body1>
       {
