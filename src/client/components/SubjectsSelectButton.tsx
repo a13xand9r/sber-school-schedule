@@ -19,8 +19,8 @@ export const SubjectSelectButton: FC<PropsType> = ({ changeSubjectListMode, sele
           style={{ padding: '0', color: '#808080' }}>
           {
             isSubjectListMode ?
-              <IconChevronUp color="inherit" size="s" /> :
-              <IconChevronDown color="inherit" size="s" />
+              <IconChevronUp size="s" /> :
+              <IconChevronDown size="s" />
           }
         </Button>
       }
