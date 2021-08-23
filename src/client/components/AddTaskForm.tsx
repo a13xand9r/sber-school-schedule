@@ -18,7 +18,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
     setSelectedSubject(null)
     setSubjectInput(str)
   }
-  const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (selectedSubject && taskText && userId) {
       console.log(dateValue)
@@ -75,12 +75,13 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
           <TextArea
             value={taskText}
             placeholder={'Введите задание'}
-            className={`${style.taskText} ${isError && !taskText && !!selectedSubject && style.taskTextError}`}
+            className={`${style.taskText} ${isError && !!selectedSubject && style.taskTextError}`}
             resize={'horizontal'}
             disabled={false}
             readOnly={false}
             onChange={(e) => {
               setTaskText(e.target.value)
+              setIsError(false)
             }}
           />
           <div className={style.addButton}>
