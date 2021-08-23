@@ -18,6 +18,14 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
     setSelectedSubject(null)
     setSubjectInput(str)
   }
+  useEffect(() => {
+    if (isSubjectListMode){
+      window.scrollTo({
+        top: 160,
+        behavior: 'auto'
+      })
+    }
+  }, [isSubjectListMode])
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (selectedSubject && taskText && userId) {
@@ -97,4 +105,6 @@ type PropsType = {
   dispatch: Dispatch<ActionsType>
   finishAdding: () => void
   userId: string | null
+  isSubjectListMode: boolean
+  setIsSubjectListMode: (flag: boolean) => void
 }

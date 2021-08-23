@@ -1,6 +1,6 @@
 import { IconArrowUp, IconChevronDown, IconChevronUp, IconHouseSbol, IconPersone, IconSleep } from '@sberdevices/plasma-icons';
 import { Body1, Button, TextField } from '@sberdevices/plasma-ui'
-import React, { Dispatch, FC, FormEvent, useState } from 'react'
+import React, { Dispatch, FC, FormEvent, useEffect, useState } from 'react'
 import { actions, ActionsType, allSubjects, SubjectConstType, SubjectType, SubjectWithIconsType } from '../../../store'
 import Image from 'next/image'
 import style from '../../../styles/schedule.module.css'
@@ -15,6 +15,14 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
   const [teacherInput, setTeacherInput] = useState<string>('')
   const [cabinetInput, setCabinetInput] = useState<string>('')
   const [isError, setIsError] = useState(false)
+  useEffect(() => {
+    if (isSubjectListMode){
+      window.scrollTo({
+        top: 200,
+        behavior: 'auto'
+      })
+    }
+  }, [isSubjectListMode])
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (selectedSubject && selectedIcon) {

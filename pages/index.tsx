@@ -1,6 +1,6 @@
 import { IconEvent, IconHouse } from '@sberdevices/plasma-icons'
 import { Body1, Button, Container, Spinner, TabItem, Tabs } from '@sberdevices/plasma-ui'
-import React, { useEffect, useReducer, useRef } from 'react'
+import React, { useEffect, useReducer, useRef, useState } from 'react'
 import { Schedule } from '../src/client/components/Schedule'
 import { GlobalStyles } from '../GlobalStyle'
 import { actions, initialState, reducer, StateType } from '../store'
@@ -24,6 +24,7 @@ const tabs = ['Расписание', 'Домашка'] as const
 
 export default function Home() {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const [isSubjectListMode, setIsSubjectListMode] = useState(false)
   const assistantRef = useRef<ReturnType<typeof createAssistant>>()
   useEffect(() => {
     assistantRef.current = initializeAssistant(() => state)
