@@ -14,10 +14,10 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
   const [subjectInput, setSubjectInput] = useState<string>('')
   const [taskText, setTaskText] = useState<string>('')
   const [isError, setIsError] = useState(false)
-  const subjectInputRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    if (isSubjectListMode) subjectInputRef.current?.focus()
-  }, [isSubjectListMode])
+  const changeSubjectInput = (str: string) => {
+    setSelectedSubject(null)
+    setSubjectInput(str)
+  }
   const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (selectedSubject && taskText && userId) {
@@ -38,20 +38,24 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
   const changeSubjectListMode = () => {
     setIsSubjectListMode(prev => !prev)
   }
-  const onSubjectClick = (subject: SubjectWithIconsType | null) => {
+  const onSubjectClick = (subject: SubjectWithIconsType) => {
+    setSubjectInput(subject.subject)
     setIsSubjectListMode(false)
     setSelectedSubject(subject)
     setIsError(false)
   }
   return <>
+    <SubjectSelectButton
+      changeSubjectListMode={changeSubjectListMode}
+      selectedSubject={selectedSubject ? selectedSubject.subject : null}
+      isError={isError && !selectedSubject}
+      isSubjectListMode={isSubjectListMode}
+      setSubjectInput={changeSubjectInput}
+      subjectInput={subjectInput}
+    />
     {
       !isSubjectListMode ?
         <form className={style.form} onSubmit={onFormSubmit}>
-          <SubjectSelectButton
-            changeSubjectListMode={changeSubjectListMode}
-            selectedSubject={selectedSubject ? selectedSubject.subject : null}
-            isError={isError && !selectedSubject}
-          />
           <Body1 className={style.label}>Дата сдачи:</Body1>
           <DatePicker
             className={style.datePicker}
@@ -83,27 +87,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
             <Button text='Добавить' />
           </div>
         </form> :
-        <>
-          <TextField
-            className={style.subjectInput}
-            value={subjectInput}
-            ref={subjectInputRef}
-            label={'Предмет'}
-            contentLeft={
-              <Button
-                onClick={changeSubjectListMode}
-                view='clear'
-                size='s'
-                style={{ padding: '0', color: '#808080' }}>
-                <IconChevronUp color="inherit" size="s" />
-              </Button>
-            }
-            placeholder='Предмет'
-            disabled={false}
-            onChange={t => setSubjectInput(t.target.value)}
-          />
-          <SubjectListMode onSubjectClick={onSubjectClick} query={subjectInput} />
-        </>
+        <SubjectListMode onSubjectClick={onSubjectClick} query={subjectInput} />
     }
   </>
 }

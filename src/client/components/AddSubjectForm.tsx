@@ -29,6 +29,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
     } else setIsError(true)
   }
   const onSubjectClick = (subject: SubjectWithIconsType) => {
+    setSubjectInput(subject.subject)
     setIsSubjectListMode(false)
     setSelectedSubject(subject.subject)
     setSelectedIcon(subject.icon)
@@ -37,14 +38,22 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
   const changeSubjectListMode = () => {
     setIsSubjectListMode(prev => !prev)
   }
+  const changeSubjectInput = (str: string) => {
+    setSelectedSubject(null)
+    setSelectedIcon(null)
+    setSubjectInput(str)
+  }
   return <>
+    <SubjectSelectButton
+      changeSubjectListMode={changeSubjectListMode}
+      selectedSubject={selectedSubject}
+      isError={isError}
+      isSubjectListMode={isSubjectListMode}
+      setSubjectInput={changeSubjectInput}
+      subjectInput={subjectInput}
+    />
     {!isSubjectListMode ?
       <form className={style.form} onSubmit={(e) => onFormSubmit(e)}>
-        <SubjectSelectButton
-          changeSubjectListMode={changeSubjectListMode}
-          selectedSubject={selectedSubject}
-          isError={isError}
-        />
         <TextField
           className={style.teacherInput}
           value={teacherInput}
@@ -66,26 +75,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
           <Button text='Добавить' />
         </div>
       </form> :
-      <>
-        <TextField
-          className={style.subjectInput}
-          value={subjectInput}
-          label={'Предмет'}
-          contentLeft={
-            <Button
-              onClick={changeSubjectListMode}
-              view='clear'
-              size='s'
-              style={{ padding: '0', color: '#808080' }}>
-              <IconChevronUp color="inherit" size="s" />
-            </Button>
-          }
-          placeholder='Предмет'
-          disabled={false}
-          onChange={t => setSubjectInput(t.target.value)}
-        />
-        <SubjectListMode onSubjectClick={onSubjectClick} query={subjectInput} />
-      </>
+      <SubjectListMode onSubjectClick={onSubjectClick} query={subjectInput} />
     }
   </>
 }
