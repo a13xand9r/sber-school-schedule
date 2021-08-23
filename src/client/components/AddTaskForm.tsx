@@ -105,6 +105,4 @@ type PropsType = {
   dispatch: Dispatch<ActionsType>
   finishAdding: () => void
   userId: string | null
-  isSubjectListMode: boolean
-  setIsSubjectListMode: (flag: boolean) => void
 }
