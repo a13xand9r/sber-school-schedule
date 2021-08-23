@@ -20,14 +20,8 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
   }
   useEffect(() => {
     if (isSubjectListMode){
-      window.scroll({
-        top: 160,
-        behavior: 'auto'
-      })
-    } else window.scroll({
-      top: 0,
-      behavior: 'auto'
-    })
+      window.scroll(0, 160)
+    } else window.scroll(0,0)
   }, [isSubjectListMode])
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
