@@ -1,4 +1,4 @@
-import { Body1, Button, Footnote1 } from '@sberdevices/plasma-ui'
+import { Body1, Footnote1 } from '@sberdevices/plasma-ui'
 import Image from 'next/image'
 import React, { FC } from 'react'
 import { dateDaysArray, monthsArray, SubjectConstType, TabsType } from '../../../store'
@@ -22,6 +22,8 @@ export const SubjectItem: FC<PropsType> = (props) => {
       <span onClick={() => deleteItem(id)} className={style.deleteItem}></span>}
   </div>
 }
+
+export const SubjectItemMemo = React.memo(SubjectItem)
 
 type PropsType = {
   tab: TabsType

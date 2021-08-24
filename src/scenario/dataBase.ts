@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb'
-import { DayType, HomeTaskType, ScheduleType, SubjectConstType, SubjectType } from '../../store'
+import { HomeTaskType, ScheduleType } from '../../store'
 
-const client = new MongoClient('mongodb+srv://school_schedule:123qwerty@cluster0.siwn0.mongodb.net/schedule')
+const client = new MongoClient(process.env.NEXT_PUBLIC_MONGODB_CLIENT ?? '')
 let scheduleDB: any
 let homeTasksDB: any
 let isMongoConnected = false

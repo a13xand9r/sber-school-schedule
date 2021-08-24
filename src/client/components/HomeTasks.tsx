@@ -1,29 +1,27 @@
-import { Body1, Button, StyledCard } from '@sberdevices/plasma-ui'
-import React, { Dispatch, FC, Ref, useEffect, useState } from 'react'
+import { Button } from '@sberdevices/plasma-ui'
+import React, { Dispatch, FC, useCallback, useEffect } from 'react'
 import { actions, ActionsType, HomeTaskType } from '../../../store'
 import { EmptyList } from './EmptyList'
-import { SubjectItem } from './SubjectItem'
+import { SubjectItemMemo } from './SubjectItem'
 import style from '../../../styles/schedule.module.css'
 import { AddTaskForm } from './AddTaskForm'
 import { Task } from './Task'
 import { deleteHomeTask } from '../apiRequests'
-import { createAssistant } from '@sberdevices/assistant-client'
 
 export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, isAddTaskMode, userId, assistantRef }) => {
-  const onTaskClickHandler = (index: number) => {
+  const onTaskClickHandler = useCallback((index: number) => {
     dispatch(actions.setShowTaskMode(index))
-  }
-  const onDeleteTaskHandler = () => {
+  }, [])
+  const onDeleteTaskHandler = useCallback(() => {
     deleteHomeTask(userId as string, showTaskMode?.id as string)
     dispatch(actions.deleteHomeTask(showTaskMode?.id as string))
     dispatch(actions.setShowTaskMode(null))
-  }
-  const onDoneTaskHandler = () => {
-    deleteHomeTask(userId as string, showTaskMode?.id as string)
-    dispatch(actions.deleteHomeTask(showTaskMode?.id as string))
-    dispatch(actions.setShowTaskMode(null))
+  }, [userId, showTaskMode])
+  const onDoneTaskHandler = useCallback(() => {
+    onDeleteTaskHandler()
     assistantRef.current?.sendAction({ type: 'task_done' })
-  }
+  }, [onDeleteTaskHandler, assistantRef])
+  const finishAdding = useCallback(() => dispatch(actions.setIsAddTaskMode(false)), [])
   useEffect(() => {
     return () => {
       dispatch(actions.setShowTaskMode(null))
@@ -35,7 +33,7 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
       isAddTaskMode ? <AddTaskForm
         dispatch={dispatch}
         userId={userId}
-        finishAdding={() => dispatch(actions.setIsAddTaskMode(false))}
+        finishAdding={finishAdding}
       /> :
         homeTasks.length === 0 ? <>
           <EmptyList isEditMode={false} tab='Домашка' />
@@ -46,7 +44,7 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
           />
         </> :
           homeTasks.map((task, i) =>
-            <SubjectItem
+            <SubjectItemMemo
               key={i}
               tab='Домашка'
               date={task.date}

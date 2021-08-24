@@ -1,10 +1,9 @@
 import { IconChevronDown, IconChevronUp } from '@sberdevices/plasma-icons'
-import { Body1, Button, TextField } from '@sberdevices/plasma-ui'
-import React, { FC, useState } from 'react'
-import { SubjectConstType } from '../../../store'
+import { Button, TextField } from '@sberdevices/plasma-ui'
+import React, { FC } from 'react'
 import style from '../../../styles/schedule.module.css'
 
-export const SubjectSelectButton: FC<PropsType> = ({ changeSubjectListMode, selectedSubject, isSubjectListMode, isError, subjectInput, setSubjectInput }) => {
+export const SubjectSelectButton: FC<PropsType> = ({ changeSubjectListMode, isSubjectListMode, isError, subjectInput, setSubjectInput }) => {
   return <>
     <TextField
       className={`${style.subjectInput} ${isError && style.errorSubjectInput}`}
@@ -31,9 +30,10 @@ export const SubjectSelectButton: FC<PropsType> = ({ changeSubjectListMode, sele
   </>
 }
 
+export const SubjectSelectButtonMemo = React.memo(SubjectSelectButton)
+
 type PropsType = {
   changeSubjectListMode: () => void
-  selectedSubject: null | SubjectConstType
   isError: boolean
   isSubjectListMode: boolean
   subjectInput: string

@@ -1,13 +1,13 @@
 import { IconEvent, IconHouse } from '@sberdevices/plasma-icons'
-import { Body1, Button, Container, Spinner, TabItem, Tabs } from '@sberdevices/plasma-ui'
-import React, { useEffect, useReducer, useRef, useState } from 'react'
+import { Container, Spinner, TabItem, Tabs } from '@sberdevices/plasma-ui'
+import React, { useCallback, useEffect, useReducer, useRef } from 'react'
 import { Schedule } from '../src/client/components/Schedule'
 import { GlobalStyles } from '../GlobalStyle'
 import { actions, initialState, reducer, StateType } from '../store'
-import { createAssistant, createSmartappDebugger, AppInfo, AssistantClientCustomizedCommand } from '@sberdevices/assistant-client'
+import { createAssistant, createSmartappDebugger } from '@sberdevices/assistant-client'
 import style from '../styles/index.module.css'
 import { postSchedule, requestHomeTasks, requestSchedule } from '../src/client/apiRequests'
-import { CustomHeader } from '../src/client/components/CutomHeader'
+import { CustomHeader } from '../src/client/components/CustomHeader'
 import { HomeTasks } from '../src/client/components/HomeTasks'
 
 const initializeAssistant = (getState: () => StateType) => {
@@ -24,7 +24,6 @@ const tabs = ['Расписание', 'Домашка'] as const
 
 export default function Home() {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const [isSubjectListMode, setIsSubjectListMode] = useState(false)
   const assistantRef = useRef<ReturnType<typeof createAssistant>>()
   useEffect(() => {
     assistantRef.current = initializeAssistant(() => state)
@@ -57,11 +56,11 @@ export default function Home() {
       initialRequests()
     }
   }, [state.userId])
-  const saveData = async () => {
+  const saveData = useCallback(async () => {
     const newSchedule = await postSchedule(state.userId as string, state.schedule)
     dispatch(actions.setSchedule(newSchedule))
     dispatch(actions.setEditMode(false))
-  }
+  }, [state.userId, state.schedule])
   const selectTab = () => {
     switch (state.tabPage) {
       case 'Расписание':

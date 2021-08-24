@@ -1,11 +1,10 @@
-import { IconChevronDown, IconChevronUp } from '@sberdevices/plasma-icons'
-import { Body1, Button, DatePicker, Headline3, TextArea, TextField } from '@sberdevices/plasma-ui'
-import React, { Dispatch, FC, FormEvent, useEffect, useRef, useState } from 'react'
+import { Body1, Button, DatePicker, TextArea } from '@sberdevices/plasma-ui'
+import React, { Dispatch, FC, FormEvent, useCallback, useEffect, useState } from 'react'
 import { actions, ActionsType, SubjectConstType, SubjectWithIconsType, SubSubjectConstType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import { changeHomeTasks } from '../apiRequests'
-import { SubjectListMode } from './SubjectListMode'
-import { SubjectSelectButton } from './SubjectsSelectButton'
+import { SubjectListModeMemo } from './SubjectListMode'
+import { SubjectSelectButtonMemo } from './SubjectsSelectButton'
 
 export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) => {
   const [isSubjectListMode, setIsSubjectListMode] = useState(false)
@@ -14,10 +13,10 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
   const [subjectInput, setSubjectInput] = useState<string>('')
   const [taskText, setTaskText] = useState<string>('')
   const [isError, setIsError] = useState(false)
-  const changeSubjectInput = (str: string) => {
+  const changeSubjectInput = useCallback((str: string) => {
     setSelectedSubject(null)
     setSubjectInput(str)
-  }
+  }, [])
   useEffect(() => {
     if (isSubjectListMode){
       window.scroll(0, 160)
@@ -40,19 +39,18 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
       finishAdding()
     } else setIsError(true)
   }
-  const changeSubjectListMode = () => {
+  const changeSubjectListMode = useCallback(() => {
     setIsSubjectListMode(prev => !prev)
-  }
-  const onSubjectClick = (subject: SubjectWithIconsType) => {
+  }, [])
+  const onSubjectClick = useCallback((subject: SubjectWithIconsType) => {
     setSubjectInput(subject.subject)
     setIsSubjectListMode(false)
     setSelectedSubject(subject)
     setIsError(false)
-  }
+  }, [])
   return <>
-    <SubjectSelectButton
+    <SubjectSelectButtonMemo
       changeSubjectListMode={changeSubjectListMode}
-      selectedSubject={selectedSubject ? selectedSubject.subject : null}
       isError={isError && !selectedSubject}
       isSubjectListMode={isSubjectListMode}
       setSubjectInput={changeSubjectInput}
@@ -70,7 +68,6 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
             size={'s'}
             visibleItems={3}
             scrollSnapType={'mandatory'}
-            // options={options}
             disabled={false}
             controls={true}
             autofocus={true}
@@ -93,7 +90,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
             <Button text='Добавить' />
           </div>
         </form> :
-        <SubjectListMode onSubjectClick={onSubjectClick} query={subjectInput} />
+        <SubjectListModeMemo onSubjectClick={onSubjectClick} query={subjectInput} />
     }
   </>
 }

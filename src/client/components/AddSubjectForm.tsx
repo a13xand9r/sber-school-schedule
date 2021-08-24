@@ -1,11 +1,10 @@
-import { IconArrowUp, IconChevronDown, IconChevronUp, IconHouseSbol, IconPersone, IconSleep } from '@sberdevices/plasma-icons';
-import { Body1, Button, TextField } from '@sberdevices/plasma-ui'
-import React, { Dispatch, FC, FormEvent, useEffect, useState } from 'react'
-import { actions, ActionsType, allSubjects, SubjectConstType, SubjectType, SubjectWithIconsType } from '../../../store'
-import Image from 'next/image'
+import { IconHouseSbol, IconPersone } from '@sberdevices/plasma-icons';
+import { Button, TextField } from '@sberdevices/plasma-ui'
+import React, { Dispatch, FC, FormEvent, useCallback, useEffect, useState } from 'react'
+import { actions, ActionsType, SubjectConstType, SubjectWithIconsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
-import { SubjectSelectButton } from './SubjectsSelectButton';
-import { SubjectListMode } from './SubjectListMode';
+import { SubjectSelectButtonMemo } from './SubjectsSelectButton'
+import { SubjectListModeMemo } from './SubjectListMode'
 
 export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
   const [isSubjectListMode, setIsSubjectListMode] = useState(false)
@@ -33,25 +32,24 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
       finishAdding()
     } else setIsError(true)
   }
-  const onSubjectClick = (subject: SubjectWithIconsType) => {
+  const onSubjectClick = useCallback((subject: SubjectWithIconsType) => {
     setSubjectInput(subject.subject)
     setIsSubjectListMode(false)
     setSelectedSubject(subject.subject)
     setSelectedIcon(subject.icon)
     setIsError(false)
-  }
-  const changeSubjectListMode = () => {
+  }, [])
+  const changeSubjectListMode = useCallback(() => {
     setIsSubjectListMode(prev => !prev)
-  }
-  const changeSubjectInput = (str: string) => {
+  }, [])
+  const changeSubjectInput = useCallback((str: string) => {
     setSelectedSubject(null)
     setSelectedIcon(null)
     setSubjectInput(str)
-  }
+  }, [])
   return <>
-    <SubjectSelectButton
+    <SubjectSelectButtonMemo
       changeSubjectListMode={changeSubjectListMode}
-      selectedSubject={selectedSubject}
       isError={isError}
       isSubjectListMode={isSubjectListMode}
       setSubjectInput={changeSubjectInput}
@@ -80,7 +78,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
           <Button text='Добавить' />
         </div>
       </form> :
-      <SubjectListMode onSubjectClick={onSubjectClick} query={subjectInput} />
+      <SubjectListModeMemo onSubjectClick={onSubjectClick} query={subjectInput} />
     }
   </>
 }

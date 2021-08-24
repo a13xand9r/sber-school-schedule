@@ -1,6 +1,6 @@
-import { IconAvatar, IconClose, IconEdit, IconPlus } from '@sberdevices/plasma-icons'
-import { Button, Header, HeaderBack, HeaderContent, HeaderLogo, HeaderMinimize, HeaderRoot, HeaderSubtitle, HeaderTitle, HeaderTitleWrapper } from '@sberdevices/plasma-ui'
-import React, { FC, useState } from 'react'
+import { IconClose, IconEdit, IconPlus } from '@sberdevices/plasma-icons'
+import { Button, Header } from '@sberdevices/plasma-ui'
+import React, { FC } from 'react'
 import { daysArray, HomeTaskType, monthsArray, TabsType } from '../../../store'
 import style from '../../../styles/header.module.css'
 
