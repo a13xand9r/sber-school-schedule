@@ -4,7 +4,7 @@ import { sberBox } from '@sberdevices/plasma-tokens'
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   return <>
-    <DeviceThemeProvider theme={sberBox}>
+    <DeviceThemeProvider>
       {children}
     </DeviceThemeProvider>
   </>
