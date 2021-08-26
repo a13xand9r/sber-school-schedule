@@ -14,7 +14,7 @@ export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, home
   return (
     //@ts-ignore
     <Header
-    className={style.header}
+      className={style.header}
       back={flag}
       title={
         homeTask ? `Д/З на ${homeTask.date.getDate()} ${monthsArray[homeTask.date.getMonth() - 1]}, ${homeTask.date.getFullYear()} (${daysArray[homeTask.date.getDay()][0].toLocaleLowerCase()})` :

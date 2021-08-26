@@ -54,7 +54,7 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
             tabIndex={1}
             onClick={() => dispatch(actions.changeDay(tab[0]))}
           >
-            {surface === 'sberbox' ? tab[0] : tab[1]}
+            {tab[1]}
           </TabItem>
         ))}
       </Tabs>

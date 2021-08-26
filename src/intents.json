@@ -5,17 +5,33 @@
         {
           "type": "phrase",
           "rule": "задание по @subj на @date"
+        },
+        {
+          "type": "phrase",
+          "rule": "новое домашнее задание"
+        },
+        {
+          "type": "phrase",
+          "rule": "добавь домашнее задание"
+        },
+        {
+          "type": "phrase",
+          "rule": "запиши домашнее задание"
+        },
+        {
+          "type": "phrase",
+          "rule": "домашнее задание на @date по @subj"
         }
       ],
       "variables": {
         "subj": {
-          "required": true,
+          "required": false,
           "questions": [
             "какой предмет?"
           ]
         },
         "date": {
-          "required": true,
+          "required": false,
           "questions": [
             "на какое число?"
           ]

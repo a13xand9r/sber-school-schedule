@@ -1,10 +1,12 @@
 import { IconWarning } from '@sberdevices/plasma-icons'
 import { Body1, Headline3 } from '@sberdevices/plasma-ui'
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
+import { CharacterContext } from '../../../pages'
 import { TabsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 
 export const EmptyList: FC<PropsType> = ({ isEditMode, tab }) => {
+  const character = useContext(CharacterContext)
   return <div className={style.emptyList}>
     <IconWarning className={style.warningIcon} />
     <br />
@@ -13,7 +15,7 @@ export const EmptyList: FC<PropsType> = ({ isEditMode, tab }) => {
       <Headline3 className={style.headline}>У вас нет домашних заданий</Headline3>
 
     }
-    <Body1>Нажмите на кнопку ниже, чтобы {tab === 'Домашка' ? 'добавить д/з' :
+    <Body1>{character === 'joy' ? 'Нажми' : 'Нажмите'} на кнопку ниже, чтобы {tab === 'Домашка' ? 'добавить д/з' :
       isEditMode ? 'добавить предмет' : 'перейти к редактированию расписания'}</Body1>
   </div>
 }

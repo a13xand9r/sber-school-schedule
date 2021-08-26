@@ -10,6 +10,8 @@ import { postSchedule, requestHomeTasks, requestSchedule } from '../src/client/a
 import { CustomHeader } from '../src/client/components/CustomHeader'
 import { HomeTasks } from '../src/client/components/HomeTasks'
 
+export const CharacterContext = React.createContext('sber')
+
 const initializeAssistant = (getState: () => StateType) => {
   if (process.env.NODE_ENV === 'development') {
     return createSmartappDebugger({
@@ -28,6 +30,7 @@ export default function Home() {
   useEffect(() => {
     assistantRef.current = initializeAssistant(() => state)
     assistantRef.current.on('data', ({ smart_app_data, type, character }: any) => {
+      console.log(smart_app_data)
       if (smart_app_data) dispatch(smart_app_data)
       if (type === 'character') dispatch(actions.setCharacter(character.id))
     })
@@ -88,7 +91,7 @@ export default function Home() {
     if (!flag) dispatch(actions.resetScheduleCopy())
   }
   return (
-    <>
+    <CharacterContext.Provider value={state.character}>
       <GlobalStyles character={state.character} />
       <Container>
         <CustomHeader
@@ -133,6 +136,6 @@ export default function Home() {
           }
         </div>
       </Container>
-    </>
+    </CharacterContext.Provider>
   )
 }

@@ -1,7 +1,7 @@
 import { SmartAppBrainRecognizer } from '@salutejs/recognizer-smartapp-brain'
 import { createIntents, createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
 import { SaluteMemoryStorage } from '@salutejs/storage-adapter-memory'
-import { getDailyScheduleHandler, noMatchHandler, runAppHandler } from './handlers'
+import { addHomeTaskHandler, getDailyScheduleHandler, noMatchHandler, runAppHandler } from './handlers'
 import model from '../intents.json'
 
 const storage = new SaluteMemoryStorage()
@@ -29,21 +29,17 @@ const userScenario = createUserScenario({
   // },
   addHomeTask: {
     match: intent('/Новое дз', {confidence: 0.2}),
-    handle: ({req, res}) => {
-      console.log('variables:', req.variables)
-      res.setPronounceText('Какое задание?')
-      res.appendBubble('Какое задание?')
-    },
-    children: {
-      taskText: {
-        match: intent('/Новое дз/Текст дз', {confidence: 0.2}),
-        handle: ({req, res}) => {
-          console.log(req.variables)
-          res.setPronounceText('Записано')
-          res.appendBubble('Записано')
-        }
-      }
-    }
+    handle: addHomeTaskHandler,
+    // children: {
+    //   taskText: {
+    //     match: intent('/Новое дз/Текст дз', {confidence: 0.2}),
+    //     handle: ({req, res}) => {
+    //       console.log(req.variables)
+    //       res.setPronounceText('Записано')
+    //       res.appendBubble('Записано')
+    //     }
+    //   }
+    // }
   },
 })
 
