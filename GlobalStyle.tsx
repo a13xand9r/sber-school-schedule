@@ -15,7 +15,7 @@ const themes = {
 
 const DocumentStyle = createGlobalStyle`
     html:root {
-        padding-top: 2rem;
+        padding-top: 1rem;
         min-height: 100vh;
         color: ${text};
         background-color: ${background};

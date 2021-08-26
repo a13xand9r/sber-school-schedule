@@ -3,7 +3,7 @@ import { SaluteHandler, SaluteRequestVariable } from '@salutejs/scenario'
 import { getSchedule, start } from './dataBase'
 import * as dictionary from './system.i18n'
 
-export const runAppHandler: SaluteHandler = ({ req, res, session }) => {
+export const runAppHandler: SaluteHandler = ({ req, res }) => {
   res.appendCommand({
     type: 'SET_USER_ID',
     id: req.request.uuid.sub
@@ -25,18 +25,21 @@ export const noMatchHandler: SaluteHandler = ({ req, res }) => {
 export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
   const { date, subj } = req.variables
   const keyset = req.i18n(dictionary)
-  res.appendBubble(keyset('newHomeTask'))
-  res.appendCommand({
-    type: 'CHANGE_TAB',
-    tab: 'Домашка'
-  })
-  res.appendCommand({
-    type: 'SET_IS_ADD_TASK_MODE',
-    flag: true
-  })
-  res.setPronounceText(keyset('newHomeTask'))
-  res.appendBubble(keyset('newHomeTask'))
-
+  if (req.request.payload.device?.surface === 'SBERBOX'){
+    res.setPronounceText('Добавить домашнее задание можно в приложении Салют или на СберПортале')
+    res.appendBubble('Добавить домашнее задание можно в приложении Салют или на СберПортале')
+  } else {
+    res.appendCommand({
+      type: 'CHANGE_TAB',
+      tab: 'Домашка'
+    })
+    res.appendCommand({
+      type: 'SET_IS_ADD_TASK_MODE',
+      flag: true
+    })
+    res.setPronounceText(keyset('newHomeTask'))
+    res.appendBubble(keyset('newHomeTask'))
+  }
 }
 export const getDailyScheduleHandler: SaluteHandler = async ({ req, res }) => {
   const { day } = req.variables

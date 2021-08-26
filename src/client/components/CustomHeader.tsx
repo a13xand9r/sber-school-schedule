@@ -1,5 +1,5 @@
 import { IconClose, IconEdit, IconPlus } from '@sberdevices/plasma-icons'
-import { Button, Header } from '@sberdevices/plasma-ui'
+import { Button, Header, HeaderLogo } from '@sberdevices/plasma-ui'
 import React, { FC, useContext } from 'react'
 import { CharacterContext } from '../../../pages'
 
