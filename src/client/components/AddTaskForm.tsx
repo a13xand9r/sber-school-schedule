@@ -68,7 +68,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
             visibleItems={3}
             scrollSnapType={'mandatory'}
             disabled={false}
-            controls={true}
+            // controls={true}
             autofocus={true}
             onChange={v => setDateValue(v)}
           />
