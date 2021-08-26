@@ -8,8 +8,13 @@ export const runAppHandler: SaluteHandler = ({ req, res, session }) => {
     type: 'SET_USER_ID',
     id: req.request.uuid.sub
   })
-  res.setPronounceText('Здесь можно добавить, просматривать и редактировать свое расписание. А также добавлять домашние задания')
-  res.appendBubble('Здесь можно добавить, просматривать и редактировать свое расписание. А также добавлять домашние задания')
+  if (req.request.payload.device?.surface === 'SBERBOX'){
+    res.setPronounceText('Здесь можно, просматривать свое расписание и домашние задания, редактировать их можно в приложении Салют или на СберПортале')
+    res.appendBubble('Здесь можно, просматривать свое расписание и домашние задания, редактировать их можно в приложении Салют или на СберПортале')
+  } else{
+    res.setPronounceText('Здесь можно добавить, просматривать и редактировать свое расписание. А также добавлять домашние задания')
+    res.appendBubble('Здесь можно добавить, просматривать и редактировать свое расписание. А также добавлять домашние задания')
+  }
 }
 export const noMatchHandler: SaluteHandler = ({ req, res }) => {
   const keyset = req.i18n(dictionary)

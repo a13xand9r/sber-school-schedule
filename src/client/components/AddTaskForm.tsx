@@ -25,7 +25,6 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId }) =
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (selectedSubject && taskText && userId) {
-      console.log(dateValue)
       const newHomeTask = {
         subject: selectedSubject.subject,
         icon: selectedSubject.icon,

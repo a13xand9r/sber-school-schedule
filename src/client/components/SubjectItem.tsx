@@ -1,12 +1,40 @@
+import { accent } from '@sberdevices/plasma-tokens'
 import { Body1, Footnote1 } from '@sberdevices/plasma-ui'
 import Image from 'next/image'
 import React, { FC } from 'react'
+import styled from 'styled-components'
+import { CharacterType } from '../../../GlobalStyle'
 import { dateDaysArray, monthsArray, SubjectConstType, TabsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 
+const ItemWrapper = styled.div`
+  margin: 0 auto;
+  max-width: 38rem;
+  display: flex;
+  height: 3.3rem;
+  align-items: center;
+  margin-top: 0.2rem;
+  position: relative;
+  /* border: 1px solid gray; */
+  border-radius: 10px;
+  padding-left: 1rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  transition: 0.2s;
+  &:active, &::visited{
+    transform: scale(0.98);
+    outline: none;
+  }
+  &:focus-visible, &:focus {
+    border: ${accent} solid 2px;
+    border-radius: 10px;
+    outline: none;
+  }
+`;
+
 export const SubjectItem: FC<PropsType> = (props) => {
   const { icon, subject, tab, cabinet, isEditMode, teacher, deleteItem, index, date, onClick, searchText, id } = props
-  return <div tabIndex={1} onClick={() => !!onClick ? onClick(index) : null} className={style.taskItem}>
+  return <ItemWrapper tabIndex={1} onClick={() => !!onClick ? onClick(index) : null}>
     <Image priority={true} loading='eager' src={icon} alt='' layout='fixed' width={35} height={35} />
     <div className={style.subjectText}>
       <Body1>{subject}</Body1>
@@ -20,7 +48,7 @@ export const SubjectItem: FC<PropsType> = (props) => {
     </div>
     {(isEditMode && !!deleteItem && tab === 'Расписание' && id) &&
       <span onClick={() => deleteItem(id)} className={style.deleteItem}></span>}
-  </div>
+  </ItemWrapper>
 }
 
 export const SubjectItemMemo = React.memo(SubjectItem)
@@ -38,4 +66,7 @@ type PropsType = {
   date?: Date
   onClick?: (index: number) => void
   searchText?: string
+}
+type StyledProps = {
+  character: CharacterType
 }

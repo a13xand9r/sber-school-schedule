@@ -30,7 +30,6 @@ export default function Home() {
   useEffect(() => {
     assistantRef.current = initializeAssistant(() => state)
     assistantRef.current.on('data', ({ smart_app_data, type, character }: any) => {
-      console.log(smart_app_data)
       if (smart_app_data) dispatch(smart_app_data)
       if (type === 'character') dispatch(actions.setCharacter(character.id))
     })
@@ -89,7 +88,6 @@ export default function Home() {
     dispatch(actions.setEditMode(flag))
     if (!flag) dispatch(actions.resetScheduleCopy())
   }
-  console.log('state srf', state.surface)
   return (
     <CharacterContext.Provider value={{character: state.character, surface: state.surface}}>
       <GlobalStyles character={state.character} />
