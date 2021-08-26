@@ -16,8 +16,10 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
   const [isError, setIsError] = useState(false)
   useEffect(() => {
     if (isSubjectListMode){
-      window.scroll(0, 200)
-    } else window.scroll(0, 0)
+      let subjInput = document.getElementById('subjInput')
+      subjInput?.scrollIntoView({block: 'start', behavior: 'smooth'})
+      // window.scroll(0, 160)
+    } else window.scrollTo({top: 0, behavior: 'smooth'})
   }, [isSubjectListMode])
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()

@@ -89,6 +89,11 @@
   text-align: start;
   max-width: 38rem;
 }
+.subjectInput{
+  /* padding-left: 5rem;
+  padding-right: 10rem;
+  margin-right: 5rem; */
+}
 .taskButton{
   margin: 0.5rem auto;
   text-align: start;

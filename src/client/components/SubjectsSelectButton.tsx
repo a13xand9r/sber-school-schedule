@@ -6,8 +6,9 @@ import style from '../../../styles/schedule.module.css'
 export const SubjectSelectButton: FC<PropsType> = ({ changeSubjectListMode, isSubjectListMode, isError, subjectInput, setSubjectInput }) => {
   return <>
     <TextField
+      id='subjInput'
       className={`${style.subjectInput} ${isError && style.errorSubjectInput}`}
-      value={subjectInput}
+      value={subjectInput ? subjectInput : ''}
       label={'Предмет'}
       onFocus={changeSubjectListMode}
       contentLeft={
@@ -15,7 +16,8 @@ export const SubjectSelectButton: FC<PropsType> = ({ changeSubjectListMode, isSu
           onClick={changeSubjectListMode}
           view='clear'
           size='s'
-          style={{ padding: '0', color: '#808080' }}>
+          style={{ padding: '0', color: '#808080' }}
+        >
           {
             isSubjectListMode ?
               <IconChevronUp size="s" /> :
