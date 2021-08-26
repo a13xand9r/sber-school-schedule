@@ -5,7 +5,7 @@
     /* max-width: 38rem; */
 }
 .subjectList{
-  margin: 3rem auto;
+  margin: 1rem auto;
   margin-bottom: 0.5rem;
   text-align: center;
 }
@@ -48,7 +48,7 @@
   display: flex;
   height: 3.3rem;
   align-items: center;
-  margin-top: 0.7rem;
+  margin-top: 0.2rem;
   position: relative;
   /* border: 1px solid gray; */
   border-radius: 10px;
@@ -163,7 +163,7 @@
   height: 15px;
   opacity: 0.3;
   position: absolute;
-  right: 0;
+  right: 0.5rem;
   cursor: pointer;
 }
 .deleteItem:hover {

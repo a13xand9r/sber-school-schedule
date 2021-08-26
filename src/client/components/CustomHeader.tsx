@@ -1,11 +1,14 @@
 import { IconClose, IconEdit, IconPlus } from '@sberdevices/plasma-icons'
 import { Button, Header } from '@sberdevices/plasma-ui'
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
+import { CharacterContext } from '../../../pages'
+
 import { daysArray, HomeTaskType, monthsArray, TabsType } from '../../../store'
 import style from '../../../styles/header.module.css'
 
 export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, homeTask, setIsAddTaskMode, isAddTaskMode, setShowTaskMode, isFetching }) => {
   const flag: boolean = !!homeTask ? true : false
+  const {surface} = useContext(CharacterContext)
   const onBackHandler = () => {
     // setEditMode(false)
     // setIsAddTaskMode(false)
@@ -23,7 +26,7 @@ export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, home
       onBackClick={onBackHandler}
     >
       {
-        !isFetching && (
+        !isFetching && surface === 'mobile' && (
         tab === 'Домашка' ?
           !!homeTask ?
             <Button

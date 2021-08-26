@@ -10,7 +10,7 @@ import { postSchedule, requestHomeTasks, requestSchedule } from '../src/client/a
 import { CustomHeader } from '../src/client/components/CustomHeader'
 import { HomeTasks } from '../src/client/components/HomeTasks'
 
-export const CharacterContext = React.createContext('sber')
+export const CharacterContext = React.createContext({character: 'sber', surface: 'mobile'})
 
 const initializeAssistant = (getState: () => StateType) => {
   if (process.env.NODE_ENV === 'development') {
@@ -68,7 +68,6 @@ export default function Home() {
     switch (state.tabPage) {
       case 'Расписание':
         return <Schedule
-          surface={state.surface}
           saveData={saveData}
           isEditMode={state.isEditMode}
           day={state.day}
@@ -90,8 +89,9 @@ export default function Home() {
     dispatch(actions.setEditMode(flag))
     if (!flag) dispatch(actions.resetScheduleCopy())
   }
+  console.log('state srf', state.surface)
   return (
-    <CharacterContext.Provider value={state.character}>
+    <CharacterContext.Provider value={{character: state.character, surface: state.surface}}>
       <GlobalStyles character={state.character} />
       <Container>
         <CustomHeader

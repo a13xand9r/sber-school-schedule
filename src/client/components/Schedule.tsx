@@ -1,14 +1,16 @@
 import { Button, TabItem, Tabs } from '@sberdevices/plasma-ui'
-import React, { Dispatch, FC, useCallback, useEffect, useState } from 'react'
+import React, { Dispatch, FC, useCallback, useContext, useEffect, useState } from 'react'
+import { CharacterContext } from '../../../pages'
 import { actions, ActionsType, daysArray, DayType, ScheduleType, SurfaceType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import { AddSubjectForm } from './AddSubjectForm'
 import { SubjectList } from './SubjectList'
 
-export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, surface, schedule, userId }) => {
+export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, schedule, userId }) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const [isAddSubjectMode, setIsAddSubjectMode] = useState(false)
   const subjects = schedule[day]
+  const {surface} = useContext(CharacterContext)
   useEffect(() => {
     setIsAddSubjectMode(false)
   }, [day])
@@ -63,7 +65,7 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
       !isEditMode ?
         <>
           <SubjectList list={subjects} isEditMode={isEditMode} deleteItem={deleteItem} />
-          {(!subjects || !subjects.length) && <Button className={style.editButton}
+          {(!subjects || !subjects.length) && surface === 'mobile'  && <Button className={style.editButton}
             text='Редактировать расписание'
             view='secondary'
             onClick={setEditMode}
@@ -99,7 +101,6 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
 
 type PropsType = {
   day: DayType
-  surface: SurfaceType
   isEditMode: boolean
   saveData: () => void
   schedule: ScheduleType
