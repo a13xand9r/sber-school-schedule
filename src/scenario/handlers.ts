@@ -25,13 +25,13 @@ export const noMatchHandler: SaluteHandler = ({ req, res }) => {
 export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
   const { date, subj } = req.variables
   const keyset = req.i18n(dictionary)
-  if (req.request.payload.device?.surface === 'SBERBOX'){
+  if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
     res.setPronounceText('Добавить домашнее задание можно в приложении Салют или на СберПортале')
     res.appendBubble('Добавить домашнее задание можно в приложении Салют или на СберПортале')
   } else {
     res.appendCommand({
       type: 'CHANGE_TAB',
-      tab: 'Расписание'
+      tab: 'Домашка'
     })
     res.appendCommand({
       type: 'SET_IS_ADD_TASK_MODE',
