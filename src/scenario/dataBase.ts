@@ -29,10 +29,11 @@ const emptySchedule = {
 export const getSchedule = async (userId: string): Promise<ScheduleType> => {
   try {
     if (!isMongoConnected){
-      await client.connect()
+      await start()
       scheduleDB = client.db().collection('schedule')
     }
     const user = await scheduleDB.findOne({ userId })
+    console.log('user', user)
     if (user) {
       return user.schedule
     } else {
@@ -47,7 +48,7 @@ export const getSchedule = async (userId: string): Promise<ScheduleType> => {
 export const changeSchedule = async (userId: string, newSchedule: ScheduleType): Promise<ScheduleType> => {
   try {
     if (!isMongoConnected){
-      await client.connect()
+      await start()
       scheduleDB = client.db().collection('schedule')
     }
     const user = await scheduleDB.findOne({ userId })
@@ -68,7 +69,7 @@ export const changeSchedule = async (userId: string, newSchedule: ScheduleType):
 export const getHomeTasks = async (userId: string): Promise<HomeTaskType[]> => {
   try {
     if (!isMongoConnected){
-      await client.connect()
+      await start()
       homeTasksDB = client.db().collection('homeTasks')
     }
     const user = await homeTasksDB.findOne({ userId })
@@ -86,7 +87,7 @@ export const getHomeTasks = async (userId: string): Promise<HomeTaskType[]> => {
 export const addHomeTask = async (userId: string, newHomeTask: HomeTaskType): Promise<HomeTaskType | null> => {
   try {
     if (!isMongoConnected){
-      await client.connect()
+      await start()
       homeTasksDB = client.db().collection('homeTasks')
     }
     const user = await homeTasksDB.findOne({ userId })

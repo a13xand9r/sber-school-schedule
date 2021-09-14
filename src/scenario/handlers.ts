@@ -31,7 +31,7 @@ export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
   } else {
     res.appendCommand({
       type: 'CHANGE_TAB',
-      tab: 'Домашка'
+      tab: 'Расписание'
     })
     res.appendCommand({
       type: 'SET_IS_ADD_TASK_MODE',
@@ -44,10 +44,14 @@ export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
 export const getDailyScheduleHandler: SaluteHandler = async ({ req, res }) => {
   const { day } = req.variables
   const dailySchedule = await getSchedule(req.request.uuid.sub)
-  const dailyScheduleText = dailySchedule[normalizeSubjectWord(day as string) as DayType]?.map(el => el.subject).join(', ')
+  const dailyScheduleText = dailySchedule[normalizeDayWord(day as string) as DayType]?.map(el => el.subject).join(', ')
+  res.appendCommand({
+    type: 'CHANGE_TAB',
+    tab: ''
+  })
   res.appendCommand({
     type: 'CHANGE_DAY',
-    day: normalizeSubjectWord(day as string)
+    day: normalizeDayWord(day as string)
   })
   if (dailyScheduleText) {
     res.setPronounceText(`В ${day} следующие уроки: ${dailyScheduleText}`)
@@ -57,8 +61,11 @@ export const getDailyScheduleHandler: SaluteHandler = async ({ req, res }) => {
     res.appendBubble(`В ${day} нет уроков`)
   }
 }
+export const homeTaskDoneHandler: SaluteHandler = ({req, res}) => {
+  res.setPronounceText('Домашнее задание выполнено. Молодец!')
+}
 
-function normalizeSubjectWord(str: string) {
+function normalizeDayWord(str: string) {
   if (!str) return str
   const lastLetter = str[str.length - 1] === 'у' ? 'а' : str[str.length - 1]
   return str[0].toUpperCase() + str.slice(1, str.length - 1) + lastLetter
