@@ -5,15 +5,17 @@ const client = new MongoClient(process.env.NEXT_PUBLIC_MONGODB_CLIENT ?? '')
 let scheduleDB: any
 let homeTasksDB: any
 let isMongoConnected = false
+
 export const start = async () => {
   try {
+    console.log('Trying to connect mongoDB')
     await client.connect()
     isMongoConnected = true
     console.log('MongoDB connected')
     scheduleDB = client.db().collection('schedule')
     homeTasksDB = client.db().collection('homeTasks')
   } catch (err) {
-    console.log(err)
+    console.log('mongo connection error', err)
   }
 }
 

@@ -1,12 +1,12 @@
 import { SmartAppBrainRecognizer } from '@salutejs/recognizer-smartapp-brain'
 import { createIntents, createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
 import { SaluteMemoryStorage } from '@salutejs/storage-adapter-memory'
-import { addHomeTaskHandler, getDailyScheduleHandler, homeTaskDoneHandler, noMatchHandler, runAppHandler } from './handlers'
+import { addHomeTaskHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, scheduleNavigationHandler } from './handlers'
 import model from '../intents.json'
 
 const storage = new SaluteMemoryStorage()
 const intents = createIntents(model.intents)
-const { action, regexp, intent, text, selectItem } = createMatchers<SaluteRequest, typeof intents>()
+const { action, regexp, intent, text, selectItem, state, match } = createMatchers<SaluteRequest, typeof intents>()
 
 const userScenario = createUserScenario({
   getDailySchedule: {
@@ -16,6 +16,18 @@ const userScenario = createUserScenario({
   homeTaskDone: {
     match: action('task_done'),
     handle: homeTaskDoneHandler
+  },
+  homeTasksNavigation:{
+    match: intent('/Дз', {confidence: 0.2}),
+    handle: homeTasksNavigationHandler
+  },
+  scheduleNavigation:{
+    match: intent('/Расписание', {confidence: 0.2}),
+    handle: scheduleNavigationHandler
+  },
+  deleteSubject:{
+    match: match(intent('/Удалить предмет', {confidence: 0.2}), (req) => req.state?.isEditMode as boolean),
+    handle: deleteSubjectHandler
   },
   addHomeTask: {
     match: intent('/Новое дз', {confidence: 0.2}),

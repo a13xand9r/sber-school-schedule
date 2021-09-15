@@ -3,8 +3,8 @@ import { Container, Spinner, TabItem, Tabs } from '@sberdevices/plasma-ui'
 import React, { useCallback, useEffect, useReducer, useRef } from 'react'
 import { Schedule } from '../src/client/components/Schedule'
 import { GlobalStyles } from '../GlobalStyle'
-import { actions, initialState, reducer, StateType } from '../store'
-import { createAssistant, createSmartappDebugger } from '@sberdevices/assistant-client'
+import { actions, DayType, initialState, reducer, ScheduleType, StateType, TabsType } from '../store'
+import { createAssistant, createSmartappDebugger, AssistantAppState } from '@sberdevices/assistant-client'
 import style from '../styles/index.module.css'
 import { postSchedule, requestHomeTasks, requestSchedule } from '../src/client/apiRequests'
 import { CustomHeader } from '../src/client/components/CustomHeader'
@@ -12,7 +12,7 @@ import { HomeTasks } from '../src/client/components/HomeTasks'
 
 export const CharacterContext = React.createContext({character: 'sber', surface: 'mobile'})
 
-const initializeAssistant = (getState: () => StateType) => {
+const initializeAssistant = (getState: () => AssistantState) => {
   if (process.env.NODE_ENV === 'development') {
     return createSmartappDebugger({
       token: process.env.NEXT_PUBLIC_ASSISTANT_TOKEN ?? '',
@@ -27,8 +27,12 @@ const tabs = ['Расписание', 'Домашка'] as const
 export default function Home() {
   const [state, dispatch] = useReducer(reducer, initialState)
   const assistantRef = useRef<ReturnType<typeof createAssistant>>()
+  const assistantStateRef = useRef<AssistantState>({} as AssistantState)
   useEffect(() => {
-    assistantRef.current = initializeAssistant(() => state)
+    assistantRef.current = initializeAssistant(() => {
+      console.log('assistantState', assistantStateRef.current)
+      return assistantStateRef.current
+    })
     assistantRef.current.on('data', ({ smart_app_data, type, character }: any) => {
       if (smart_app_data) dispatch(smart_app_data)
       if (type === 'character') dispatch(actions.setCharacter(character.id))
@@ -58,6 +62,14 @@ export default function Home() {
       initialRequests()
     }
   }, [state.userId])
+  useEffect(() => {
+    assistantStateRef.current = {
+      isEditMode: state.isEditMode,
+      tabPage: state.tabPage,
+      day: state.day,
+      schedule: state.schedule
+    }
+  }, [state])
   const saveData = useCallback(async () => {
     const newSchedule = await postSchedule(state.userId as string, state.schedule)
     dispatch(actions.setSchedule(newSchedule))
@@ -136,4 +148,11 @@ export default function Home() {
       </Container>
     </CharacterContext.Provider>
   )
+}
+
+export interface AssistantState extends AssistantAppState {
+  isEditMode: boolean
+  tabPage: TabsType
+  day: DayType
+  schedule: ScheduleType
 }
