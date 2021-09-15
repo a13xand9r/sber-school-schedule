@@ -11,11 +11,11 @@ export const runAppHandler: SaluteHandler = ({ req, res }) => {
     id: req.request.uuid.sub
   })
   if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
-    res.setPronounceText('Здесь можно, просматривать свое расписание и домашние задания, редактировать их можно в приложении Салют или на СберПортале')
-    res.appendBubble('Здесь можно, просматривать свое расписание и домашние задания, редактировать их можно в приложении Салют или на СберПортале')
+    res.setPronounceText('Здесь можно просматривать свое расписание и домашние задания, редактировать их можно в приложении Салют или на СберПортале.')
+    res.appendBubble('Здесь можно просматривать свое расписание и домашние задания, редактировать их можно в приложении Салют или на СберПортале.')
   } else{
-    res.setPronounceText('Здесь можно добавить, просматривать и редактировать свое расписание. А также добавлять домашние задания')
-    res.appendBubble('Здесь можно добавить, просматривать и редактировать свое расписание. А также добавлять домашние задания')
+    res.setPronounceText('Здесь можно добавлять просматривать и редактировать свое расписание. А также добавлять домашние задания.')
+    res.appendBubble('Здесь можно добавлять, просматривать и редактировать свое расписание. А также добавлять домашние задания.')
   }
 }
 
@@ -28,8 +28,6 @@ export const noMatchHandler: SaluteHandler = ({ req, res }) => {
 export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
   const subject = req.variables.subject ? JSON.parse(req.variables.subject as string).name : ''
   const timestamp = req.variables.date ? JSON.parse(req.variables.date as string).timestamp : null
-  console.log(timestamp)
-  console.log(subject)
   const keyset = req.i18n(dictionary)
   if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
     res.setPronounceText('Добавить домашнее задание можно в приложении Салют или на СберПортале')
@@ -56,7 +54,7 @@ export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
       })
     }
     res.setPronounceText(keyset('newHomeTask'))
-    res.appendBubble(keyset('newHomeTask'))
+    res.setAutoListening(true)
   }
 }
 
@@ -85,6 +83,21 @@ export const homeTaskDoneHandler: SaluteHandler = ({req, res}) => {
   res.setPronounceText('Домашнее задание выполнено. Молодец!')
 }
 
+export const addHomeTaskTextHandler: SaluteHandler = ({req, res}) => {
+  // console.log(req.message.original_text)
+  // console.log(req.message.human_normalized_text_with_anaphora)
+  // console.log(req.message.normalized_text)
+  // console.log(req.message.human_normalized_text)
+  // console.log(req.currentState?.path)
+  res.appendCommand({
+    type: 'SET_HOME_TASK_TEXT_FORM',
+    text: req.message.original_text
+  })
+  const answerArray = ['Сохранить?', 'Добавить?']
+  res.setPronounceText(getRandomFromArray(answerArray))
+  res.setAutoListening(true)
+}
+
 export const homeTasksNavigationHandler: SaluteHandler = ({req, res}) => {
   res.appendCommand({
     type: 'CHANGE_TAB',
@@ -110,6 +123,14 @@ export const saveScheduleHandler: SaluteHandler = ({ res }) => {
     type: 'SAVE_SCHEDULE',
   })
   const answerArray = ['Готово', 'Сохранено']
+  res.setPronounceText(getRandomFromArray(answerArray))
+}
+
+export const saveHomeTaskHandler: SaluteHandler = ({ res }) => {
+  res.appendCommand({
+    type: 'SAVE_HOME_TASK_FROM',
+  })
+  const answerArray = ['Готово', 'Сохранено', 'Добавлено']
   res.setPronounceText(getRandomFromArray(answerArray))
 }
 

@@ -26,6 +26,52 @@
         }
       }
     },
+    "/Согласие": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "Да"
+        },
+        {
+          "type": "phrase",
+          "rule": "Добавить"
+        },
+        {
+          "type": "phrase",
+          "rule": "Давай"
+        }
+      ],
+      "variables": {}
+    },
+    "/Отрицание": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "нет"
+        },
+        {
+          "type": "phrase",
+          "rule": "не надо"
+        },
+        {
+          "type": "phrase",
+          "rule": "не сохроняй"
+        },
+        {
+          "type": "phrase",
+          "rule": "не добавляй"
+        },
+        {
+          "type": "phrase",
+          "rule": "стой"
+        },
+        {
+          "type": "phrase",
+          "rule": "стоп"
+        }
+      ],
+      "variables": {}
+    },
     "/Новое дз": {
       "matchers": [
         {
@@ -251,6 +297,14 @@
         {
           "type": "phrase",
           "rule": "сохранить"
+        },
+        {
+          "type": "phrase",
+          "rule": "добавить"
+        },
+        {
+          "type": "phrase",
+          "rule": "добавь"
         }
       ],
       "variables": {}

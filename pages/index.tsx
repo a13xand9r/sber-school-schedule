@@ -77,7 +77,8 @@ export default function Home() {
       isEditMode: state.isEditMode,
       tabPage: state.tabPage,
       day: state.day,
-      schedule: state.schedule
+      schedule: state.schedule,
+      isAddTaskMode: state.isAddTaskMode
     }
   }, [state])
   const selectTab = () => {
@@ -164,4 +165,5 @@ export interface AssistantState extends AssistantAppState {
   tabPage: TabsType
   day: DayType
   schedule: ScheduleType
+  isAddTaskMode: boolean
 }

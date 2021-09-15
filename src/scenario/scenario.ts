@@ -1,7 +1,7 @@
 import { SmartAppBrainRecognizer } from '@salutejs/recognizer-smartapp-brain'
 import { createIntents, createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
 import { SaluteMemoryStorage } from '@salutejs/storage-adapter-memory'
-import { addHomeTaskHandler, addSubjectHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, saveScheduleHandler, scheduleNavigationHandler } from './handlers'
+import { addHomeTaskHandler, addHomeTaskTextHandler, addSubjectHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, saveHomeTaskHandler, saveScheduleHandler, scheduleNavigationHandler } from './handlers'
 import model from '../intents.json'
 
 const storage = new SaluteMemoryStorage()
@@ -55,16 +55,29 @@ const userScenario = createUserScenario({
   addHomeTask: {
     match: intent('/Новое дз', {confidence: 0.2}),
     handle: addHomeTaskHandler,
-    // children: {
-    //   taskText: {
-    //     match: intent('/Новое дз/Текст дз', {confidence: 0.2}),
-    //     handle: ({req, res}) => {
-    //       console.log(req.variables)
-    //       res.setPronounceText('Записано')
-    //       res.appendBubble('Записано')
-    //     }
-    //   }
-    // }
+    children: {
+      taskText: {
+        match: match((req) => !!req.message.original_text, (req) => req.state?.isAddTaskMode as boolean, (req) => {
+          console.log('current state',req.currentState?.path[0])
+          return req.currentState?.path[0] !== 'addHomeTask'
+        }),
+        handle: addHomeTaskTextHandler
+      },
+      yes:{
+        match: intent('/Согласие', {confidence: 0.2}),
+        handle: saveHomeTaskHandler
+      },
+      no:{
+        match: intent('/Отрицание', {confidence: 0.2}),
+        handle: ({res}) => {
+          res.setPronounceText('Хорошо. Не буду.')
+        }
+      },
+    }
+  },
+  saveHomeTask:{
+    match: match(intent('/Сохранить', {confidence: 0.4}), (req) => req.state?.isAddTaskMode as boolean),
+    handle: saveHomeTaskHandler
   },
 })
 
