@@ -18,7 +18,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
   useEffect(() => {
     assistant.on('data', ({ smart_app_data }: any) => {
       if (smart_app_data) {
-        if (smart_app_data.type === 'ADD_SUBJECT') setSubjectInput(smart_app_data.subject)
+        if (smart_app_data.type === 'ADD_SUBJECT_FORM') setSubjectInput(smart_app_data.subject)
       }
     })
   }, [])

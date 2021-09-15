@@ -7,8 +7,9 @@ import style from '../../../styles/schedule.module.css'
 import { AddTaskForm } from './AddTaskForm'
 import { Task } from './Task'
 import { deleteHomeTask } from '../apiRequests'
+import { createAssistant } from '@sberdevices/assistant-client'
 
-export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, isAddTaskMode, userId, assistantRef }) => {
+export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, isAddTaskMode, userId, assistant }) => {
   const onTaskClickHandler = useCallback((index: number) => {
     dispatch(actions.setShowTaskMode(index))
   }, [])
@@ -19,8 +20,8 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
   }, [userId, showTaskMode])
   const onDoneTaskHandler = useCallback(() => {
     onDeleteTaskHandler()
-    assistantRef.current?.sendAction({ type: 'task_done' })
-  }, [onDeleteTaskHandler, assistantRef])
+    assistant.sendAction({ type: 'task_done', payload: {} })
+  }, [onDeleteTaskHandler, assistant])
   const finishAdding = useCallback(() => dispatch(actions.setIsAddTaskMode(false)), [])
   useEffect(() => {
     return () => {
@@ -31,6 +32,7 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
   return <div className={style.schedule}>
     {showTaskMode ? <Task showTaskMode={showTaskMode} onDelete={onDeleteTaskHandler} onDone={onDoneTaskHandler} /> :
       isAddTaskMode ? <AddTaskForm
+        assistant={assistant}
         dispatch={dispatch}
         userId={userId}
         finishAdding={finishAdding}
@@ -64,5 +66,5 @@ type PropsType = {
   showTaskMode: null | HomeTaskType
   isAddTaskMode: boolean
   userId: string | null
-  assistantRef: any
+  assistant: ReturnType<typeof createAssistant>
 }

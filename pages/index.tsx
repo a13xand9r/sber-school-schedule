@@ -100,7 +100,8 @@ export default function Home() {
         homeTasks={state.homeTasks}
         showTaskMode={state.showTaskMode}
         dispatch={dispatch}
-        assistantRef={assistantRef}
+        //@ts-ignore
+        assistant={assistantRef.current}
       />
     }
   }

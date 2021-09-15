@@ -26,7 +26,10 @@ export const noMatchHandler: SaluteHandler = ({ req, res }) => {
 }
 
 export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
-  const { date, subj } = req.variables
+  const subject = req.variables.subject ? JSON.parse(req.variables.subject as string).name : ''
+  const timestamp = req.variables.date ? JSON.parse(req.variables.date as string).timestamp : null
+  console.log(timestamp)
+  console.log(subject)
   const keyset = req.i18n(dictionary)
   if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
     res.setPronounceText('Добавить домашнее задание можно в приложении Салют или на СберПортале')
@@ -40,6 +43,18 @@ export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
       type: 'SET_IS_ADD_TASK_MODE',
       flag: true
     })
+    if (subject){
+      res.appendCommand({
+        type: 'ADD_SUBJECT_FORM',
+        subject
+      })
+    }
+    if (timestamp){
+      res.appendCommand({
+        type: 'SET_DATE_FORM',
+        timestamp
+      })
+    }
     res.setPronounceText(keyset('newHomeTask'))
     res.appendBubble(keyset('newHomeTask'))
   }
@@ -110,7 +125,7 @@ export const addSubjectHandler: SaluteHandler = ({ req, res }) => {
   const keyset = req.i18n(dictionary)
   if (subject) {
     res.appendCommand({
-      type: 'ADD_SUBJECT',
+      type: 'ADD_SUBJECT_FORM',
       subject: subject
     })
     res.setPronounceText(keyset('good'))

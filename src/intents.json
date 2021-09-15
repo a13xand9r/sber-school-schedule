@@ -9,15 +9,28 @@
         {
           "type": "phrase",
           "rule": "Добавить"
+        },
+        {
+          "type": "phrase",
+          "rule": "Добавь @subject"
+        },
+        {
+          "type": "phrase",
+          "rule": "Добавить @subject"
         }
       ],
-      "variables": {}
+      "variables": {
+        "subject": {
+          "required": true,
+          "questions": []
+        }
+      }
     },
     "/Новое дз": {
       "matchers": [
         {
           "type": "phrase",
-          "rule": "задание по @subj на @date"
+          "rule": "задание по @subject на @duckling.date"
         },
         {
           "type": "phrase",
@@ -33,21 +46,21 @@
         },
         {
           "type": "phrase",
-          "rule": "домашнее задание на @date по @subj"
+          "rule": "домашнее задание на @duckling.date по @subject"
+        },
+        {
+          "type": "phrase",
+          "rule": "добавь домашнее задание по @subject"
         }
       ],
       "variables": {
-        "subj": {
+        "subject": {
           "required": true,
-          "questions": [
-            "какой предмет?"
-          ]
+          "questions": []
         },
         "date": {
           "required": true,
-          "questions": [
-            "на какое число?"
-          ]
+          "questions": []
         }
       }
     },
