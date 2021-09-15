@@ -1,7 +1,7 @@
 import { Button, TabItem, Tabs } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, useCallback, useContext, useEffect, useState } from 'react'
 import { CharacterContext } from '../../../pages'
-import { actions, ActionsType, daysArray, DayType, ScheduleType, SurfaceType } from '../../../store'
+import { actions, ActionsType, daysArray, DayType, ScheduleType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import { AddSubjectForm } from './AddSubjectForm'
 import { SubjectList } from './SubjectList'

@@ -26,6 +26,13 @@ const tabs = ['Расписание', 'Домашка'] as const
 
 export default function Home() {
   const [state, dispatch] = useReducer(reducer, initialState)
+
+  const saveData = useCallback(() => {
+    postSchedule(state.userId as string, state.schedule)
+    // dispatch(actions.setSchedule(newSchedule))
+    dispatch(actions.setEditMode(false))
+  }, [state.userId, state.schedule])
+
   const assistantRef = useRef<ReturnType<typeof createAssistant>>()
   const assistantStateRef = useRef<AssistantState>({} as AssistantState)
   useEffect(() => {
@@ -34,7 +41,10 @@ export default function Home() {
       return assistantStateRef.current
     })
     assistantRef.current.on('data', ({ smart_app_data, type, character }: any) => {
-      if (smart_app_data) dispatch(smart_app_data)
+      if (smart_app_data) {
+        dispatch(smart_app_data)
+        if (smart_app_data.type === 'SAVE_SCHEDULE') saveData()
+      }
       if (type === 'character') dispatch(actions.setCharacter(character.id))
     })
     const detectDeviceCallback = () => (
@@ -70,11 +80,6 @@ export default function Home() {
       schedule: state.schedule
     }
   }, [state])
-  const saveData = useCallback(async () => {
-    const newSchedule = await postSchedule(state.userId as string, state.schedule)
-    dispatch(actions.setSchedule(newSchedule))
-    dispatch(actions.setEditMode(false))
-  }, [state.userId, state.schedule])
   const selectTab = () => {
     switch (state.tabPage) {
       case 'Расписание':

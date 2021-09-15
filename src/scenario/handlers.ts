@@ -3,6 +3,7 @@ import { DayType } from './../../store';
 import { SaluteHandler } from '@salutejs/scenario'
 import { getSchedule } from './dataBase'
 import * as dictionary from './system.i18n'
+import { getRandomFromArray } from '../utils/utils';
 
 export const runAppHandler: SaluteHandler = ({ req, res }) => {
   res.appendCommand({
@@ -83,21 +84,26 @@ export const scheduleNavigationHandler: SaluteHandler = ({req, res}) => {
   res.appendBubble(keyset('schedule'))
   res.setPronounceText(keyset('schedule'))
 }
+export const saveScheduleHandler: SaluteHandler = ({ res }) => {
+  res.appendCommand({
+    type: 'SAVE_SCHEDULE',
+  })
+  const answerArray = ['Готово', 'Сохранено']
+  res.setPronounceText(getRandomFromArray(answerArray))
+}
 
 export const deleteSubjectHandler: SaluteHandler = ({req, res}) => {
   const state = req.state as AssistantState
   const subject = JSON.parse(req.variables.subject as string).name
-  console.log('state', req.state)
-  // console.log('subject', subject)
-  
+
   const subjectInDaySchedule = state.schedule[state.day]?.find(el => el.subject === subject)
-  // console.log(subjectInDaySchedule)
   if (subjectInDaySchedule){
     res.appendCommand({
       type: 'DELETE_SUBJECT',
       id: subjectInDaySchedule.id
     })
-    res.setPronounceText('Готово')
+    const answerArray = ['Готово', 'Удалено']
+    res.setPronounceText(getRandomFromArray(answerArray))
   } else {
     res.setPronounceText('Такого предмета нет в этот день')
   }

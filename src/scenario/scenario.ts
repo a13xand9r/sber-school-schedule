@@ -1,7 +1,7 @@
 import { SmartAppBrainRecognizer } from '@salutejs/recognizer-smartapp-brain'
 import { createIntents, createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
 import { SaluteMemoryStorage } from '@salutejs/storage-adapter-memory'
-import { addHomeTaskHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, scheduleNavigationHandler } from './handlers'
+import { addHomeTaskHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, saveScheduleHandler, scheduleNavigationHandler } from './handlers'
 import model from '../intents.json'
 
 const storage = new SaluteMemoryStorage()
@@ -28,6 +28,25 @@ const userScenario = createUserScenario({
   deleteSubject:{
     match: match(intent('/Удалить предмет', {confidence: 0.2}), (req) => req.state?.isEditMode as boolean),
     handle: deleteSubjectHandler
+  },
+  deleteSubjectNotFromEditMode:{
+    match: match(intent('/Удалить предмет', {confidence: 0.2}), (req) => !req.state?.isEditMode as boolean),
+    handle: ({ res }) => {
+      res.setPronounceText('Для удаления предмета нужно перейти в режим редактирования')
+    }
+  },
+  setEditMode:{
+    match: match(intent('/Режим редактирования', {confidence: 0.2}), (req) => !req.state?.isEditMode as boolean),
+    handle: ({ res }) => {
+      res.appendCommand({
+        type: 'SET_EDIT_MODE',
+        flag: true
+      })
+    }
+  },
+  saveSchedule:{
+    match: match(intent('/Сохранить', {confidence: 0.2}), (req) => req.state?.isEditMode as boolean),
+    handle: saveScheduleHandler
   },
   addHomeTask: {
     match: intent('/Новое дз', {confidence: 0.2}),
