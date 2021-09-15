@@ -84,6 +84,9 @@ export default function Home() {
     switch (state.tabPage) {
       case 'Расписание':
         return <Schedule
+          //@ts-ignore
+          assistant={assistantRef.current}
+          isAddSubjectMode={state.isAddSubjectMode}
           saveData={saveData}
           isEditMode={state.isEditMode}
           day={state.day}

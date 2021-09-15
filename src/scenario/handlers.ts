@@ -18,6 +18,7 @@ export const runAppHandler: SaluteHandler = ({ req, res }) => {
     res.appendBubble('Здесь можно добавить, просматривать и редактировать свое расписание. А также добавлять домашние задания')
   }
 }
+
 export const noMatchHandler: SaluteHandler = ({ req, res }) => {
   const keyset = req.i18n(dictionary)
   res.appendBubble(keyset('404'))
@@ -43,6 +44,7 @@ export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
     res.appendBubble(keyset('newHomeTask'))
   }
 }
+
 export const getDailyScheduleHandler: SaluteHandler = async ({ req, res }) => {
   const day = JSON.parse(req.variables.day as string) as DayBrainType
   const dailySchedule = await getSchedule(req.request.uuid.sub)
@@ -63,9 +65,11 @@ export const getDailyScheduleHandler: SaluteHandler = async ({ req, res }) => {
     res.appendBubble(`${day.name === 'Вторник' ? 'Во' : 'В'} ${day.subName.toLowerCase()} нет уроков`)
   }
 }
+
 export const homeTaskDoneHandler: SaluteHandler = ({req, res}) => {
   res.setPronounceText('Домашнее задание выполнено. Молодец!')
 }
+
 export const homeTasksNavigationHandler: SaluteHandler = ({req, res}) => {
   res.appendCommand({
     type: 'CHANGE_TAB',
@@ -75,6 +79,7 @@ export const homeTasksNavigationHandler: SaluteHandler = ({req, res}) => {
   res.appendBubble(keyset('homeTasks'))
   res.setPronounceText(keyset('homeTasks'))
 }
+
 export const scheduleNavigationHandler: SaluteHandler = ({req, res}) => {
   res.appendCommand({
     type: 'CHANGE_TAB',
@@ -84,12 +89,34 @@ export const scheduleNavigationHandler: SaluteHandler = ({req, res}) => {
   res.appendBubble(keyset('schedule'))
   res.setPronounceText(keyset('schedule'))
 }
+
 export const saveScheduleHandler: SaluteHandler = ({ res }) => {
   res.appendCommand({
     type: 'SAVE_SCHEDULE',
   })
   const answerArray = ['Готово', 'Сохранено']
   res.setPronounceText(getRandomFromArray(answerArray))
+}
+
+export const addSubjectHandler: SaluteHandler = ({ req, res }) => {
+  let subject: string = ''
+  try{
+    subject = JSON.parse(req.variables.subject as string).name
+  }catch(e){}
+  res.appendCommand({
+    type: 'SET_IS_ADD_SUBJECT_MODE',
+    flag: true
+  })
+  const keyset = req.i18n(dictionary)
+  if (subject) {
+    res.appendCommand({
+      type: 'ADD_SUBJECT',
+      subject: subject
+    })
+    res.setPronounceText(keyset('good'))
+  } else {
+    res.setPronounceText(keyset('letsAddSubject'))
+  }
 }
 
 export const deleteSubjectHandler: SaluteHandler = ({req, res}) => {

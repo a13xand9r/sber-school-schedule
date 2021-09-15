@@ -21,6 +21,7 @@ export const initialState = {
   homeTasks: [] as HomeTaskType[],
   showTaskMode: null as null | HomeTaskType,
   isAddTaskMode: false,
+  isAddSubjectMode: false,
 }
 
 export const reducer = (state: StateType, action: ActionsType): StateType => {
@@ -60,6 +61,8 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
       return { ...state, homeTasks: [...state.homeTasks, { ...action.task, date: new Date(action.task.date) }] }
     case 'SET_IS_ADD_TASK_MODE':
       return { ...state, isAddTaskMode: action.flag }
+    case 'SET_IS_ADD_SUBJECT_MODE':
+      return { ...state, isAddSubjectMode: action.flag }
     case 'SET_TASK_MODE':
       return { ...state, showTaskMode: action.index !== null ? { ...state.homeTasks[action.index] } : null }
     case 'RESET_SCHEDULE_COPY':
@@ -89,6 +92,7 @@ export const actions = {
   setShowTaskMode: (index: number | null) => ({ type: 'SET_TASK_MODE', index } as const),
   setIsAddTaskMode: (flag: boolean) => ({ type: 'SET_IS_ADD_TASK_MODE', flag } as const),
   resetScheduleCopy: () => ({ type: 'RESET_SCHEDULE_COPY' } as const),
+  setIsAddSubjectMode: (flag: boolean) => ({ type: 'SET_IS_ADD_SUBJECT_MODE', flag } as const),
 }
 export const allSubjects = [
   { subject: 'Алгебра', subSubject: 'Алгебре', icon: '/algebra.png' as string },

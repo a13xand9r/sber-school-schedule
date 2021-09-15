@@ -1,5 +1,18 @@
 {
   "intents": {
+    "/Добавить предмет": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "Добавь предмет"
+        },
+        {
+          "type": "phrase",
+          "rule": "Добавить"
+        }
+      ],
+      "variables": {}
+    },
     "/Новое дз": {
       "matchers": [
         {

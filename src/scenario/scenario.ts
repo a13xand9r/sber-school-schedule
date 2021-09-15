@@ -1,7 +1,7 @@
 import { SmartAppBrainRecognizer } from '@salutejs/recognizer-smartapp-brain'
 import { createIntents, createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
 import { SaluteMemoryStorage } from '@salutejs/storage-adapter-memory'
-import { addHomeTaskHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, saveScheduleHandler, scheduleNavigationHandler } from './handlers'
+import { addHomeTaskHandler, addSubjectHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, saveScheduleHandler, scheduleNavigationHandler } from './handlers'
 import model from '../intents.json'
 
 const storage = new SaluteMemoryStorage()
@@ -34,6 +34,10 @@ const userScenario = createUserScenario({
     handle: ({ res }) => {
       res.setPronounceText('Для удаления предмета нужно перейти в режим редактирования')
     }
+  },
+  addSubject:{
+    match: match(intent('/Добавить предмет', {confidence: 0.2}), (req) => req.state?.isEditMode as boolean),
+    handle: addSubjectHandler
   },
   setEditMode:{
     match: match(intent('/Режим редактирования', {confidence: 0.2}), (req) => !req.state?.isEditMode as boolean),
