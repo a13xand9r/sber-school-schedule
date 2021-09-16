@@ -9,48 +9,28 @@ import style from '../styles/index.module.css'
 import { postSchedule, requestHomeTasks, requestSchedule } from '../src/client/apiRequests'
 import { CustomHeader } from '../src/client/components/CustomHeader'
 import { HomeTasks } from '../src/client/components/HomeTasks'
+import { initAssistant, initializeAssistant } from '../src/client/assistant'
 
 export const CharacterContext = React.createContext({character: 'sber', surface: 'mobile'})
 
-const initializeAssistant = (getState: () => AssistantState) => {
-  if (process.env.NODE_ENV === 'development') {
-    return createSmartappDebugger({
-      token: process.env.NEXT_PUBLIC_ASSISTANT_TOKEN ?? '',
-      initPhrase: 'Запусти школьное расписание',
-      getState
-    })
-  }
-  return createAssistant({ getState })
-}
+
 const tabs = ['Расписание', 'Домашка'] as const
 
 export default function Home() {
   const [state, dispatch] = useReducer(reducer, initialState)
 
+  const stateRef = useRef<StateType>(state)
+  stateRef.current = state
   const saveData = useCallback(() => {
-    postSchedule(state.userId as string, state.schedule)
-    // dispatch(actions.setSchedule(newSchedule))
+    postSchedule(stateRef.current.userId as string, stateRef.current.schedule)
     dispatch(actions.setEditMode(false))
-  }, [state.userId, state.schedule])
+  }, [stateRef.current.userId, stateRef.current.schedule])
 
   const assistantRef = useRef<ReturnType<typeof createAssistant>>()
   const assistantStateRef = useRef<AssistantState>({} as AssistantState)
   useEffect(() => {
-    assistantRef.current = initializeAssistant(() => {
-      console.log('assistantState', assistantStateRef.current)
-      return assistantStateRef.current
-    })
-    assistantRef.current.on('data', ({ smart_app_data, type, character }: any) => {
-      if (smart_app_data) {
-        dispatch(smart_app_data)
-        if (smart_app_data.type === 'SAVE_SCHEDULE') saveData()
-      }
-      if (type === 'character') dispatch(actions.setCharacter(character.id))
-    })
-    const detectDeviceCallback = () => (
-      window.navigator.userAgent.toLowerCase().includes('sberbox') ? 'sberbox' : 'mobile'
-    )
-    dispatch(actions.setSurface(detectDeviceCallback()))
+    assistantRef.current = initializeAssistant(() => assistantStateRef.current)
+    initAssistant(dispatch, assistantRef.current as ReturnType<typeof createAssistant>, assistantStateRef.current, saveData)
   }, [])
   useEffect(() => {
     const getSchedule = async () => {
