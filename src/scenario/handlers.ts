@@ -20,8 +20,6 @@ export const runAppHandler: SaluteHandler = ({ req, res }) => {
 }
 
 export const changeTabPageHandler: SaluteHandler = ({req, res}) => {
-  console.log(req.serverAction?.payload)
-  console.log(req.state)
   //@ts-ignore
   if(req.serverAction?.payload.tabPage === 'Расписание'){
     res.appendSuggestions([getRandomFromArray(buttons.schedulePage)])
@@ -35,7 +33,6 @@ export const changeTabPageHandler: SaluteHandler = ({req, res}) => {
 }
 
 export const changeIsEditModeHandler: SaluteHandler = ({req, res}) => {
-  console.log(req.serverAction?.payload)
   //@ts-ignore
   if(req.serverAction?.payload.isEditMode === true){
     res.appendSuggestions([getRandomFromArray(buttons.schedulePageEditMode)])
@@ -114,7 +111,6 @@ export const homeTaskDoneHandler: SaluteHandler = ({req, res}) => {
 }
 
 export const addHomeTaskTextHandler: SaluteHandler = ({req, res}) => {
-  console.log(req.message.tokenized_elements_list)
   const text = req.message.tokenized_elements_list.map(word => word.text).join(' ')
   res.appendCommand({
     type: 'SET_HOME_TASK_TEXT_FORM',

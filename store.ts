@@ -65,8 +65,7 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
     case 'SET_IS_ADD_SUBJECT_MODE':
       return { ...state, isAddSubjectMode: action.flag }
     case 'SET_TASK_MODE':
-
-      return { ...state, showTaskMode: action.id !== null ? { ...state.homeTasks.find(item => item.id === action.id) as HomeTaskType } : null }
+      return { ...state, showTaskMode: action.id ? { ...state.homeTasks.find(item => item.id === action.id) as HomeTaskType } : null }
     case 'START_CHANGING_SUBJECT':
       return { ...state, changingSubject: {...state.schedule[state.day]?.find(item => item.id === action.id)} as SubjectType }
     case 'FINISH_CHANGING_SUBJECT':

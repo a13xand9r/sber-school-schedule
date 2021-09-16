@@ -18,7 +18,7 @@ export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, home
       className={style.header}
       back={flag}
       title={
-        homeTask ? `Д/З на ${homeTask.date.getDate()} ${monthsArray[homeTask.date.getMonth() - 1]}, ${homeTask.date.getFullYear()} (${daysArray[homeTask.date.getDay()][0].toLocaleLowerCase()})` :
+        homeTask ? `Д/З на ${homeTask.date?.getDate()} ${monthsArray[homeTask.date?.getMonth() - 1]}, ${homeTask.date?.getFullYear()} (${daysArray[homeTask.date?.getDay()][0].toLocaleLowerCase()})` :
           'Школьное распиcание'}
       subtitle={homeTask ? `по ${homeTask.subSubject.toLowerCase()}` : undefined}
       onBackClick={onBackHandler}
@@ -67,7 +67,7 @@ type PropsType = {
   tab: TabsType
   homeTask: HomeTaskType | null
   isAddTaskMode: boolean
-  setShowTaskMode: (index: string | null) => void
+  setShowTaskMode: (id: string | null) => void
   setIsAddTaskMode: (flag: boolean) => void
 }
 

@@ -40,7 +40,6 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
   }, [])
 
   const onSubjectClick = (id: string) => {
-    console.log('onClick', id)
     dispatch(actions.startChangingSubject(id))
     dispatch(actions.setIsAddSubjectMode(true))
   }
