@@ -22,9 +22,13 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
       setSubjectInput(changingSubject.subject)
       setTeacherInput(changingSubject.teacher ?? '')
       setCabinetInput(changingSubject.cabinet ?? '')
+      setSelectedIcon(changingSubject.icon ?? '')
     }
   }, [changingSubject])
 
+
+  const changingSubjectRef = useRef<any>()
+  changingSubjectRef.current = changingSubject
   const formDataRef = useRef<any>()
   formDataRef.current = {
     cabinetInput,
@@ -34,8 +38,8 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
   }
   const onFormSubmit = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
-    if (selectedSubject && selectedIcon) {
-      if (!changingSubject) {
+    if (formDataRef.current.selectedSubject && formDataRef.current.selectedIcon) {
+      if (!changingSubjectRef.current) {
         dispatch(actions.addSubject({
           cabinet: formDataRef.current.cabinetInput,
           teacher: formDataRef.current.teacherInput,
@@ -49,7 +53,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
           teacher: formDataRef.current.teacherInput,
           subject: formDataRef.current.selectedSubject,
           icon: formDataRef.current.selectedIcon,
-          id: changingSubject.id
+          id: changingSubjectRef.current.id
         }))
       }
       finishAdding()
