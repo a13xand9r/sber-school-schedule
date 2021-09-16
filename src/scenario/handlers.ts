@@ -107,7 +107,8 @@ export const getDailyScheduleHandler: SaluteHandler = async ({ req, res }) => {
 }
 
 export const homeTaskDoneHandler: SaluteHandler = ({req, res}) => {
-  res.setPronounceText('Домашнее задание выполнено. Молодец!')
+  const text = ['Домашнее задание выполнено. Молодец!', 'Готово!', 'Молодец!', 'Выполнено!', 'Сделано!']
+  res.setPronounceText(getRandomFromArray(text))
 }
 
 export const addHomeTaskTextHandler: SaluteHandler = ({req, res}) => {
