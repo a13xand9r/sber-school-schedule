@@ -72,44 +72,6 @@
       ],
       "variables": {}
     },
-    "/Новое дз": {
-      "matchers": [
-        {
-          "type": "phrase",
-          "rule": "задание по @subject на @duckling.date"
-        },
-        {
-          "type": "phrase",
-          "rule": "новое домашнее задание"
-        },
-        {
-          "type": "phrase",
-          "rule": "добавь домашнее задание"
-        },
-        {
-          "type": "phrase",
-          "rule": "запиши домашнее задание"
-        },
-        {
-          "type": "phrase",
-          "rule": "домашнее задание на @duckling.date по @subject"
-        },
-        {
-          "type": "phrase",
-          "rule": "добавь домашнее задание по @subject"
-        }
-      ],
-      "variables": {
-        "subject": {
-          "required": true,
-          "questions": []
-        },
-        "date": {
-          "required": true,
-          "questions": []
-        }
-      }
-    },
     "/sum": {
       "matchers": [
         {
@@ -165,7 +127,7 @@
         }
       }
     },
-    "/Сохранить дз": {
+    "/Добавить": {
       "matchers": [
         {
           "type": "phrase",
@@ -178,15 +140,39 @@
       ],
       "variables": {}
     },
-    "/Новое дз/Текст дз": {
+    "/Новое дз": {
       "matchers": [
         {
-          "type": "pattern",
-          "rule": "@taskText"
+          "type": "phrase",
+          "rule": "задание по @subject на @duckling.date"
+        },
+        {
+          "type": "phrase",
+          "rule": "новое домашнее задание"
+        },
+        {
+          "type": "phrase",
+          "rule": "добавь домашнее задание"
+        },
+        {
+          "type": "phrase",
+          "rule": "запиши домашнее задание"
+        },
+        {
+          "type": "phrase",
+          "rule": "домашнее задание на @duckling.date по @subject"
+        },
+        {
+          "type": "phrase",
+          "rule": "добавь домашнее задание по @subject"
         }
       ],
       "variables": {
-        "text": {
+        "subject": {
+          "required": true,
+          "questions": []
+        },
+        "date": {
           "required": true,
           "questions": []
         }

@@ -1,8 +1,9 @@
 import { SmartAppBrainRecognizer } from '@salutejs/recognizer-smartapp-brain'
 import { createIntents, createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
 import { SaluteMemoryStorage } from '@salutejs/storage-adapter-memory'
-import { addHomeTaskHandler, addHomeTaskTextHandler, addSubjectHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, saveHomeTaskHandler, saveScheduleHandler, scheduleNavigationHandler } from './handlers'
+import { addHomeTaskHandler, addHomeTaskTextHandler, addSubjectHandler, changeIsEditModeHandler, changeTabPageHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, saveHomeTaskHandler, saveScheduleHandler, scheduleNavigationHandler } from './handlers'
 import model from '../intents.json'
+import { buttons, getRandomFromArray } from '../utils/utils'
 
 const storage = new SaluteMemoryStorage()
 const intents = createIntents(model.intents)
@@ -16,6 +17,22 @@ const userScenario = createUserScenario({
   homeTaskDone: {
     match: action('task_done'),
     handle: homeTaskDoneHandler
+  },
+  changeTabPage: {
+    match: action('CHANGE_TAB_PAGE'),
+    handle: changeTabPageHandler
+  },
+  addSubjectMode: {
+    match: match(intent('/Добавить'), req => req.state?.isAddSubjectMode as boolean ),
+    handle: ({res}) => {
+      res.appendCommand({
+        type: 'FINISH_ADDING'
+      })
+    }
+  },
+  changeIsEditMode: {
+    match: action('CHANGE_IS_EDIT_MODE'),
+    handle: changeIsEditModeHandler
   },
   homeTasksNavigation: {
     match: intent('/Дз', { confidence: 0.2 }),
@@ -36,7 +53,7 @@ const userScenario = createUserScenario({
     }
   },
   saveHomeTask: {
-    match: match(intent('/Сохранить дз', { confidence: 0.2 }), (req) => req.state?.isAddTaskMode as boolean),
+    match: match(intent('/Добавить', { confidence: 0.2 }), (req) => req.state?.isAddTaskMode as boolean),
     handle: saveHomeTaskHandler
   },
   addSubject: {

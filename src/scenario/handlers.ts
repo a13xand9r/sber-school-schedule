@@ -3,7 +3,7 @@ import { DayType } from './../../store';
 import { SaluteHandler } from '@salutejs/scenario'
 import { getSchedule } from './dataBase'
 import * as dictionary from './system.i18n'
-import { getRandomFromArray } from '../utils/utils';
+import { buttons, getRandomFromArray } from '../utils/utils';
 
 export const runAppHandler: SaluteHandler = ({ req, res }) => {
   res.appendCommand({
@@ -14,8 +14,31 @@ export const runAppHandler: SaluteHandler = ({ req, res }) => {
     res.setPronounceText('Здесь можно просматривать свое расписание и домашние задания, редактировать их можно в приложении Салют или на СберПортале.')
     res.appendBubble('Здесь можно просматривать свое расписание и домашние задания, редактировать их можно в приложении Салют или на СберПортале.')
   } else{
-    res.setPronounceText('Здесь можно добавлять просматривать и редактировать свое расписание. А также добавлять домашние задания.')
+    res.setPronounceText('Здесь можно добавлять, просматривать и редактировать свое расписание. А также добавлять домашние задания.')
     res.appendBubble('Здесь можно добавлять, просматривать и редактировать свое расписание. А также добавлять домашние задания.')
+  }
+}
+
+export const changeTabPageHandler: SaluteHandler = ({req, res}) => {
+  //@ts-ignore
+  if(req.serverAction?.payload.tabPage === 'Расписание'){
+    res.appendSuggestions([getRandomFromArray(buttons.schedulePage)])
+  } else{
+    if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
+      res.appendSuggestions([getRandomFromArray(buttons.generalSberBox)])
+    } else{
+      res.appendSuggestions([getRandomFromArray(buttons.general)])
+    }
+  }
+}
+
+export const changeIsEditModeHandler: SaluteHandler = ({req, res}) => {
+  console.log(req.serverAction?.payload)
+  //@ts-ignore
+  if(req.serverAction?.payload.isEditMode === true){
+    res.appendSuggestions([getRandomFromArray(buttons.schedulePageEditMode)])
+  } else {
+    res.appendSuggestions([getRandomFromArray(buttons.schedulePage)])
   }
 }
 
@@ -23,6 +46,7 @@ export const noMatchHandler: SaluteHandler = ({ req, res }) => {
   const keyset = req.i18n(dictionary)
   res.appendBubble(keyset('404'))
   res.setPronounceText('Хм, не понимаю о чем вы')
+  res.appendSuggestions([getRandomFromArray(buttons.general)])
 }
 
 export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
@@ -88,11 +112,6 @@ export const homeTaskDoneHandler: SaluteHandler = ({req, res}) => {
 }
 
 export const addHomeTaskTextHandler: SaluteHandler = ({req, res}) => {
-  // console.log(req.message.original_text)
-  // console.log(req.message.human_normalized_text_with_anaphora)
-  // console.log(req.message.normalized_text)
-  // console.log(req.message.human_normalized_text)
-  // console.log(req.currentState?.path)
   console.log(req.message.tokenized_elements_list)
   const text = req.message.tokenized_elements_list.map(word => word.text).join(' ')
   res.appendCommand({
@@ -102,6 +121,7 @@ export const addHomeTaskTextHandler: SaluteHandler = ({req, res}) => {
   const answerArray = ['Сохранить?', 'Добавить?']
   res.setPronounceText(getRandomFromArray(answerArray))
   res.setAutoListening(true)
+  res.appendSuggestions(['Да', 'Нет'])
 }
 
 export const homeTasksNavigationHandler: SaluteHandler = ({req, res}) => {
@@ -136,8 +156,9 @@ export const saveHomeTaskHandler: SaluteHandler = ({ res }) => {
   res.appendCommand({
     type: 'SAVE_HOME_TASK_FROM',
   })
-  const answerArray = ['Готово', 'Сохранено', 'Добавлено']
-  res.setPronounceText(getRandomFromArray(answerArray))
+  // const answerArray = ['Готово', 'Сохранено', 'Добавлено']
+  // res.setPronounceText(getRandomFromArray(answerArray))
+  res.appendSuggestions([getRandomFromArray(buttons.general)])
 }
 
 export const addSubjectHandler: SaluteHandler = ({ req, res }) => {

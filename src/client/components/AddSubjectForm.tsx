@@ -1,6 +1,6 @@
 import { IconHouseSbol, IconPersone } from '@sberdevices/plasma-icons';
 import { Button, TextField } from '@sberdevices/plasma-ui'
-import React, { Dispatch, FC, FormEvent, useCallback, useEffect, useState } from 'react'
+import React, { Dispatch, FC, FormEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { actions, ActionsType, SubjectConstType, SubjectWithIconsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import { SubjectSelectButtonMemo } from './SubjectsSelectButton'
@@ -15,10 +15,33 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
   const [teacherInput, setTeacherInput] = useState<string>('')
   const [cabinetInput, setCabinetInput] = useState<string>('')
   const [isError, setIsError] = useState(false)
+
+  const formDataRef = useRef<any>()
+  formDataRef.current = {
+    cabinetInput,
+    teacherInput,
+    selectedSubject,
+    selectedIcon
+  }
+  const onFormSubmit = (e?: FormEvent<HTMLFormElement>) => {
+    e?.preventDefault()
+    if (selectedSubject && selectedIcon) {
+      dispatch(actions.addSubject({
+        cabinet: formDataRef.current.cabinetInput,
+        teacher: formDataRef.current.teacherInput,
+        subject: formDataRef.current.selectedSubject,
+        icon: formDataRef.current.selectedIcon,
+        id: Date.now().toString()
+      }))
+      finishAdding()
+    } else setIsError(true)
+  }
+
   useEffect(() => {
     assistant.on('data', ({ smart_app_data }: any) => {
       if (smart_app_data) {
         if (smart_app_data.type === 'ADD_SUBJECT_FORM') setSubjectInput(smart_app_data.subject)
+        if (smart_app_data.type === 'FINISH_ADDING') onFormSubmit()
       }
     })
   }, [])
@@ -29,19 +52,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
       // window.scroll(0, 160)
     } else window.scrollTo({top: 0, behavior: 'smooth'})
   }, [isSubjectListMode])
-  const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (selectedSubject && selectedIcon) {
-      dispatch(actions.addSubject({
-        cabinet: cabinetInput,
-        teacher: teacherInput,
-        subject: selectedSubject,
-        icon: selectedIcon,
-        id: Date.now().toString()
-      }))
-      finishAdding()
-    } else setIsError(true)
-  }
+
   const onSubjectClick = useCallback((subject: SubjectWithIconsType) => {
     setSubjectInput(subject.subject)
     setIsSubjectListMode(false)

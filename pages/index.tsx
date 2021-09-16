@@ -13,7 +13,6 @@ import { initAssistant, initializeAssistant } from '../src/client/assistant'
 
 export const CharacterContext = React.createContext({character: 'sber', surface: 'mobile'})
 
-
 const tabs = ['Расписание', 'Домашка'] as const
 
 export default function Home() {
@@ -28,6 +27,14 @@ export default function Home() {
 
   const assistantRef = useRef<ReturnType<typeof createAssistant>>()
   const assistantStateRef = useRef<AssistantState>({} as AssistantState)
+  assistantStateRef.current = {
+    isEditMode: state.isEditMode,
+    tabPage: state.tabPage,
+    day: state.day,
+    schedule: state.schedule,
+    isAddTaskMode: state.isAddTaskMode,
+    isAddSubjectMode: state.isAddSubjectMode
+  }
   useEffect(() => {
     assistantRef.current = initializeAssistant(() => assistantStateRef.current)
     initAssistant(dispatch, assistantRef.current as ReturnType<typeof createAssistant>, assistantStateRef.current, saveData)
@@ -52,15 +59,14 @@ export default function Home() {
       initialRequests()
     }
   }, [state.userId])
+
   useEffect(() => {
-    assistantStateRef.current = {
-      isEditMode: state.isEditMode,
-      tabPage: state.tabPage,
-      day: state.day,
-      schedule: state.schedule,
-      isAddTaskMode: state.isAddTaskMode
-    }
-  }, [state])
+    assistantRef.current?.sendAction({ type: 'CHANGE_TAB_PAGE', payload: {tabPage: state.tabPage} })
+  }, [state.tabPage])
+  useEffect(() => {
+    assistantRef.current?.sendAction({ type: 'CHANGE_IS_EDIT_MODE', payload: {isEditMode: state.isEditMode} })
+  }, [state.isEditMode])
+
   const selectTab = () => {
     switch (state.tabPage) {
       case 'Расписание':
@@ -146,4 +152,5 @@ export interface AssistantState extends AssistantAppState {
   day: DayType
   schedule: ScheduleType
   isAddTaskMode: boolean
+  isAddSubjectMode: boolean
 }
