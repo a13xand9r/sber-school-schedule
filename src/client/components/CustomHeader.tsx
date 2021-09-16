@@ -10,8 +10,6 @@ export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, home
   const flag: boolean = !!homeTask ? true : false
   const {surface} = useContext(CharacterContext)
   const onBackHandler = () => {
-    // setEditMode(false)
-    // setIsAddTaskMode(false)
     setShowTaskMode(null)
   }
   return (
@@ -69,7 +67,7 @@ type PropsType = {
   tab: TabsType
   homeTask: HomeTaskType | null
   isAddTaskMode: boolean
-  setShowTaskMode: (index: number | null) => void
+  setShowTaskMode: (index: string | null) => void
   setIsAddTaskMode: (flag: boolean) => void
 }
 

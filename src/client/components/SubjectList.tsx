@@ -13,7 +13,7 @@ export const SubjectList: FC<PropsType> = ({ list, isEditMode, deleteItem, onCli
       /> :
       <div className={style.subjectList}>
         {list.map((subj, i) => <SubjectItemMemo
-          key={i}
+          key={subj.id}
           tab='Расписание'
           onClick={onClick}
           icon={subj.icon}

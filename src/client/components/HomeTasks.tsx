@@ -10,8 +10,8 @@ import { deleteHomeTask } from '../apiRequests'
 import { createAssistant } from '@sberdevices/assistant-client'
 
 export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, isAddTaskMode, userId, assistant }) => {
-  const onTaskClickHandler = useCallback((index: number) => {
-    dispatch(actions.setShowTaskMode(index))
+  const onTaskClickHandler = useCallback((id: string) => {
+    dispatch(actions.setShowTaskMode(id))
   }, [])
   const onDeleteTaskHandler = useCallback(() => {
     deleteHomeTask(userId as string, showTaskMode?.id as string)
@@ -47,7 +47,8 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
         </> :
           homeTasks.map((task, i) =>
             <SubjectItemMemo
-              key={i}
+              key={task.id}
+              id={task.id}
               tab='Домашка'
               date={task.date}
               icon={task.icon}

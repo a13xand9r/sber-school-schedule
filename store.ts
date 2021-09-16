@@ -65,7 +65,8 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
     case 'SET_IS_ADD_SUBJECT_MODE':
       return { ...state, isAddSubjectMode: action.flag }
     case 'SET_TASK_MODE':
-      return { ...state, showTaskMode: action.index !== null ? { ...state.homeTasks[action.index] } : null }
+
+      return { ...state, showTaskMode: action.id !== null ? { ...state.homeTasks.find(item => item.id === action.id) as HomeTaskType } : null }
     case 'START_CHANGING_SUBJECT':
       return { ...state, changingSubject: {...state.schedule[state.day]?.find(item => item.id === action.id)} as SubjectType }
     case 'FINISH_CHANGING_SUBJECT':
@@ -104,7 +105,7 @@ export const actions = {
   setSurface: (surface: SurfaceType) => ({ type: 'SET_SURFACE', surface } as const),
   setHomeTasks: (tasks: HomeTaskType[]) => ({ type: 'SET_HOME_TASKS', tasks } as const),
   addHomeTask: (task: HomeTaskType) => ({ type: 'ADD_HOME_TASK', task } as const),
-  setShowTaskMode: (index: number | null) => ({ type: 'SET_TASK_MODE', index } as const),
+  setShowTaskMode: (id: string | null) => ({ type: 'SET_TASK_MODE', id } as const),
   setIsAddTaskMode: (flag: boolean) => ({ type: 'SET_IS_ADD_TASK_MODE', flag } as const),
   resetScheduleCopy: () => ({ type: 'RESET_SCHEDULE_COPY' } as const),
   setIsAddSubjectMode: (flag: boolean) => ({ type: 'SET_IS_ADD_SUBJECT_MODE', flag } as const),

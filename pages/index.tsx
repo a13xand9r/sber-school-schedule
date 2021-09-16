@@ -109,7 +109,7 @@ export default function Home() {
           tab={state.tabPage}
           setIsAddTaskMode={(flag: boolean) => dispatch(actions.setIsAddTaskMode(flag))}
           isAddTaskMode={state.isAddTaskMode}
-          setShowTaskMode={(index: number | null) => dispatch(actions.setShowTaskMode(index))}
+          setShowTaskMode={(id: string | null) => dispatch(actions.setShowTaskMode(id))}
         />
         <div className={style.appContainer}>
           <Tabs
