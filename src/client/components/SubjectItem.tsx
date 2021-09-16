@@ -34,7 +34,7 @@ const ItemWrapper = styled.div`
 
 export const SubjectItem: FC<PropsType> = (props) => {
   const { icon, subject, tab, cabinet, isEditMode, teacher, deleteItem, index, date, onClick, searchText, id } = props
-  return <ItemWrapper tabIndex={1} onClick={() => !!onClick ? onClick(index) : null}>
+  return <ItemWrapper tabIndex={1} onClick={() => !!onClick ? onClick(id) : null}>
     <Image priority={true} loading='eager' src={icon} alt='' layout='fixed' width={35} height={35} />
     <div className={style.subjectText}>
       <Body1>{subject}</Body1>
@@ -61,10 +61,10 @@ type PropsType = {
   subject: SubjectConstType
   isEditMode?: boolean
   deleteItem?: (id: string) => void
-  id?: string
+  id: string
   index: number
   date?: Date
-  onClick?: (index: number) => void
+  onClick?: (id: string) => void
   searchText?: string
 }
 type StyledProps = {

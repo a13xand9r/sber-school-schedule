@@ -34,6 +34,12 @@ const userScenario = createUserScenario({
     match: action('CHANGE_IS_EDIT_MODE'),
     handle: changeIsEditModeHandler
   },
+  changeAddSubjectMode: {
+    match: action('CHANGE_ADD_SUBJECT_MODE'),
+    handle: ({req, res}) => {
+      res.appendSuggestions(['Соранить'])
+    }
+  },
   homeTasksNavigation: {
     match: intent('/Дз', { confidence: 0.2 }),
     handle: homeTasksNavigationHandler

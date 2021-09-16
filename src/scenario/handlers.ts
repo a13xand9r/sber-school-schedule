@@ -20,6 +20,7 @@ export const runAppHandler: SaluteHandler = ({ req, res }) => {
 }
 
 export const changeTabPageHandler: SaluteHandler = ({req, res}) => {
+  console.log(req.serverAction?.payload)
   //@ts-ignore
   if(req.serverAction?.payload.tabPage === 'Расписание'){
     res.appendSuggestions([getRandomFromArray(buttons.schedulePage)])
@@ -44,8 +45,7 @@ export const changeIsEditModeHandler: SaluteHandler = ({req, res}) => {
 
 export const noMatchHandler: SaluteHandler = ({ req, res }) => {
   const keyset = req.i18n(dictionary)
-  res.appendBubble(keyset('404'))
-  res.setPronounceText('Хм, не понимаю о чем вы')
+  res.setPronounceText(keyset('404'))
   res.appendSuggestions([getRandomFromArray(buttons.general)])
 }
 

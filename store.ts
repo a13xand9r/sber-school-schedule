@@ -22,6 +22,7 @@ export const initialState = {
   showTaskMode: null as null | HomeTaskType,
   isAddTaskMode: false,
   isAddSubjectMode: false,
+  changingSubject: null as SubjectType | null
 }
 
 export const reducer = (state: StateType, action: ActionsType): StateType => {
@@ -65,10 +66,23 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
       return { ...state, isAddSubjectMode: action.flag }
     case 'SET_TASK_MODE':
       return { ...state, showTaskMode: action.index !== null ? { ...state.homeTasks[action.index] } : null }
+    case 'START_CHANGING_SUBJECT':
+      return { ...state, changingSubject: {...state.schedule[state.day]?.find(item => item.id === action.id)} as SubjectType }
+    case 'CHANGE_SUBJECT':
+      const newSchedule = { ...state.schedule }
+      newSchedule[state.day] = state.schedule[state.day]?.map(item => {
+        if (item.id === action.subject.id) return action.subject
+        else return item
+      }) as SubjectType[]
+      return {
+        ...state,
+        changingSubject: null,
+        schedule: newSchedule
+      }
     case 'RESET_SCHEDULE_COPY':
       return {
         ...state,
-        schedule:  _.cloneDeep(state.scheduleCopy ? state.scheduleCopy : state.schedule),
+        schedule: _.cloneDeep(state.scheduleCopy ? state.scheduleCopy : state.schedule),
         scheduleCopy: null
       }
     default: return state
@@ -93,6 +107,8 @@ export const actions = {
   setIsAddTaskMode: (flag: boolean) => ({ type: 'SET_IS_ADD_TASK_MODE', flag } as const),
   resetScheduleCopy: () => ({ type: 'RESET_SCHEDULE_COPY' } as const),
   setIsAddSubjectMode: (flag: boolean) => ({ type: 'SET_IS_ADD_SUBJECT_MODE', flag } as const),
+  startChangingSubject: (id: string) => ({ type: 'START_CHANGING_SUBJECT', id } as const),
+  changeSubject: (subject: SubjectType) => ({ type: 'CHANGE_SUBJECT', subject } as const),
 }
 export const allSubjects = [
   { subject: 'Алгебра', subSubject: 'Алгебре', icon: '/algebra.png' as string },

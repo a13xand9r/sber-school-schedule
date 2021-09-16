@@ -80,6 +80,7 @@ export default function Home() {
           dispatch={dispatch}
           schedule={state.schedule}
           userId={state.userId}
+          changingSubject={state.changingSubject}
         />
       case 'Домашка': return <HomeTasks
         userId={state.userId}

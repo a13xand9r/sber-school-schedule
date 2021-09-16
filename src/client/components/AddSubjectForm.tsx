@@ -1,13 +1,13 @@
 import { IconHouseSbol, IconPersone } from '@sberdevices/plasma-icons';
 import { Button, TextField } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, FormEvent, useCallback, useEffect, useRef, useState } from 'react'
-import { actions, ActionsType, SubjectConstType, SubjectWithIconsType } from '../../../store'
+import { actions, ActionsType, SubjectConstType, SubjectType, SubjectWithIconsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import { SubjectSelectButtonMemo } from './SubjectsSelectButton'
 import { SubjectListModeMemo } from './SubjectListMode'
 import { createAssistant } from '@sberdevices/assistant-client';
 
-export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistant }) => {
+export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistant, changingSubject }) => {
   const [isSubjectListMode, setIsSubjectListMode] = useState(false)
   const [selectedSubject, setSelectedSubject] = useState<SubjectConstType | null>(null)
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null)
@@ -15,6 +15,15 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
   const [teacherInput, setTeacherInput] = useState<string>('')
   const [cabinetInput, setCabinetInput] = useState<string>('')
   const [isError, setIsError] = useState(false)
+
+  useEffect(() => {
+    if (changingSubject){
+      setSelectedSubject(changingSubject.subject)
+      setSubjectInput(changingSubject.subject)
+      setTeacherInput(changingSubject.teacher ?? '')
+      setCabinetInput(changingSubject.cabinet ?? '')
+    }
+  }, [changingSubject])
 
   const formDataRef = useRef<any>()
   formDataRef.current = {
@@ -26,13 +35,23 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
   const onFormSubmit = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
     if (selectedSubject && selectedIcon) {
-      dispatch(actions.addSubject({
-        cabinet: formDataRef.current.cabinetInput,
-        teacher: formDataRef.current.teacherInput,
-        subject: formDataRef.current.selectedSubject,
-        icon: formDataRef.current.selectedIcon,
-        id: Date.now().toString()
-      }))
+      if (!changingSubject) {
+        dispatch(actions.addSubject({
+          cabinet: formDataRef.current.cabinetInput,
+          teacher: formDataRef.current.teacherInput,
+          subject: formDataRef.current.selectedSubject,
+          icon: formDataRef.current.selectedIcon,
+          id: Date.now().toString()
+        }))
+      } else{
+        dispatch(actions.changeSubject({
+          cabinet: formDataRef.current.cabinetInput,
+          teacher: formDataRef.current.teacherInput,
+          subject: formDataRef.current.selectedSubject,
+          icon: formDataRef.current.selectedIcon,
+          id: changingSubject.id
+        }))
+      }
       finishAdding()
     } else setIsError(true)
   }
@@ -96,7 +115,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
           onChange={c => setCabinetInput(c.target.value)}
         />
         <div className={style.addButton}>
-          <Button text='Добавить' />
+          <Button text={changingSubject ? 'Изменить' : 'Добавить'} />
         </div>
       </form> :
       <SubjectListModeMemo onSubjectClick={onSubjectClick} query={subjectInput} />
@@ -107,5 +126,6 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
 type PropsType = {
   dispatch: Dispatch<ActionsType>
   finishAdding: () => void
+  changingSubject: SubjectType | null
   assistant: ReturnType<typeof createAssistant>
 }

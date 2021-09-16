@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 import { EmptyList } from './EmptyList'
 import { SubjectItemMemo } from './SubjectItem'
 
-export const SubjectList: FC<PropsType> = ({ list, isEditMode, deleteItem }) => {
+export const SubjectList: FC<PropsType> = ({ list, isEditMode, deleteItem, onClick }) => {
   return <>
     {(!list || !list.length) ?
       <EmptyList
@@ -15,6 +15,7 @@ export const SubjectList: FC<PropsType> = ({ list, isEditMode, deleteItem }) => 
         {list.map((subj, i) => <SubjectItemMemo
           key={i}
           tab='Расписание'
+          onClick={onClick}
           icon={subj.icon}
           cabinet={subj.cabinet}
           teacher={subj.teacher}
@@ -32,6 +33,7 @@ export const SubjectList: FC<PropsType> = ({ list, isEditMode, deleteItem }) => 
 
 type PropsType = {
   list: SubjectType[] | null
+  onClick?: (id: string) => void
   isEditMode: boolean
   deleteItem: (id: string) => void
 }
