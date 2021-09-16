@@ -1,7 +1,7 @@
 import { IconHouseSbol, IconPersone } from '@sberdevices/plasma-icons';
 import { Button, TextField } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, FormEvent, useCallback, useEffect, useRef, useState } from 'react'
-import { actions, ActionsType, SubjectConstType, SubjectType, SubjectWithIconsType } from '../../../store'
+import { actions, ActionsType, allSubjects, SubjectConstType, SubjectType, SubjectWithIconsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import { SubjectSelectButtonMemo } from './SubjectsSelectButton'
 import { SubjectListModeMemo } from './SubjectListMode'
@@ -38,6 +38,10 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
   }
   const onFormSubmit = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
+    console.log(selectedSubject)
+    console.log(selectedIcon)
+    console.log(formDataRef.current.selectedSubject)
+    console.log(formDataRef.current.selectedIcon)
     if (formDataRef.current.selectedSubject && formDataRef.current.selectedIcon) {
       if (!changingSubjectRef.current) {
         dispatch(actions.addSubject({
@@ -63,7 +67,11 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
   useEffect(() => {
     assistant.on('data', ({ smart_app_data }: any) => {
       if (smart_app_data) {
-        if (smart_app_data.type === 'ADD_SUBJECT_FORM') setSubjectInput(smart_app_data.subject)
+        if (smart_app_data.type === 'ADD_SUBJECT_FORM') {
+          setSubjectInput(smart_app_data.subject)
+          setSelectedSubject(smart_app_data.subject)
+          setSelectedIcon(allSubjects.filter(item => item.subject === smart_app_data.subject)[0].icon)
+        }
         if (smart_app_data.type === 'FINISH_ADDING') onFormSubmit()
       }
     })
