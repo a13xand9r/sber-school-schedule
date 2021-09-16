@@ -37,7 +37,10 @@ const userScenario = createUserScenario({
   changeAddSubjectMode: {
     match: action('CHANGE_ADD_SUBJECT_MODE'),
     handle: ({req, res}) => {
-      res.appendSuggestions(['Соранить'])
+      //@ts-ignore
+      const {isChangingSubject, isAddSubjectMode} = req.serverAction?.payload
+      if (isAddSubjectMode)
+        res.appendSuggestions([`${isChangingSubject ? 'Изменить' :'Добавить'}`])
     }
   },
   homeTasksNavigation: {

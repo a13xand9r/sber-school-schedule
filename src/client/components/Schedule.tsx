@@ -15,9 +15,6 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
     dispatch(actions.setIsAddSubjectMode(false))
   }, [day])
   useEffect(() => {
-    !isEditMode && dispatch(actions.setIsAddSubjectMode(false))
-  }, [isEditMode])
-  useEffect(() => {
     return () => {
       dispatch(actions.setEditMode(false))
     }
@@ -30,11 +27,14 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
   useEffect(() => {
     if (!isEditMode) {
       setIsButtonDisabled(true)
+      dispatch(actions.finishChangingSubject())
+      dispatch(actions.setIsAddSubjectMode(false))
     }
   }, [isEditMode])
   useEffect(() => {
-    assistant.sendAction({type: 'CHANGE_ADD_SUBJECT_MODE', payload: {isAddSubjectMode}})
-  }, [isAddSubjectMode])
+    if (isAddSubjectMode)
+      assistant.sendAction({type: 'CHANGE_ADD_SUBJECT_MODE', payload: {isAddSubjectMode, isChangingSubject: !!changingSubject}})
+  }, [isAddSubjectMode, changingSubject])
   const deleteItem = useCallback((id: string) => {
     dispatch(actions.deleteSubject(id))
   }, [])
@@ -45,7 +45,10 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
     dispatch(actions.setIsAddSubjectMode(true))
   }
 
-  const finishAdding = useCallback(() => dispatch(actions.setIsAddSubjectMode(false)), [])
+  const finishAdding = useCallback(() => {
+    dispatch(actions.finishChangingSubject())
+    dispatch(actions.setIsAddSubjectMode(false))
+  }, [])
   const setEditMode = useCallback(() => dispatch(actions.setEditMode(true)), [])
   return <div className={style.schedule}>
     <div className={style.dayTabs}>

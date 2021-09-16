@@ -136,6 +136,10 @@
         {
           "type": "phrase",
           "rule": "добавить"
+        },
+        {
+          "type": "phrase",
+          "rule": "изменить"
         }
       ],
       "variables": {}

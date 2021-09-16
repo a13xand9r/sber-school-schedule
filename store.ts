@@ -68,6 +68,8 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
       return { ...state, showTaskMode: action.index !== null ? { ...state.homeTasks[action.index] } : null }
     case 'START_CHANGING_SUBJECT':
       return { ...state, changingSubject: {...state.schedule[state.day]?.find(item => item.id === action.id)} as SubjectType }
+    case 'FINISH_CHANGING_SUBJECT':
+      return { ...state, changingSubject: null }
     case 'CHANGE_SUBJECT':
       const newSchedule = { ...state.schedule }
       newSchedule[state.day] = state.schedule[state.day]?.map(item => {
@@ -76,7 +78,6 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
       }) as SubjectType[]
       return {
         ...state,
-        changingSubject: null,
         schedule: newSchedule
       }
     case 'RESET_SCHEDULE_COPY':
@@ -109,6 +110,7 @@ export const actions = {
   setIsAddSubjectMode: (flag: boolean) => ({ type: 'SET_IS_ADD_SUBJECT_MODE', flag } as const),
   startChangingSubject: (id: string) => ({ type: 'START_CHANGING_SUBJECT', id } as const),
   changeSubject: (subject: SubjectType) => ({ type: 'CHANGE_SUBJECT', subject } as const),
+  finishChangingSubject: () => ({ type: 'FINISH_CHANGING_SUBJECT' } as const),
 }
 export const allSubjects = [
   { subject: 'Алгебра', subSubject: 'Алгебре', icon: '/algebra.png' as string },

@@ -21,6 +21,7 @@ export const runAppHandler: SaluteHandler = ({ req, res }) => {
 
 export const changeTabPageHandler: SaluteHandler = ({req, res}) => {
   console.log(req.serverAction?.payload)
+  console.log(req.state)
   //@ts-ignore
   if(req.serverAction?.payload.tabPage === 'Расписание'){
     res.appendSuggestions([getRandomFromArray(buttons.schedulePage)])
@@ -105,6 +106,7 @@ export const getDailyScheduleHandler: SaluteHandler = async ({ req, res }) => {
     res.setPronounceText(`${day.name === 'Вторник' ? 'Во' : 'В'} ${day.subName.toLowerCase()} нет уроков`)
     res.appendBubble(`${day.name === 'Вторник' ? 'Во' : 'В'} ${day.subName.toLowerCase()} нет уроков`)
   }
+  res.appendSuggestions([getRandomFromArray(buttons.schedulePage)])
 }
 
 export const homeTaskDoneHandler: SaluteHandler = ({req, res}) => {
@@ -197,12 +199,6 @@ export const deleteSubjectHandler: SaluteHandler = ({req, res}) => {
   } else {
     res.setPronounceText('Такого предмета нет в этот день')
   }
-}
-
-function normalizeDayWord(str: string) {
-  if (!str) return str
-  const lastLetter = str[str.length - 1] === 'у' ? 'а' : str[str.length - 1]
-  return str[0].toUpperCase() + str.slice(1, str.length - 1) + lastLetter
 }
 
 type DayBrainType = {
