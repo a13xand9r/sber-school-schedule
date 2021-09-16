@@ -10,37 +10,41 @@ const { action, regexp, intent, text, selectItem, state, match } = createMatcher
 
 const userScenario = createUserScenario({
   getDailySchedule: {
-    match: intent('/Расписание на день', {confidence: 0.2}),
+    match: intent('/Расписание на день', { confidence: 0.2 }),
     handle: getDailyScheduleHandler
   },
   homeTaskDone: {
     match: action('task_done'),
     handle: homeTaskDoneHandler
   },
-  homeTasksNavigation:{
-    match: intent('/Дз', {confidence: 0.2}),
+  homeTasksNavigation: {
+    match: intent('/Дз', { confidence: 0.2 }),
     handle: homeTasksNavigationHandler
   },
-  scheduleNavigation:{
-    match: intent('/Расписание', {confidence: 0.2}),
+  scheduleNavigation: {
+    match: intent('/Расписание', { confidence: 0.2 }),
     handle: scheduleNavigationHandler
   },
-  deleteSubject:{
-    match: match(intent('/Удалить предмет', {confidence: 0.2}), (req) => req.state?.isEditMode as boolean),
+  deleteSubject: {
+    match: match(intent('/Удалить предмет', { confidence: 0.2 }), (req) => req.state?.isEditMode as boolean),
     handle: deleteSubjectHandler
   },
-  deleteSubjectNotFromEditMode:{
-    match: match(intent('/Удалить предмет', {confidence: 0.2}), (req) => !req.state?.isEditMode as boolean),
+  deleteSubjectNotFromEditMode: {
+    match: match(intent('/Удалить предмет', { confidence: 0.2 }), (req) => !req.state?.isEditMode as boolean),
     handle: ({ res }) => {
       res.setPronounceText('Для удаления предмета нужно перейти в режим редактирования')
     }
   },
-  addSubject:{
-    match: match(intent('/Добавить предмет', {confidence: 0.2}), (req) => req.state?.isEditMode as boolean),
+  saveHomeTask: {
+    match: match(intent('/Сохранить дз', { confidence: 0.2 }), (req) => req.state?.isAddTaskMode as boolean),
+    handle: saveHomeTaskHandler
+  },
+  addSubject: {
+    match: match((req) => req.state?.isEditMode as boolean, intent('/Добавить предмет', { confidence: 0.2 })),
     handle: addSubjectHandler
   },
-  setEditMode:{
-    match: match(intent('/Режим редактирования', {confidence: 0.2}), (req) => !req.state?.isEditMode as boolean),
+  setEditMode: {
+    match: match(intent('/Режим редактирования', { confidence: 0.2 }), (req) => !req.state?.isEditMode as boolean),
     handle: ({ res }) => {
       res.appendCommand({
         type: 'SET_EDIT_MODE',
@@ -48,37 +52,38 @@ const userScenario = createUserScenario({
       })
     }
   },
-  saveSchedule:{
-    match: match(intent('/Сохранить', {confidence: 0.2}), (req) => req.state?.isEditMode as boolean),
+  saveSchedule: {
+    match: match(intent('/Сохранить расписание', { confidence: 0.2 }), (req) => req.state?.isEditMode as boolean),
     handle: saveScheduleHandler
   },
   addHomeTask: {
-    match: intent('/Новое дз', {confidence: 0.2}),
+    match: intent('/Новое дз', { confidence: 0.2 }),
     handle: addHomeTaskHandler,
     children: {
       taskText: {
-        match: match((req) => !!req.message.original_text, (req) => req.state?.isAddTaskMode as boolean, (req) => {
-          console.log('current state',req.currentState?.path[0])
-          return req.currentState?.path[0] !== 'addHomeTask'
-        }),
-        handle: addHomeTaskTextHandler
-      },
-      yes:{
-        match: intent('/Согласие', {confidence: 0.2}),
-        handle: saveHomeTaskHandler
-      },
-      no:{
-        match: intent('/Отрицание', {confidence: 0.2}),
-        handle: ({res}) => {
-          res.setPronounceText('Хорошо. Не буду.')
+        match: match(
+          (req) => !!req.message.original_text,
+          (req) => req.state?.isAddTaskMode as boolean,
+          (req) => req.currentState?.path[0] !== 'addHomeTask'
+        ),
+        handle: addHomeTaskTextHandler,
+        children: {
+          yes: {
+            match: (req) => {
+              return intent('/Согласие', { confidence: 0.2 })(req)
+            },
+            handle: saveHomeTaskHandler
+          },
+          no: {
+            match: intent('/Отрицание', { confidence: 0.2 }),
+            handle: ({ res }) => {
+              res.setPronounceText('Хорошо. Не буду.')
+            }
+          },
         }
       },
     }
-  },
-  saveHomeTask:{
-    match: match(intent('/Сохранить', {confidence: 0.4}), (req) => req.state?.isAddTaskMode as boolean),
-    handle: saveHomeTaskHandler
-  },
+  }
 })
 
 const systemScenario = createSystemScenario({
@@ -100,7 +105,7 @@ export const handleNlpRequest = async (request: NLPRequest): Promise<NLPResponse
   const session = await storage.resolve(sessionId)
   await scenarioWalker({ req, res, session })
 
-  await storage.save({ id: sessionId, session})
+  await storage.save({ id: sessionId, session })
 
   return res.message
 }

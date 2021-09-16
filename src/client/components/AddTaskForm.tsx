@@ -20,16 +20,13 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
     setSubjectInput(str)
   }, [])
 
-  console.log('taskText', taskText)
   const taskRef = useRef<any>()
-  useEffect(() => {
-    taskRef.current = {
-      userId,
-      taskText,
-      selectedSubject,
-      dateValue
-    }
-  }, [taskText, selectedSubject, dateValue, userId])
+  taskRef.current = {
+    userId,
+    taskText,
+    selectedSubject,
+    dateValue
+  }
 
   const onFormSubmit = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault()

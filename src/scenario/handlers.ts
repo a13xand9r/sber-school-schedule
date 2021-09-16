@@ -38,6 +38,10 @@ export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
       tab: 'Домашка'
     })
     res.appendCommand({
+      type: 'SET_TASK_MODE',
+      index: null
+    })
+    res.appendCommand({
       type: 'SET_IS_ADD_TASK_MODE',
       flag: true
     })
@@ -89,9 +93,11 @@ export const addHomeTaskTextHandler: SaluteHandler = ({req, res}) => {
   // console.log(req.message.normalized_text)
   // console.log(req.message.human_normalized_text)
   // console.log(req.currentState?.path)
+  console.log(req.message.tokenized_elements_list)
+  const text = req.message.tokenized_elements_list.map(word => word.text).join(' ')
   res.appendCommand({
     type: 'SET_HOME_TASK_TEXT_FORM',
-    text: req.message.original_text
+    text: text
   })
   const answerArray = ['Сохранить?', 'Добавить?']
   res.setPronounceText(getRandomFromArray(answerArray))
