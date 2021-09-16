@@ -1,21 +1,22 @@
+import { createAssistant } from '@sberdevices/assistant-client'
 import { Button, TabItem, Tabs } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, useCallback, useContext, useEffect, useState } from 'react'
 import { CharacterContext } from '../../../pages'
-import { actions, ActionsType, daysArray, DayType, ScheduleType, SurfaceType } from '../../../store'
+import { actions, ActionsType, daysArray, DayType, ScheduleType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import { AddSubjectForm } from './AddSubjectForm'
 import { SubjectList } from './SubjectList'
 
-export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, schedule, userId }) => {
+export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, schedule, userId, isAddSubjectMode, assistant }) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
-  const [isAddSubjectMode, setIsAddSubjectMode] = useState(false)
+  // const [isAddSubjectMode, setIsAddSubjectMode] = useState(false)
   const subjects = schedule[day]
   const {surface} = useContext(CharacterContext)
   useEffect(() => {
-    setIsAddSubjectMode(false)
+    dispatch(actions.setIsAddSubjectMode(false))
   }, [day])
   useEffect(() => {
-    !isEditMode && setIsAddSubjectMode(false)
+    !isEditMode && dispatch(actions.setIsAddSubjectMode(false))
   }, [isEditMode])
   useEffect(() => {
     return () => {
@@ -35,7 +36,7 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
   const deleteItem = useCallback((id: string) => {
     dispatch(actions.deleteSubject(id))
   }, [])
-  const finishAdding = useCallback(() => setIsAddSubjectMode(false), [])
+  const finishAdding = useCallback(() => dispatch(actions.setIsAddSubjectMode(false)), [])
   const setEditMode = useCallback(() => dispatch(actions.setEditMode(true)), [])
   return <div className={style.schedule}>
     <div className={style.dayTabs}>
@@ -78,7 +79,7 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
               <Button className={style.editButton}
                 text='Добавить предмет'
                 view='secondary'
-                onClick={() => setIsAddSubjectMode(true)}
+                onClick={() => dispatch(actions.setIsAddSubjectMode(true))}
               />
             </div>
             <div className={style.submitChangeButtonContainer}>
@@ -92,6 +93,7 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
             </div>
           </> :
           <AddSubjectForm
+            assistant={assistant}
             dispatch={dispatch}
             finishAdding={finishAdding}
           />
@@ -106,4 +108,6 @@ type PropsType = {
   schedule: ScheduleType
   dispatch: Dispatch<ActionsType>
   userId: string | null
+  isAddSubjectMode: boolean
+  assistant: ReturnType<typeof createAssistant>
 }

@@ -5,15 +5,17 @@ const client = new MongoClient(process.env.NEXT_PUBLIC_MONGODB_CLIENT ?? '')
 let scheduleDB: any
 let homeTasksDB: any
 let isMongoConnected = false
+
 export const start = async () => {
   try {
+    console.log('Trying to connect mongoDB')
     await client.connect()
     isMongoConnected = true
     console.log('MongoDB connected')
     scheduleDB = client.db().collection('schedule')
     homeTasksDB = client.db().collection('homeTasks')
   } catch (err) {
-    console.log(err)
+    console.log('mongo connection error', err)
   }
 }
 
@@ -29,7 +31,7 @@ const emptySchedule = {
 export const getSchedule = async (userId: string): Promise<ScheduleType> => {
   try {
     if (!isMongoConnected){
-      await client.connect()
+      await start()
       scheduleDB = client.db().collection('schedule')
     }
     const user = await scheduleDB.findOne({ userId })
@@ -47,7 +49,7 @@ export const getSchedule = async (userId: string): Promise<ScheduleType> => {
 export const changeSchedule = async (userId: string, newSchedule: ScheduleType): Promise<ScheduleType> => {
   try {
     if (!isMongoConnected){
-      await client.connect()
+      await start()
       scheduleDB = client.db().collection('schedule')
     }
     const user = await scheduleDB.findOne({ userId })
@@ -68,7 +70,7 @@ export const changeSchedule = async (userId: string, newSchedule: ScheduleType):
 export const getHomeTasks = async (userId: string): Promise<HomeTaskType[]> => {
   try {
     if (!isMongoConnected){
-      await client.connect()
+      await start()
       homeTasksDB = client.db().collection('homeTasks')
     }
     const user = await homeTasksDB.findOne({ userId })
@@ -86,7 +88,7 @@ export const getHomeTasks = async (userId: string): Promise<HomeTaskType[]> => {
 export const addHomeTask = async (userId: string, newHomeTask: HomeTaskType): Promise<HomeTaskType | null> => {
   try {
     if (!isMongoConnected){
-      await client.connect()
+      await start()
       homeTasksDB = client.db().collection('homeTasks')
     }
     const user = await homeTasksDB.findOne({ userId })

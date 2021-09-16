@@ -21,6 +21,7 @@ export const initialState = {
   homeTasks: [] as HomeTaskType[],
   showTaskMode: null as null | HomeTaskType,
   isAddTaskMode: false,
+  isAddSubjectMode: false,
 }
 
 export const reducer = (state: StateType, action: ActionsType): StateType => {
@@ -60,6 +61,8 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
       return { ...state, homeTasks: [...state.homeTasks, { ...action.task, date: new Date(action.task.date) }] }
     case 'SET_IS_ADD_TASK_MODE':
       return { ...state, isAddTaskMode: action.flag }
+    case 'SET_IS_ADD_SUBJECT_MODE':
+      return { ...state, isAddSubjectMode: action.flag }
     case 'SET_TASK_MODE':
       return { ...state, showTaskMode: action.index !== null ? { ...state.homeTasks[action.index] } : null }
     case 'RESET_SCHEDULE_COPY':
@@ -89,6 +92,7 @@ export const actions = {
   setShowTaskMode: (index: number | null) => ({ type: 'SET_TASK_MODE', index } as const),
   setIsAddTaskMode: (flag: boolean) => ({ type: 'SET_IS_ADD_TASK_MODE', flag } as const),
   resetScheduleCopy: () => ({ type: 'RESET_SCHEDULE_COPY' } as const),
+  setIsAddSubjectMode: (flag: boolean) => ({ type: 'SET_IS_ADD_SUBJECT_MODE', flag } as const),
 }
 export const allSubjects = [
   { subject: 'Алгебра', subSubject: 'Алгебре', icon: '/algebra.png' as string },
@@ -99,7 +103,7 @@ export const allSubjects = [
   { subject: 'Казахский язык', subSubject: 'Казахскому языку', icon: '/kazakhstan.png' as string },
   { subject: 'Английский язык', subSubject: 'Английскому языку', icon: '/english.png' as string },
   { subject: 'Немецкий язык', subSubject: 'Немецкому языку', icon: '/germany.png' as string },
-  { subject: 'Франузский язык', subSubject: 'Франузскому языку', icon: '/franc.png' as string },
+  { subject: 'Французский язык', subSubject: 'Французскому языку', icon: '/franc.png' as string },
   { subject: 'Родной язык', subSubject: 'Родному языку', icon: '/books.png' as string },
   { subject: 'Биология', subSubject: 'Биологии', icon: '/biology.png' as string },
   { subject: 'Всемирная история', subSubject: 'Всемирной истории', icon: '/history.png' as string },
@@ -114,7 +118,7 @@ export const allSubjects = [
   { subject: 'Классный час', subSubject: 'Классному часу', icon: '/time.png' as string },
   { subject: 'Математика', subSubject: 'Математике', icon: '/algebra.png' as string },
   { subject: 'Мировая художественная культура', subSubject: 'Мировой художественной культуре', icon: '/books.png' as string },
-  { subject: 'Музыка(пение)', subSubject: 'Музыке(пению)', icon: '/music.png' as string },
+  { subject: 'Музыка (пение)', subSubject: 'Музыке (пению)', icon: '/music.png' as string },
   { subject: 'Начальная военная подготовка', subSubject: 'Начальной военной подготовке', icon: '/army.png' as string },
   { subject: 'Обществознание', subSubject: 'Обществознанию', icon: '/society.png' as string },
   { subject: 'Основы безопасности жизнедеятельности', subSubject: 'Основам безопасности жизнедеятельности', icon: '/family.png' as string },

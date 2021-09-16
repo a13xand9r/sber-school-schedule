@@ -5,8 +5,9 @@ import { actions, ActionsType, SubjectConstType, SubjectWithIconsType } from '..
 import style from '../../../styles/schedule.module.css'
 import { SubjectSelectButtonMemo } from './SubjectsSelectButton'
 import { SubjectListModeMemo } from './SubjectListMode'
+import { createAssistant } from '@sberdevices/assistant-client';
 
-export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
+export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistant }) => {
   const [isSubjectListMode, setIsSubjectListMode] = useState(false)
   const [selectedSubject, setSelectedSubject] = useState<SubjectConstType | null>(null)
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null)
@@ -14,6 +15,13 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
   const [teacherInput, setTeacherInput] = useState<string>('')
   const [cabinetInput, setCabinetInput] = useState<string>('')
   const [isError, setIsError] = useState(false)
+  useEffect(() => {
+    assistant.on('data', ({ smart_app_data }: any) => {
+      if (smart_app_data) {
+        if (smart_app_data.type === 'ADD_SUBJECT_FORM') setSubjectInput(smart_app_data.subject)
+      }
+    })
+  }, [])
   useEffect(() => {
     if (isSubjectListMode){
       let subjInput = document.getElementById('subjInput')
@@ -88,4 +96,5 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding }) => {
 type PropsType = {
   dispatch: Dispatch<ActionsType>
   finishAdding: () => void
+  assistant: ReturnType<typeof createAssistant>
 }

@@ -1,45 +1,83 @@
 import { SmartAppBrainRecognizer } from '@salutejs/recognizer-smartapp-brain'
 import { createIntents, createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
 import { SaluteMemoryStorage } from '@salutejs/storage-adapter-memory'
-import { addHomeTaskHandler, getDailyScheduleHandler, noMatchHandler, runAppHandler } from './handlers'
+import { addHomeTaskHandler, addHomeTaskTextHandler, addSubjectHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, saveHomeTaskHandler, saveScheduleHandler, scheduleNavigationHandler } from './handlers'
 import model from '../intents.json'
 
 const storage = new SaluteMemoryStorage()
 const intents = createIntents(model.intents)
-const { action, regexp, intent, text, selectItem } = createMatchers<SaluteRequest, typeof intents>()
+const { action, regexp, intent, text, selectItem, state, match } = createMatchers<SaluteRequest, typeof intents>()
 
 const userScenario = createUserScenario({
-  calc: {
-    match: intent('/sum', {confidence: 0.2}),
-    handle: ({req, res}) => {
-      const {num1, num2} = req.variables
-      res.setPronounceText(`Получится ${+num1 + +num2}`)
-    }
-  },
   getDailySchedule: {
     match: intent('/Расписание на день', {confidence: 0.2}),
     handle: getDailyScheduleHandler
   },
-  // homeTaskDone: {
-  //   match: action('task_done'),
-  //   handle: ({req, res}) => {
-  //     res.setPronounceText()
-  //     res.appendBubble()
-  //   }
-  // },
+  homeTaskDone: {
+    match: action('task_done'),
+    handle: homeTaskDoneHandler
+  },
+  homeTasksNavigation:{
+    match: intent('/Дз', {confidence: 0.2}),
+    handle: homeTasksNavigationHandler
+  },
+  scheduleNavigation:{
+    match: intent('/Расписание', {confidence: 0.2}),
+    handle: scheduleNavigationHandler
+  },
+  deleteSubject:{
+    match: match(intent('/Удалить предмет', {confidence: 0.2}), (req) => req.state?.isEditMode as boolean),
+    handle: deleteSubjectHandler
+  },
+  deleteSubjectNotFromEditMode:{
+    match: match(intent('/Удалить предмет', {confidence: 0.2}), (req) => !req.state?.isEditMode as boolean),
+    handle: ({ res }) => {
+      res.setPronounceText('Для удаления предмета нужно перейти в режим редактирования')
+    }
+  },
+  addSubject:{
+    match: match(intent('/Добавить предмет', {confidence: 0.2}), (req) => req.state?.isEditMode as boolean),
+    handle: addSubjectHandler
+  },
+  setEditMode:{
+    match: match(intent('/Режим редактирования', {confidence: 0.2}), (req) => !req.state?.isEditMode as boolean),
+    handle: ({ res }) => {
+      res.appendCommand({
+        type: 'SET_EDIT_MODE',
+        flag: true
+      })
+    }
+  },
+  saveSchedule:{
+    match: match(intent('/Сохранить', {confidence: 0.2}), (req) => req.state?.isEditMode as boolean),
+    handle: saveScheduleHandler
+  },
   addHomeTask: {
     match: intent('/Новое дз', {confidence: 0.2}),
     handle: addHomeTaskHandler,
-    // children: {
-    //   taskText: {
-    //     match: intent('/Новое дз/Текст дз', {confidence: 0.2}),
-    //     handle: ({req, res}) => {
-    //       console.log(req.variables)
-    //       res.setPronounceText('Записано')
-    //       res.appendBubble('Записано')
-    //     }
-    //   }
-    // }
+    children: {
+      taskText: {
+        match: match((req) => !!req.message.original_text, (req) => req.state?.isAddTaskMode as boolean, (req) => {
+          console.log('current state',req.currentState?.path[0])
+          return req.currentState?.path[0] !== 'addHomeTask'
+        }),
+        handle: addHomeTaskTextHandler
+      },
+      yes:{
+        match: intent('/Согласие', {confidence: 0.2}),
+        handle: saveHomeTaskHandler
+      },
+      no:{
+        match: intent('/Отрицание', {confidence: 0.2}),
+        handle: ({res}) => {
+          res.setPronounceText('Хорошо. Не буду.')
+        }
+      },
+    }
+  },
+  saveHomeTask:{
+    match: match(intent('/Сохранить', {confidence: 0.4}), (req) => req.state?.isAddTaskMode as boolean),
+    handle: saveHomeTaskHandler
   },
 })
 
