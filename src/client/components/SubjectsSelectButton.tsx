@@ -13,7 +13,7 @@ export const SubjectSelectButton: FC<PropsType> = ({ changeSubjectListMode, isSu
       onFocus={() => changeSubjectListMode(true)}
       contentLeft={
         <Button
-          onClick={() => changeSubjectListMode}
+          onClick={() => changeSubjectListMode()}
           view='clear'
           size='s'
           style={{ padding: '0', color: '#808080' }}

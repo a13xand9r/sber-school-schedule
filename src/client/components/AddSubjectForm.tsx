@@ -68,7 +68,6 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
     if (isSubjectListMode){
       let subjInput = document.getElementById('subjInput')
       subjInput?.scrollIntoView({block: 'start', behavior: 'smooth'})
-      // window.scroll(0, 160)
     } else window.scrollTo({top: 0, behavior: 'smooth'})
   }, [isSubjectListMode])
 
@@ -79,8 +78,9 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
     setSelectedIcon(subject.icon)
     setIsError(false)
   }, [])
-  const changeSubjectListMode = useCallback(() => {
-    setIsSubjectListMode(prev => !prev)
+  const changeSubjectListMode = useCallback((flag?: boolean) => {
+    if (flag !== undefined) setIsSubjectListMode(flag)
+    else setIsSubjectListMode(prev => !prev)
   }, [])
   const changeSubjectInput = useCallback((str: string) => {
     setSelectedSubject(null)
