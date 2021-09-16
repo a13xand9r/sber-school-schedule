@@ -8,6 +8,7 @@ export const SubjectListMode = ({onSubjectClick, query}: {onSubjectClick: (subje
     <div className={style.subjectsSelect}>
         {allSubjects.filter(subj => subj.subject.toLowerCase().includes(query.toLowerCase())).map((subj, i) => (
           <SubjectItem
+            id={i.toString()}
             key={i}
             subject={subj.subject}
             icon={subj.icon}
