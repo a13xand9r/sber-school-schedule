@@ -86,8 +86,9 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
       // window.scroll(0, 160)
     } else window.scrollTo({top: 0, behavior: 'smooth'})
   }, [isSubjectListMode])
-  const changeSubjectListMode = useCallback(() => {
-    setIsSubjectListMode(prev => !prev)
+  const changeSubjectListMode = useCallback((flag?: boolean) => {
+    if (flag !== undefined) setIsSubjectListMode(flag)
+    else setIsSubjectListMode(prev => !prev)
   }, [])
   const onSubjectClick = useCallback((subject: SubjectWithIconsType) => {
     setSubjectInput(subject.subject)

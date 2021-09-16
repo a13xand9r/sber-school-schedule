@@ -10,10 +10,10 @@ export const SubjectSelectButton: FC<PropsType> = ({ changeSubjectListMode, isSu
       className={`${style.subjectInput} ${isError && style.errorSubjectInput}`}
       value={subjectInput ? subjectInput : ''}
       label={'Предмет'}
-      onFocus={changeSubjectListMode}
+      onFocus={() => changeSubjectListMode(true)}
       contentLeft={
         <Button
-          onClick={changeSubjectListMode}
+          onClick={() => changeSubjectListMode}
           view='clear'
           size='s'
           style={{ padding: '0', color: '#808080' }}
@@ -35,7 +35,7 @@ export const SubjectSelectButton: FC<PropsType> = ({ changeSubjectListMode, isSu
 export const SubjectSelectButtonMemo = React.memo(SubjectSelectButton)
 
 type PropsType = {
-  changeSubjectListMode: () => void
+  changeSubjectListMode: (flag?: boolean) => void
   isError: boolean
   isSubjectListMode: boolean
   subjectInput: string
