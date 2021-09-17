@@ -18,11 +18,12 @@ export const runAppHandler: SaluteHandler = ({ req, res }) => {
   }
 }
 
-export const changeTabPageHandler: SaluteHandler = ({req, res}) => {
+export const changeTabPageHandler: SaluteHandler = ({req, res}, dispatch) => {
   //@ts-ignore
   if(req.serverAction?.payload.tabPage === 'Расписание'){
     res.appendSuggestions([getRandomFromArray(buttons.schedulePage)])
   } else{
+    dispatch && req.state?.isAddTaskMode && dispatch(['addHomeTask'])
     if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
       res.appendSuggestions([getRandomFromArray(buttons.generalSberBox)])
     } else{
@@ -55,16 +56,16 @@ export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
     res.appendBubble('Добавить домашнее задание можно в приложении Салют или на СберПортале')
   } else {
     res.appendCommand({
+      type: 'SET_IS_ADD_TASK_MODE',
+      flag: true
+    })
+    res.appendCommand({
       type: 'CHANGE_TAB',
       tab: 'Домашка'
     })
     res.appendCommand({
       type: 'SET_TASK_MODE',
       index: null
-    })
-    res.appendCommand({
-      type: 'SET_IS_ADD_TASK_MODE',
-      flag: true
     })
     if (subject){
       res.appendCommand({
@@ -78,8 +79,10 @@ export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
         timestamp
       })
     }
-    res.setPronounceText(keyset('newHomeTask'))
-    res.setAutoListening(true)
+    if (req.state?.tabPage === 'Домашка'){
+      res.setPronounceText(keyset('newHomeTask'))
+      res.setAutoListening(true)
+    }
   }
 }
 
@@ -107,7 +110,7 @@ export const getDailyScheduleHandler: SaluteHandler = ({ req, res }) => {
 
 export const homeTaskDoneHandler: SaluteHandler = ({req, res}) => {
   const text = ['Домашнее задание выполнено. Молодец!', 'Готово!', 'Молодец!', 'Выполнено!', 'Сделано!']
-  res.setPronounceText(getRandomFromArray(text))
+  res.appendBubble(getRandomFromArray(text))
 }
 
 export const setHomeTaskDoneHandler: SaluteHandler = ({req, res}) => {
@@ -131,8 +134,7 @@ export const addHomeTaskTextHandler: SaluteHandler = ({req, res}) => {
     type: 'SET_HOME_TASK_TEXT_FORM',
     text: text
   })
-  const answerArray = ['Сохранить?', 'Добавить?']
-  res.setPronounceText(getRandomFromArray(answerArray))
+  res.setPronounceText('Добавить?')
   res.setAutoListening(true)
   res.appendSuggestions(['Да', 'Нет'])
 }

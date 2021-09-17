@@ -73,6 +73,10 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
         if (smart_app_data.type === 'FINISH_ADDING') onFormSubmit()
       }
     })
+    return () => {
+      const unsubscribe = assistant.sendAction({type: 'unsubscribe', payload: {}})
+      unsubscribe()
+    }
   }, [])
   useEffect(() => {
     if (isSubjectListMode){

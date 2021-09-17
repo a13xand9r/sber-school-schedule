@@ -40,6 +40,7 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
 
   useEffect(() => {
     assistant.on('data', ({ smart_app_data }: any) => {
+      console.log(smart_app_data)
       if (smart_app_data?.type === 'ASSISTANT_DELETE_HOME_TASK') {
         onDeleteTaskHandler(smart_app_data.id)
       }
@@ -50,6 +51,8 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
     return () => {
       dispatch(actions.setShowTaskMode(null))
       dispatch(actions.setIsAddTaskMode(false))
+      const unsubscribe = assistant.sendAction({type: 'unsubscribe', payload: {}})
+      unsubscribe()
     }
   }, [])
   return <div className={style.schedule}>

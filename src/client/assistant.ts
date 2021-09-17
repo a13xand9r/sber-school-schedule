@@ -27,6 +27,6 @@ export const initAssistant = (
       if (smart_app_data.type === 'SAVE_SCHEDULE') saveData()
     }
     if (type === 'character') dispatch(actions.setCharacter(character.id))
-  })  
+  })
   dispatch(actions.setSurface(detectDevice()))
 }

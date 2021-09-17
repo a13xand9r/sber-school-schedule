@@ -69,6 +69,10 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
         }
       }
     })
+    return () => {
+      const unsubscribe = assistant.sendAction({type: 'unsubscribe', payload: {}})
+      unsubscribe()
+    }
   }, [])
   const getDatePicker = () => (
     <DatePicker
