@@ -20,6 +20,7 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
   useEffect(() => {
     return () => {
       dispatch(actions.setEditMode(false))
+      alert('hello')
     }
   }, [])
   useEffect(() => {
@@ -123,7 +124,7 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
     }
     <CSSTransition
       in={isAddSubjectMode && isEditMode}
-      timeout={300}
+      timeout={200}
       classNames='alert'
       unmountOnExit
       onEnter={() => setIsAddSubjectModeTransition(true)}
