@@ -22,15 +22,6 @@ const ItemWrapper = styled.div`
   cursor: pointer;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   transition: 0.2s;
-  &:active, &::visited{
-    transform: scale(0.98);
-    /* outline: none; */
-  }
-  &:focus-visible, &:focus {
-    /* border: ${accent} solid 2px; */
-    border-radius: 10px;
-    outline: ${accent} solid 1px;
-  }
 `;
 
 export const SubjectItem: FC<PropsType> = (props) => {
