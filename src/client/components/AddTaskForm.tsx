@@ -95,7 +95,8 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
     setSelectedSubject(subject)
     setIsError(false)
   }, [])
-  return <>
+
+  return <div>
     <SubjectSelectButtonMemo
       changeSubjectListMode={changeSubjectListMode}
       isError={isError && !selectedSubject}
@@ -128,7 +129,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
         </form> :
         <SubjectListModeMemo onSubjectClick={onSubjectClick} query={subjectInput} />
     }
-  </>
+  </div>
 }
 
 type PropsType = {

@@ -1,5 +1,5 @@
 import { Button } from '@sberdevices/plasma-ui'
-import React, { Dispatch, FC, useCallback, useEffect } from 'react'
+import React, { Dispatch, FC, useCallback, useEffect, useState } from 'react'
 import { actions, ActionsType, HomeTaskType } from '../../../store'
 import { EmptyList } from './EmptyList'
 import { SubjectItemMemo } from './SubjectItem'
@@ -8,8 +8,11 @@ import { AddTaskForm } from './AddTaskForm'
 import { Task } from './Task'
 import { deleteHomeTask } from '../apiRequests'
 import { createAssistant } from '@sberdevices/assistant-client'
+import { CSSTransition } from 'react-transition-group'
 
 export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, isAddTaskMode, userId, assistant }) => {
+  const [isAddTaskModeTransition, setIsAddTaskModeTransition] = useState(false)
+
   const onTaskClickHandler = useCallback((id: string) => {
     dispatch(actions.setShowTaskMode(id))
   }, [])
@@ -30,13 +33,23 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
     }
   }, [])
   return <div className={style.schedule}>
-    {showTaskMode ? <Task showTaskMode={showTaskMode} onDelete={onDeleteTaskHandler} onDone={onDoneTaskHandler} /> :
-      isAddTaskMode ? <AddTaskForm
+     <CSSTransition
+      in={isAddTaskMode}
+      timeout={200}
+      classNames='formTransition'
+      unmountOnExit
+      onEnter={() => setIsAddTaskModeTransition(true)}
+      onExited={() => setIsAddTaskModeTransition(false)}
+    >
+      <AddTaskForm
         assistant={assistant}
         dispatch={dispatch}
         userId={userId}
         finishAdding={finishAdding}
-      /> :
+      />
+    </CSSTransition>
+    {showTaskMode ? <Task showTaskMode={showTaskMode} onDelete={onDeleteTaskHandler} onDone={onDoneTaskHandler} /> :
+      isAddTaskModeTransition ? null :
         homeTasks.length === 0 ? <>
           <EmptyList isEditMode={false} tab='Домашка' />
           <Button className={style.editButton}
