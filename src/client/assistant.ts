@@ -1,7 +1,7 @@
 import { createSmartappDebugger, createAssistant } from '@sberdevices/assistant-client'
 import { Dispatch } from 'react'
-import { AssistantState } from '../../pages'
 import { actions } from '../../store'
+import { AssistantState } from '../types'
 
 export const initializeAssistant = (getState: () => AssistantState) => {
   if (process.env.NODE_ENV === 'development') {
