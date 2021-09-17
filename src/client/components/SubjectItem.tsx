@@ -24,12 +24,12 @@ const ItemWrapper = styled.div`
   transition: 0.2s;
   &:active, &::visited{
     transform: scale(0.98);
-    outline: none;
+    /* outline: none; */
   }
   &:focus-visible, &:focus {
-    border: ${accent} solid 2px;
+    /* border: ${accent} solid 2px; */
     border-radius: 10px;
-    outline: 2px ${accent} solid;
+    outline: ${accent} solid 1px;
   }
 `;
 
