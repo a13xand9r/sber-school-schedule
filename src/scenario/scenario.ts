@@ -6,7 +6,7 @@ import model from '../intents.json'
 
 const storage = new SaluteMemoryStorage()
 const intents = createIntents(model.intents)
-const { action, regexp, intent, text, selectItem, state, match } = createMatchers<SaluteRequest, typeof intents>()
+const { action, intent, match } = createMatchers<SaluteRequest, typeof intents>()
 
 const userScenario = createUserScenario({
   getDailySchedule: {

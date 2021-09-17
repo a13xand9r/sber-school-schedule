@@ -2,7 +2,7 @@ import { SaluteHandler } from '@salutejs/scenario'
 import { getSchedule } from './dataBase'
 import * as dictionary from './system.i18n'
 import { buttons, getRandomFromArray } from '../utils/utils'
-import { AssistantState, DayType } from '../types'
+import { AssistantState, DayType, ScheduleType } from '../types'
 
 export const runAppHandler: SaluteHandler = ({ req, res }) => {
   res.appendCommand({
@@ -83,9 +83,9 @@ export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
   }
 }
 
-export const getDailyScheduleHandler: SaluteHandler = async ({ req, res }) => {
+export const getDailyScheduleHandler: SaluteHandler = ({ req, res }) => {
   const day = JSON.parse(req.variables.day as string) as DayBrainType
-  const dailySchedule = await getSchedule(req.request.uuid.sub)
+  const dailySchedule = req.state?.schedule as ScheduleType
   const dailyScheduleText = dailySchedule[day.name as DayType]?.map(el => el.subject).join(', ')
   res.appendCommand({
     type: 'CHANGE_TAB',
