@@ -29,7 +29,7 @@ const ItemWrapper = styled.div`
   &:focus-visible, &:focus {
     border: ${accent} solid 2px;
     border-radius: 10px;
-    outline: none;
+    outline: 2px ${accent} solid;
   }
 `;
 
