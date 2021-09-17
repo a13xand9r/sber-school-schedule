@@ -1,6 +1,6 @@
 import { SaluteHandler } from '@salutejs/scenario'
 import * as dictionary from './system.i18n'
-import {getRandomFromArray } from '../utils/utils'
+import {capitalizeFirstLetter, getRandomFromArray } from '../utils/utils'
 import { AssistantState, DayType, ScheduleType } from '../types'
 import { buttons } from '../utils/constants'
 
@@ -129,7 +129,11 @@ export const deleteHomeTaskHandler: SaluteHandler = ({req, res}) => {
 }
 
 export const addHomeTaskTextHandler: SaluteHandler = ({req, res}) => {
-  const text = req.message.tokenized_elements_list.map(word => word.text).join(' ')
+  const text = req.message.tokenized_elements_list.map((word, i) => {
+    if (i === 0 || !!word.composite_token_type) return capitalizeFirstLetter(word.text)
+    return word.text
+  }).join(' ')
+  console.log(req.message.tokenized_elements_list)
   res.appendCommand({
     type: 'SET_HOME_TASK_TEXT_FORM',
     text: text
