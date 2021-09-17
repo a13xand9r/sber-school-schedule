@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb'
-import { HomeTaskType, ScheduleType } from '../../store'
+import { HomeTaskType, ScheduleType } from '../types'
 
 const client = new MongoClient(process.env.NEXT_PUBLIC_MONGODB_CLIENT ?? '')
 let scheduleDB: any

@@ -1,3 +1,4 @@
+import { AssistantAppState } from '@sberdevices/assistant-client'
 import { actions, initialState } from '../store'
 import { allSubjects } from './utils/constants'
 
@@ -34,4 +35,14 @@ export type HomeTaskType = {
   task: string
   icon: string
   id: string
+}
+
+export interface AssistantState extends AssistantAppState {
+  isEditMode: boolean
+  tabPage: TabsType
+  day: DayType
+  schedule: ScheduleType
+  isAddTaskMode: boolean
+  isAddSubjectMode: boolean
+  isShowTaskMode: boolean
 }

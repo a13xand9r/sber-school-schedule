@@ -3,13 +3,14 @@ import { Container, Spinner, TabItem, Tabs } from '@sberdevices/plasma-ui'
 import React, { useCallback, useEffect, useReducer, useRef } from 'react'
 import { Schedule } from '../src/client/components/Schedule'
 import { GlobalStyles } from '../GlobalStyle'
-import { actions, DayType, initialState, reducer, ScheduleType, StateType, TabsType } from '../store'
-import { createAssistant, AssistantAppState } from '@sberdevices/assistant-client'
+import { actions, initialState, reducer } from '../store'
+import { createAssistant } from '@sberdevices/assistant-client'
 import style from '../styles/index.module.css'
 import { postSchedule, requestHomeTasks, requestSchedule } from '../src/client/apiRequests'
 import { CustomHeader } from '../src/client/components/CustomHeader'
 import { HomeTasks } from '../src/client/components/HomeTasks'
 import { initAssistant, initializeAssistant } from '../src/client/assistant'
+import { AssistantState, StateType } from '../src/types'
 
 export const CharacterContext = React.createContext({character: 'sber', surface: 'mobile'})
 
@@ -150,14 +151,4 @@ export default function Home() {
       </Container>
     </CharacterContext.Provider>
   )
-}
-
-export interface AssistantState extends AssistantAppState {
-  isEditMode: boolean
-  tabPage: TabsType
-  day: DayType
-  schedule: ScheduleType
-  isAddTaskMode: boolean
-  isAddSubjectMode: boolean
-  isShowTaskMode: boolean
 }
