@@ -6,11 +6,23 @@ import { CharacterContext } from '../../../pages'
 import { daysArray, HomeTaskType, monthsArray, TabsType } from '../../../store'
 import style from '../../../styles/header.module.css'
 
-export const CustomHeader: FC<PropsType> = ({ isEditMode, setEditMode, tab, homeTask, setIsAddTaskMode, isAddTaskMode, setShowTaskMode, isFetching }) => {
-  const flag: boolean = !!homeTask ? true : false
+export const CustomHeader: FC<PropsType> = ({
+  isEditMode,
+  setEditMode,
+  tab,
+  homeTask,
+  setIsAddTaskMode,
+  isAddTaskMode,
+  setShowTaskMode,
+  isFetching,
+  isAddSubjectMode,
+  setIsAddSubjectMode
+}) => {
+  const flag: boolean = !!homeTask || isAddSubjectMode
   const {surface} = useContext(CharacterContext)
   const onBackHandler = () => {
     setShowTaskMode(null)
+    setIsAddSubjectMode(false)
   }
   return (
     //@ts-ignore
@@ -69,6 +81,8 @@ type PropsType = {
   isAddTaskMode: boolean
   setShowTaskMode: (id: string | null) => void
   setIsAddTaskMode: (flag: boolean) => void
+  isAddSubjectMode: boolean
+  setIsAddSubjectMode: (flag: boolean) => void
 }
 
 {/* <HeaderRoot>

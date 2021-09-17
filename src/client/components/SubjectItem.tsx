@@ -34,6 +34,12 @@ const ItemWrapper = styled.div`
 
 export const SubjectItem: FC<PropsType> = (props) => {
   const { icon, subject, tab, cabinet, isEditMode, teacher, deleteItem, index, date, onClick, searchText, id } = props
+
+  const onDeleteHandler = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    e.stopPropagation()
+    id && deleteItem && deleteItem(id)
+  }
+
   return <ItemWrapper tabIndex={1} onClick={() => !!onClick ? onClick(id as string) : null}>
     <Image priority={true} loading='eager' src={icon} alt='' layout='fixed' width={35} height={35} />
     <div className={style.subjectText}>
@@ -46,8 +52,8 @@ export const SubjectItem: FC<PropsType> = (props) => {
           <Footnote1 className={style.subjectFooter}>{cabinet && `Кабинет ${cabinet} ${"\u2022"}`} {teacher && teacher}</Footnote1>
       }
     </div>
-    {(isEditMode && !!deleteItem && tab === 'Расписание' && id) &&
-      <span onClick={() => deleteItem(id)} className={style.deleteItem}></span>}
+    {(isEditMode && tab === 'Расписание') &&
+      <span onClick={onDeleteHandler} className={style.deleteItem}></span>}
   </ItemWrapper>
 }
 

@@ -6,9 +6,12 @@ import { actions, ActionsType, daysArray, DayType, ScheduleType, SubjectType } f
 import style from '../../../styles/schedule.module.css'
 import { AddSubjectForm } from './AddSubjectForm'
 import { SubjectList } from './SubjectList'
+import { CSSTransition } from 'react-transition-group'
 
 export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, schedule, userId, isAddSubjectMode, assistant, changingSubject }) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
+  const [isAddSubjectModeTransition, setIsAddSubjectModeTransition] = useState(false)
+  const [isEditModeTransition, setIEditModeTransition] = useState(false)
   const subjects = schedule[day]
   const {surface} = useContext(CharacterContext)
   useEffect(() => {
@@ -28,8 +31,10 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
     if (!isEditMode) {
       setIsButtonDisabled(true)
       dispatch(actions.finishChangingSubject())
-      dispatch(actions.setIsAddSubjectMode(false))
+      // dispatch(actions.setIsAddSubjectMode(false))
+      !isAddSubjectMode && setIEditModeTransition(false)
     }
+    isEditMode && setIEditModeTransition(true)
   }, [isEditMode])
   useEffect(() => {
     if (isAddSubjectMode)
@@ -46,9 +51,11 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
 
   const finishAdding = useCallback(() => {
     dispatch(actions.finishChangingSubject())
+    // setIsAddSubjectModeTransition(false)
     dispatch(actions.setIsAddSubjectMode(false))
   }, [])
   const setEditMode = useCallback(() => dispatch(actions.setEditMode(true)), [])
+  console.log(isAddSubjectMode)
   return <div className={style.schedule}>
     <div className={style.dayTabs}>
       <Tabs
@@ -74,7 +81,7 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
       </Tabs>
     </div>
     {
-      !isEditMode ?
+      !isEditModeTransition ?
         <>
           <SubjectList
             list={subjects}
@@ -88,7 +95,7 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
               onClick={setEditMode}
             />}
         </> :
-        !isAddSubjectMode ?
+        !isAddSubjectModeTransition ?
           <>
             <SubjectList
               list={subjects}
@@ -112,14 +119,27 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
                 text='Сохранить'
               />
             </div>
-          </> :
-          <AddSubjectForm
-            changingSubject={changingSubject}
-            assistant={assistant}
-            dispatch={dispatch}
-            finishAdding={finishAdding}
-          />
+          </> : null
     }
+    <CSSTransition
+      in={isAddSubjectMode && isEditMode}
+      timeout={300}
+      classNames='alert'
+      unmountOnExit
+      onEnter={() => setIsAddSubjectModeTransition(true)}
+      onExited={() => {
+        setIsAddSubjectModeTransition(false)
+        dispatch(actions.setIsAddSubjectMode(false))
+        !isEditMode && setIEditModeTransition(false)
+      }}
+    >
+      <AddSubjectForm
+        changingSubject={changingSubject}
+        assistant={assistant}
+        dispatch={dispatch}
+        finishAdding={finishAdding}
+      />
+    </CSSTransition>
   </div>
 }
 

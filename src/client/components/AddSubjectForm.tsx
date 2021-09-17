@@ -99,7 +99,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
     setSelectedIcon(null)
     setSubjectInput(str)
   }, [])
-  return <>
+  return <div>
     <SubjectSelectButtonMemo
       changeSubjectListMode={changeSubjectListMode}
       isError={isError}
@@ -132,7 +132,7 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
       </form> :
       <SubjectListModeMemo onSubjectClick={onSubjectClick} query={subjectInput} />
     }
-  </>
+  </div>
 }
 
 type PropsType = {

@@ -107,6 +107,8 @@ export default function Home() {
           setEditMode={setEditMode}
           isEditMode={state.isEditMode}
           tab={state.tabPage}
+          isAddSubjectMode={state.isAddSubjectMode}
+          setIsAddSubjectMode={(flag: boolean) => dispatch(actions.setIsAddSubjectMode(flag))}
           setIsAddTaskMode={(flag: boolean) => dispatch(actions.setIsAddTaskMode(flag))}
           isAddTaskMode={state.isAddTaskMode}
           setShowTaskMode={(id: string | null) => dispatch(actions.setShowTaskMode(id))}

@@ -113,9 +113,10 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
             value={taskText}
             placeholder={'Введите задание'}
             className={`${style.taskText} ${isError && !!selectedSubject && style.taskTextError}`}
-            resize={'none'}
+            resize='vertical'
             disabled={false}
             readOnly={false}
+            wrap="soft"
             onChange={(e) => {
               setTaskText(e.target.value)
               setIsError(false)
