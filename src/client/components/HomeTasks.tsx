@@ -19,14 +19,20 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
   }, [])
   const userIdRef = useRef<string | null>()
   userIdRef.current = userId
-  const onDeleteTaskHandler = useCallback((id: string) => {
-    deleteHomeTask(userIdRef.current as string, id)
+  const onDeleteTaskHandler = useCallback(async (id: string) => {
+    dispatch(actions.setIsFetching(true))
+    try{
+      await deleteHomeTask(userIdRef.current as string, id)
+    } catch(e){
+      alert('Какие-то неполадки. Попробуйте попозже.')
+    }
+    dispatch(actions.setIsFetching(false))
     dispatch(actions.deleteHomeTask(id))
     dispatch(actions.setShowTaskMode(null))
   }, [userIdRef, dispatch])
 
-  const onDoneTaskHandler = (id: string) => {
-    onDeleteTaskHandler(id)
+  const onDoneTaskHandler = async (id: string) => {
+    await onDeleteTaskHandler(id)
     assistant.sendAction({ type: 'task_done', payload: {} })
   }
 

@@ -30,7 +30,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
     dateValue
   }
 
-  const onFormSubmit = (e?: FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = async (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
     if (taskRef.current.selectedSubject && taskRef.current.taskText && taskRef.current.userId) {
       const newHomeTask = {
@@ -41,7 +41,13 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
         subSubject: taskRef.current.selectedSubject.subSubject,
         id: Date.now().toString()
       }
-      changeHomeTasks(taskRef.current.userId, newHomeTask)
+      dispatch(actions.setIsFetching(true))
+      try{
+        await changeHomeTasks(taskRef.current.userId, newHomeTask)
+      } catch(e){
+        alert('Какие-то неполадки. Попробуйте попозже.')
+      }
+      dispatch(actions.setIsFetching(false))
       dispatch(actions.addHomeTask(newHomeTask))
       finishAdding()
     } else setIsError(true)

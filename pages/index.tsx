@@ -2,7 +2,7 @@ import { IconEvent, IconHouse } from '@sberdevices/plasma-icons'
 import { Container, Spinner, TabItem, Tabs } from '@sberdevices/plasma-ui'
 import React, { useCallback, useEffect, useReducer, useRef } from 'react'
 import { Schedule } from '../src/client/components/Schedule'
-import { CharacterType, GlobalStyles } from '../GlobalStyle'
+import { GlobalStyles } from '../GlobalStyle'
 import { actions, initialState, reducer } from '../store'
 import { createAssistant } from '@sberdevices/assistant-client'
 import style from '../styles/index.module.css'
@@ -10,9 +10,9 @@ import { postSchedule, requestHomeTasks, requestSchedule } from '../src/client/a
 import { CustomHeader } from '../src/client/components/CustomHeader'
 import { HomeTasks } from '../src/client/components/HomeTasks'
 import { initAssistant, initializeAssistant } from '../src/client/assistant'
-import { AssistantState, StateType, SurfaceType } from '../src/types'
-
-export const CharacterContext = React.createContext<{character: CharacterType, surface: SurfaceType}>({character: 'sber', surface: 'mobile'})
+import { AssistantState, StateType } from '../src/types'
+import { CharacterContext } from '../src/client/context'
+import { Fetching } from '../src/client/components/Fetching'
 
 const tabs = ['Расписание', 'Домашка'] as const
 
@@ -21,8 +21,14 @@ export default function Home() {
 
   const stateRef = useRef<StateType>(state)
   stateRef.current = state
-  const saveData = useCallback(() => {
-    postSchedule(stateRef.current.userId as string, stateRef.current.schedule)
+  const saveData = useCallback(async () => {
+    dispatch(actions.setIsFetching(true))
+    try {
+      await postSchedule(stateRef.current.userId as string, stateRef.current.schedule)
+    } catch (e) {
+      alert('Какие-то неполадки. Попробуйте попозже.')
+    }
+    dispatch(actions.setIsFetching(false))
     dispatch(actions.setEditMode(false))
   }, [stateRef.current.userId, stateRef.current.schedule])
 
@@ -55,7 +61,7 @@ export default function Home() {
         getHomeTasks(),
         getSchedule()
       ])
-      dispatch(actions.setIsFetching(false))
+      dispatch(actions.setIsInitialFetching(false))
     }
     if (state.userId) {
       initialRequests()
@@ -63,10 +69,10 @@ export default function Home() {
   }, [state.userId])
 
   useEffect(() => {
-    assistantRef.current?.sendAction({ type: 'CHANGE_TAB_PAGE', payload: {tabPage: state.tabPage} })
+    assistantRef.current?.sendAction({ type: 'CHANGE_TAB_PAGE', payload: { tabPage: state.tabPage } })
   }, [state.tabPage])
   useEffect(() => {
-    assistantRef.current?.sendAction({ type: 'CHANGE_IS_EDIT_MODE', payload: {isEditMode: state.isEditMode} })
+    assistantRef.current?.sendAction({ type: 'CHANGE_IS_EDIT_MODE', payload: { isEditMode: state.isEditMode } })
   }, [state.isEditMode])
 
   const selectTab = () => {
@@ -100,11 +106,11 @@ export default function Home() {
     if (!flag) dispatch(actions.resetScheduleCopy())
   }
   return (
-    <CharacterContext.Provider value={{character: state.character, surface: state.surface}}>
+    <CharacterContext.Provider value={{ character: state.character, surface: state.surface }}>
       <GlobalStyles character={state.character} />
       <Container>
         <CustomHeader
-          isFetching={state.isFetching}
+          isFetching={state.isStartFetching}
           homeTask={state.showTaskMode}
           setEditMode={setEditMode}
           isEditMode={state.isEditMode}
@@ -133,9 +139,9 @@ export default function Home() {
                 onClick={() => dispatch(actions.changeTab(tab))}
                 contentLeft={
                   state.userId && (
-                  tab === 'Расписание' ?
-                    <IconEvent className={style.icon} /> :
-                    <IconHouse className={style.icon} />
+                    tab === 'Расписание' ?
+                      <IconEvent className={style.icon} /> :
+                      <IconHouse className={style.icon} />
                   )
                 }
               >
@@ -144,8 +150,11 @@ export default function Home() {
             ))}
           </Tabs>
           {
-            state.isFetching ? <div className={style.spinner}><Spinner /></div> :
+            state.isStartFetching ? <div className={style.spinner}><Spinner /></div> :
               selectTab()
+          }
+          {
+            state.isFetching && <Fetching />
           }
         </div>
       </Container>

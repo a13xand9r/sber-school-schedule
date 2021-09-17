@@ -9,7 +9,8 @@ export const initialState = {
   surface: 'sberBox' as SurfaceType,
   isEditMode: false,
   day: 'Понедельник' as DayType,
-  isFetching: true,
+  isStartFetching: true,
+  isFetching: false,
   schedule: {
     'Понедельник': null,
     'Вторник': null,
@@ -53,7 +54,9 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
       return { ...state, userId: action.id }
     case 'SET_EDIT_MODE':
       return { ...state, isEditMode: action.flag, scheduleCopy: action.flag ? _.cloneDeep(state.schedule) : state.scheduleCopy}
-    case 'SET_IS_DATA_FETCHING':
+    case 'SET_IS_INITIAL_DATA_FETCHING':
+      return { ...state, isStartFetching: action.flag }
+    case 'SET_IS_FETCHING':
       return { ...state, isFetching: action.flag }
     case 'SET_SURFACE':
       return { ...state, surface: action.surface }
@@ -99,7 +102,8 @@ export const actions = {
   setSchedule: (schedule: ScheduleType) => ({ type: 'SET_SCHEDULE', schedule } as const),
   setUserId: (id: string) => ({ type: 'SET_USER_ID', id } as const),
   setEditMode: (flag: boolean) => ({ type: 'SET_EDIT_MODE', flag } as const),
-  setIsFetching: (flag: boolean) => ({ type: 'SET_IS_DATA_FETCHING', flag } as const),
+  setIsInitialFetching: (flag: boolean) => ({ type: 'SET_IS_INITIAL_DATA_FETCHING', flag } as const),
+  setIsFetching: (flag: boolean) => ({ type: 'SET_IS_FETCHING', flag } as const),
   deleteSubject: (id: string) => ({ type: 'DELETE_SUBJECT', id } as const),
   deleteHomeTask: (id: string) => ({ type: 'DELETE_HOME_TASK', id } as const),
   setSurface: (surface: SurfaceType) => ({ type: 'SET_SURFACE', surface } as const),

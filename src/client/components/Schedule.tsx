@@ -1,7 +1,6 @@
 import { createAssistant } from '@sberdevices/assistant-client'
 import { Button, TabItem, Tabs } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, useCallback, useContext, useEffect, useState } from 'react'
-import { CharacterContext } from '../../../pages'
 import { actions } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import { AddSubjectForm } from './AddSubjectForm'
@@ -9,6 +8,7 @@ import { SubjectList } from './SubjectList'
 import { CSSTransition } from 'react-transition-group'
 import { daysArray } from '../../utils/constants'
 import { ActionsType, DayType, ScheduleType, SubjectType } from '../../types'
+import { CharacterContext } from '../context'
 
 export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, schedule, userId, isAddSubjectMode, assistant, changingSubject }) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
@@ -57,7 +57,6 @@ export const Schedule: FC<PropsType> = ({ day, dispatch, isEditMode, saveData, s
     dispatch(actions.setIsAddSubjectMode(false))
   }, [])
   const setEditMode = useCallback(() => dispatch(actions.setEditMode(true)), [])
-  console.log(isAddSubjectMode)
   return <div className={style.schedule}>
     <div className={style.dayTabs}>
       <Tabs
