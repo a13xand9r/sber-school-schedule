@@ -130,9 +130,11 @@ export default function Home() {
                 tabIndex={1}
                 onClick={() => dispatch(actions.changeTab(tab))}
                 contentLeft={
+                  state.userId && (
                   tab === 'Расписание' ?
                     <IconEvent className={style.icon} /> :
                     <IconHouse className={style.icon} />
+                  )
                 }
               >
                 {tab}
