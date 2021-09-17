@@ -33,7 +33,8 @@ export default function Home() {
     day: state.day,
     schedule: state.schedule,
     isAddTaskMode: state.isAddTaskMode,
-    isAddSubjectMode: state.isAddSubjectMode
+    isAddSubjectMode: state.isAddSubjectMode,
+    isShowTaskMode: !!state.showTaskMode
   }
   useEffect(() => {
     assistantRef.current = initializeAssistant(() => assistantStateRef.current)
@@ -158,4 +159,5 @@ export interface AssistantState extends AssistantAppState {
   schedule: ScheduleType
   isAddTaskMode: boolean
   isAddSubjectMode: boolean
+  isShowTaskMode: boolean
 }

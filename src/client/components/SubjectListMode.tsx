@@ -1,6 +1,7 @@
 import React from 'react'
-import { allSubjects, SubjectWithIconsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
+import { SubjectWithIconsType } from '../../types'
+import { allSubjects } from '../../utils/constants'
 import { SubjectItem } from './SubjectItem'
 
 export const SubjectListMode = ({onSubjectClick, query}: {onSubjectClick: (subject: SubjectWithIconsType) => void, query: string}) => {

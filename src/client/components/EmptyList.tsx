@@ -2,8 +2,8 @@ import { IconWarning } from '@sberdevices/plasma-icons'
 import { Body1, Headline3 } from '@sberdevices/plasma-ui'
 import React, { FC, useContext } from 'react'
 import { CharacterContext } from '../../../pages'
-import { TabsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
+import { TabsType } from '../../types'
 
 export const EmptyList: FC<PropsType> = ({ isEditMode, tab }) => {
   const {character, surface} = useContext(CharacterContext)

@@ -2,9 +2,9 @@ import { IconClose, IconEdit, IconPlus } from '@sberdevices/plasma-icons'
 import { Button, Header, HeaderLogo } from '@sberdevices/plasma-ui'
 import React, { FC, useContext } from 'react'
 import { CharacterContext } from '../../../pages'
-
-import { daysArray, HomeTaskType, monthsArray, TabsType } from '../../../store'
 import style from '../../../styles/header.module.css'
+import { HomeTaskType, TabsType } from '../../types'
+import { daysArray, monthsArray } from '../../utils/constants'
 
 export const CustomHeader: FC<PropsType> = ({
   isEditMode,

@@ -1,8 +1,8 @@
-import { SubjectType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import React, { FC } from 'react'
 import { EmptyList } from './EmptyList'
 import { SubjectItemMemo } from './SubjectItem'
+import { SubjectType } from '../../types'
 
 export const SubjectList: FC<PropsType> = ({ list, isEditMode, deleteItem, onClick }) => {
   return <>

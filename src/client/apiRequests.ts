@@ -1,6 +1,5 @@
-import { HomeTaskType } from './../../store';
-import { ScheduleType } from '../../store';
 import axios from 'axios'
+import { HomeTaskType, ScheduleType } from '../types'
 
 const axiosInstance = axios.create({
   baseURL: '/api',

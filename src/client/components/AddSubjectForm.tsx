@@ -1,11 +1,13 @@
 import { IconHouseSbol, IconPersone } from '@sberdevices/plasma-icons';
 import { Button, TextField } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, FormEvent, useCallback, useEffect, useRef, useState } from 'react'
-import { actions, ActionsType, allSubjects, SubjectConstType, SubjectType, SubjectWithIconsType } from '../../../store'
+import { actions } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import { SubjectSelectButtonMemo } from './SubjectsSelectButton'
 import { SubjectListModeMemo } from './SubjectListMode'
 import { createAssistant } from '@sberdevices/assistant-client';
+import { ActionsType, SubjectConstType, SubjectType, SubjectWithIconsType } from '../../types';
+import { allSubjects } from '../../utils/constants';
 
 export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistant, changingSubject }) => {
   const [isSubjectListMode, setIsSubjectListMode] = useState(false)

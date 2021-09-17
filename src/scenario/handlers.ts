@@ -111,6 +111,15 @@ export const homeTaskDoneHandler: SaluteHandler = ({req, res}) => {
   res.setPronounceText(getRandomFromArray(text))
 }
 
+export const setHomeTaskDoneHandler: SaluteHandler = ({req, res}) => {
+  const text = ['Домашнее задание выполнено. Молодец!', 'Готово!', 'Молодец!', 'Выполнено!', 'Сделано!']
+  res.setPronounceText(getRandomFromArray(text))
+  res.appendCommand({
+    type: 'SET_TASK_MODE',
+    id: null
+  })
+}
+
 export const addHomeTaskTextHandler: SaluteHandler = ({req, res}) => {
   const text = req.message.tokenized_elements_list.map(word => word.text).join(' ')
   res.appendCommand({

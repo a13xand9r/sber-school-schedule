@@ -4,8 +4,9 @@ import Image from 'next/image'
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { CharacterType } from '../../../GlobalStyle'
-import { dateDaysArray, monthsArray, SubjectConstType, TabsType } from '../../../store'
 import style from '../../../styles/schedule.module.css'
+import { SubjectConstType, TabsType } from '../../types'
+import { dateDaysArray, monthsArray } from '../../utils/constants'
 
 const ItemWrapper = styled.div`
   margin: 0 auto;

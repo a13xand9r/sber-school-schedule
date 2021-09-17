@@ -1,5 +1,39 @@
 {
   "intents": {
+    "/Удалить": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "удалить"
+        },
+        {
+          "type": "phrase",
+          "rule": "удалить задание"
+        },
+        {
+          "type": "phrase",
+          "rule": "удали"
+        }
+      ],
+      "variables": {}
+    },
+    "/Сделано": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "сделано"
+        },
+        {
+          "type": "phrase",
+          "rule": "задание сделано"
+        },
+        {
+          "type": "phrase",
+          "rule": "готово"
+        }
+      ],
+      "variables": {}
+    },
     "/Добавить предмет": {
       "matchers": [
         {
@@ -169,6 +203,22 @@
         {
           "type": "phrase",
           "rule": "добавь домашнее задание по @subject"
+        },
+        {
+          "type": "phrase",
+          "rule": "добавь задание"
+        },
+        {
+          "type": "phrase",
+          "rule": "добавь домашку"
+        },
+        {
+          "type": "phrase",
+          "rule": "запиши задание"
+        },
+        {
+          "type": "phrase",
+          "rule": "запиши домашку по @subject на @duckling.date"
         }
       ],
       "variables": {

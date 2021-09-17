@@ -1,9 +1,8 @@
 import { SmartAppBrainRecognizer } from '@salutejs/recognizer-smartapp-brain'
 import { createIntents, createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
 import { SaluteMemoryStorage } from '@salutejs/storage-adapter-memory'
-import { addHomeTaskHandler, addHomeTaskTextHandler, addSubjectHandler, changeIsEditModeHandler, changeTabPageHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, saveHomeTaskHandler, saveScheduleHandler, scheduleNavigationHandler } from './handlers'
+import { addHomeTaskHandler, addHomeTaskTextHandler, addSubjectHandler, changeIsEditModeHandler, changeTabPageHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, saveHomeTaskHandler, saveScheduleHandler, scheduleNavigationHandler, setHomeTaskDoneHandler } from './handlers'
 import model from '../intents.json'
-import { buttons, getRandomFromArray } from '../utils/utils'
 
 const storage = new SaluteMemoryStorage()
 const intents = createIntents(model.intents)
@@ -82,22 +81,33 @@ const userScenario = createUserScenario({
     match: match(intent('/Сохранить расписание', { confidence: 0.2 }), (req) => req.state?.isEditMode as boolean),
     handle: saveScheduleHandler
   },
+  deleteHomeTask: {
+    match: match(intent('/Удалить', { confidence: 0.2 }), (req) => req.state?.isShowTaskMode as boolean),
+    handle: ({req, res}) => {
+      res.appendCommand({
+        type: 'SET_TASK_MODE',
+        id: null
+      })
+    }
+  },
+  setHomeTaskDone: {
+    match: match(intent('/Сделано', { confidence: 0.2 }), (req) => req.state?.isShowTaskMode as boolean),
+    handle: setHomeTaskDoneHandler
+  },
   addHomeTask: {
     match: intent('/Новое дз', { confidence: 0.2 }),
     handle: addHomeTaskHandler,
     children: {
       taskText: {
         match: match(
-          (req) => !!req.message.original_text,
+          (req) => !!req.message?.original_text,
           (req) => req.state?.isAddTaskMode as boolean,
           (req) => req.currentState?.path[0] !== 'addHomeTask'
         ),
         handle: addHomeTaskTextHandler,
         children: {
           yes: {
-            match: (req) => {
-              return intent('/Согласие', { confidence: 0.2 })(req)
-            },
+            match:intent('/Согласие', { confidence: 0.2 }),
             handle: saveHomeTaskHandler
           },
           no: {

@@ -1,6 +1,6 @@
 import { Button } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, useCallback, useEffect, useState } from 'react'
-import { actions, ActionsType, HomeTaskType } from '../../../store'
+import { actions } from '../../../store'
 import { EmptyList } from './EmptyList'
 import { SubjectItemMemo } from './SubjectItem'
 import style from '../../../styles/schedule.module.css'
@@ -9,6 +9,7 @@ import { Task } from './Task'
 import { deleteHomeTask } from '../apiRequests'
 import { createAssistant } from '@sberdevices/assistant-client'
 import { CSSTransition } from 'react-transition-group'
+import { ActionsType, HomeTaskType } from '../../types'
 
 export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, isAddTaskMode, userId, assistant }) => {
   const [isAddTaskModeTransition, setIsAddTaskModeTransition] = useState(false)
@@ -33,7 +34,7 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
     }
   }, [])
   return <div className={style.schedule}>
-     <CSSTransition
+    <CSSTransition
       in={isAddTaskMode}
       timeout={200}
       classNames='formTransition'
