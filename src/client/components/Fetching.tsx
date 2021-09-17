@@ -11,7 +11,7 @@ const StyledDiv = styled.div`
   background-color: #0000006c;
   width: 5rem;
   height: 5rem;
-  position: absolute;
+  position: fixed;
   left: 50%;
   transform: translate(-50%, -50%);
   top: 47%;
