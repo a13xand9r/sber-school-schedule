@@ -1,6 +1,6 @@
-import { HomeTaskType } from './../../store'
 import { addHomeTask, deleteHomeTask, getHomeTasks } from './../../src/scenario/dataBase'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { HomeTaskType } from '../../src/types'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<HomeTaskType | HomeTaskType[] | null>) {
   const userId = typeof req.query.userId === 'string' ? req.query.userId.split('').map(el => el === ' ' ? '+' : el).join('') : ''

@@ -1,6 +1,6 @@
-import { ScheduleType } from './../../store';
 import { changeSchedule, getSchedule, start } from '../../src/scenario/dataBase';
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { ScheduleType } from '../../src/types';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ScheduleType>) {
   const userId = typeof req.query.userId === 'string' ? req.query.userId.split('').map(el => el === ' ' ? '+' : el).join('') : ''
