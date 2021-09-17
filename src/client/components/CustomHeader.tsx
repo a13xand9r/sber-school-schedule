@@ -36,7 +36,7 @@ export const CustomHeader: FC<PropsType> = ({
       onBackClick={onBackHandler}
     >
       {
-        !isFetching && surface === 'mobile' && (
+        !isFetching && surface !== 'sberBox' && (
         tab === 'Домашка' ?
           !!homeTask ?
             <Button

@@ -40,10 +40,6 @@ export const AddSubjectForm: FC<PropsType> = ({ dispatch, finishAdding, assistan
   }
   const onFormSubmit = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
-    console.log(selectedSubject)
-    console.log(selectedIcon)
-    console.log(formDataRef.current.selectedSubject)
-    console.log(formDataRef.current.selectedIcon)
     if (formDataRef.current.selectedSubject && formDataRef.current.selectedIcon) {
       if (!changingSubjectRef.current) {
         dispatch(actions.addSubject({

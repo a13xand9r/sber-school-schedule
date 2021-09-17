@@ -2,6 +2,7 @@ import { createSmartappDebugger, createAssistant } from '@sberdevices/assistant-
 import { Dispatch } from 'react'
 import { actions } from '../../store'
 import { AssistantState } from '../types'
+import { detectDevice } from '@sberdevices/plasma-ui/utils'
 
 export const initializeAssistant = (getState: () => AssistantState) => {
   if (process.env.NODE_ENV === 'development') {
@@ -26,9 +27,6 @@ export const initAssistant = (
       if (smart_app_data.type === 'SAVE_SCHEDULE') saveData()
     }
     if (type === 'character') dispatch(actions.setCharacter(character.id))
-  })
-  const detectDeviceCallback = () => (
-    window.navigator.userAgent.toLowerCase().includes('sberbox') ? 'sberbox' : 'mobile'
-  )
-  dispatch(actions.setSurface(detectDeviceCallback()))
+  })  
+  dispatch(actions.setSurface(detectDevice()))
 }

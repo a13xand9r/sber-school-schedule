@@ -6,7 +6,7 @@ export const initialState = {
   userId: null as null | string,
   character: 'sber' as CharacterType,
   tabPage: 'Расписание' as TabsType,
-  surface: 'sberbox' as SurfaceType,
+  surface: 'sberBox' as SurfaceType,
   isEditMode: false,
   day: 'Понедельник' as DayType,
   isFetching: true,

@@ -27,7 +27,7 @@ export type ScheduleType = {
   'Пятница': null | SubjectType[],
   'Суббота': null | SubjectType[],
 }
-export type SurfaceType = 'sberbox' | 'mobile'
+export type SurfaceType = 'sberPortal' | 'sberBox' | 'mobile'
 export type HomeTaskType = {
   subject: SubjectConstType
   subSubject: SubSubjectConstType

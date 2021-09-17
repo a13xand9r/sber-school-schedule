@@ -2,7 +2,7 @@ import { IconEvent, IconHouse } from '@sberdevices/plasma-icons'
 import { Container, Spinner, TabItem, Tabs } from '@sberdevices/plasma-ui'
 import React, { useCallback, useEffect, useReducer, useRef } from 'react'
 import { Schedule } from '../src/client/components/Schedule'
-import { GlobalStyles } from '../GlobalStyle'
+import { CharacterType, GlobalStyles } from '../GlobalStyle'
 import { actions, initialState, reducer } from '../store'
 import { createAssistant } from '@sberdevices/assistant-client'
 import style from '../styles/index.module.css'
@@ -10,9 +10,9 @@ import { postSchedule, requestHomeTasks, requestSchedule } from '../src/client/a
 import { CustomHeader } from '../src/client/components/CustomHeader'
 import { HomeTasks } from '../src/client/components/HomeTasks'
 import { initAssistant, initializeAssistant } from '../src/client/assistant'
-import { AssistantState, StateType } from '../src/types'
+import { AssistantState, StateType, SurfaceType } from '../src/types'
 
-export const CharacterContext = React.createContext({character: 'sber', surface: 'mobile'})
+export const CharacterContext = React.createContext<{character: CharacterType, surface: SurfaceType}>({character: 'sber', surface: 'mobile'})
 
 const tabs = ['Расписание', 'Домашка'] as const
 

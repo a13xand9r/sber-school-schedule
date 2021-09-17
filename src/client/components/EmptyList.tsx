@@ -16,7 +16,7 @@ export const EmptyList: FC<PropsType> = ({ isEditMode, tab }) => {
 
     }
     {
-      surface === 'mobile' ?
+      surface !== 'sberBox' ?
       <Body1>{character === 'joy' ? 'Нажми' : 'Нажмите'} на кнопку ниже, чтобы {tab === 'Домашка' ? 'добавить д/з' :
       isEditMode ? 'добавить предмет' : 'перейти к редактированию расписания'}</Body1> :
       <Body1>Для {character === 'joy' ? 'твоего' : 'вашего'} удобства {tab === 'Домашка' ? 'добавить д/з' :
