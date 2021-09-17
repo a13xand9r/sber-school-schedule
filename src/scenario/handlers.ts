@@ -1,8 +1,8 @@
 import { SaluteHandler } from '@salutejs/scenario'
-import { getSchedule } from './dataBase'
 import * as dictionary from './system.i18n'
-import { buttons, getRandomFromArray } from '../utils/utils'
+import {getRandomFromArray } from '../utils/utils'
 import { AssistantState, DayType, ScheduleType } from '../types'
+import { buttons } from '../utils/constants'
 
 export const runAppHandler: SaluteHandler = ({ req, res }) => {
   res.appendCommand({
