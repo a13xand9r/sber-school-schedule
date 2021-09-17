@@ -1,5 +1,5 @@
 import { IconClose, IconEdit, IconPlus } from '@sberdevices/plasma-icons'
-import { Button, Header, HeaderLogo } from '@sberdevices/plasma-ui'
+import { Button, Header } from '@sberdevices/plasma-ui'
 import React, { FC, useContext } from 'react'
 import style from '../../../styles/header.module.css'
 import { HomeTaskType, TabsType } from '../../types'
@@ -24,15 +24,17 @@ export const CustomHeader: FC<PropsType> = ({
     setShowTaskMode(null)
     setIsAddSubjectMode(false)
   }
+  const title = homeTask ? surface === 'mobile' ?
+    `Д/З на ${homeTask.date?.getDate()} ${monthsArray[homeTask.date?.getMonth() - 1]} по ${homeTask.subSubject.toLowerCase()}` :
+    `Д/З на ${homeTask.date?.getDate()} ${monthsArray[homeTask.date?.getMonth() - 1]}, ${homeTask.date?.getFullYear()} (${daysArray[homeTask.date?.getDay()][0].toLocaleLowerCase()})` :
+    'Школьное распиcание'
   return (
     //@ts-ignore
     <Header
       className={style.header}
       back={flag}
-      title={
-        homeTask ? `Д/З на ${homeTask.date?.getDate()} ${monthsArray[homeTask.date?.getMonth() - 1]}, ${homeTask.date?.getFullYear()} (${daysArray[homeTask.date?.getDay()][0].toLocaleLowerCase()})` :
-          'Школьное распиcание'}
-      subtitle={homeTask ? `по ${homeTask.subSubject.toLowerCase()}` : undefined}
+      title={title}
+      subtitle={homeTask && surface !== 'mobile' ? `по ${homeTask.subSubject.toLowerCase()}` : undefined}
       onBackClick={onBackHandler}
     >
       {
