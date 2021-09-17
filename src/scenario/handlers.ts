@@ -111,11 +111,17 @@ export const homeTaskDoneHandler: SaluteHandler = ({req, res}) => {
 }
 
 export const setHomeTaskDoneHandler: SaluteHandler = ({req, res}) => {
-  const text = ['Домашнее задание выполнено. Молодец!', 'Готово!', 'Молодец!', 'Выполнено!', 'Сделано!']
-  res.setPronounceText(getRandomFromArray(text))
   res.appendCommand({
-    type: 'SET_TASK_MODE',
-    id: null
+    type: 'ASSISTANT_SET_HOME_TASK_DONE',
+    //@ts-ignore
+    id: req.state?.showTaskMode.id
+  })
+}
+export const deleteHomeTaskHandler: SaluteHandler = ({req, res}) => {
+  res.appendCommand({
+    type: 'ASSISTANT_DELETE_HOME_TASK',
+    //@ts-ignore
+    id: req.state?.showTaskMode.id
   })
 }
 

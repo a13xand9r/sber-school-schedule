@@ -1,5 +1,5 @@
 import { Button } from '@sberdevices/plasma-ui'
-import React, { Dispatch, FC, useCallback, useEffect, useState } from 'react'
+import React, { Dispatch, FC, useCallback, useEffect, useRef, useState } from 'react'
 import { actions } from '../../../store'
 import { EmptyList } from './EmptyList'
 import { SubjectItemMemo } from './SubjectItem'
@@ -17,17 +17,30 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
   const onTaskClickHandler = useCallback((id: string) => {
     dispatch(actions.setShowTaskMode(id))
   }, [])
-  const onDeleteTaskHandler = useCallback(() => {
-    deleteHomeTask(userId as string, showTaskMode?.id as string)
-    dispatch(actions.deleteHomeTask(showTaskMode?.id as string))
+  const userIdRef = useRef<string | null>()
+  userIdRef.current = userId
+  const onDeleteTaskHandler = useCallback((id: string) => {
+    deleteHomeTask(userIdRef.current as string, id)
+    dispatch(actions.deleteHomeTask(id))
     dispatch(actions.setShowTaskMode(null))
-  }, [userId, showTaskMode])
-  const onDoneTaskHandler = useCallback(() => {
-    onDeleteTaskHandler()
+  }, [userIdRef, dispatch])
+
+  const onDoneTaskHandler = (id: string) => {
+    onDeleteTaskHandler(id)
     assistant.sendAction({ type: 'task_done', payload: {} })
-  }, [onDeleteTaskHandler, assistant])
+  }
+
   const finishAdding = useCallback(() => dispatch(actions.setIsAddTaskMode(false)), [])
+
   useEffect(() => {
+    assistant.on('data', ({ smart_app_data }: any) => {
+      if (smart_app_data?.type === 'ASSISTANT_DELETE_HOME_TASK') {
+        onDeleteTaskHandler(smart_app_data.id)
+      }
+      if (smart_app_data?.type === 'ASSISTANT_SET_HOME_TASK_DONE') {
+        onDoneTaskHandler(smart_app_data.id)
+      }
+    })
     return () => {
       dispatch(actions.setShowTaskMode(null))
       dispatch(actions.setIsAddTaskMode(false))
@@ -49,7 +62,12 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
         finishAdding={finishAdding}
       />
     </CSSTransition>
-    {showTaskMode ? <Task showTaskMode={showTaskMode} onDelete={onDeleteTaskHandler} onDone={onDoneTaskHandler} /> :
+    {showTaskMode ?
+      <Task
+        showTaskMode={showTaskMode}
+        onDelete={onDeleteTaskHandler}
+        onDone={onDoneTaskHandler}
+      /> :
       isAddTaskModeTransition ? null :
         homeTasks.length === 0 ? <>
           <EmptyList isEditMode={false} tab='Домашка' />

@@ -44,5 +44,5 @@ export interface AssistantState extends AssistantAppState {
   schedule: ScheduleType
   isAddTaskMode: boolean
   isAddSubjectMode: boolean
-  isShowTaskMode: boolean
+  showTaskMode?: HomeTaskType | null
 }

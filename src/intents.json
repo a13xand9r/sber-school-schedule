@@ -17,23 +17,6 @@
       ],
       "variables": {}
     },
-    "/Сделано": {
-      "matchers": [
-        {
-          "type": "phrase",
-          "rule": "сделано"
-        },
-        {
-          "type": "phrase",
-          "rule": "задание сделано"
-        },
-        {
-          "type": "phrase",
-          "rule": "готово"
-        }
-      ],
-      "variables": {}
-    },
     "/Добавить предмет": {
       "matchers": [
         {
@@ -290,6 +273,27 @@
         {
           "type": "phrase",
           "rule": "посмотреть расписание"
+        }
+      ],
+      "variables": {}
+    },
+    "/Сделано": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "сделано"
+        },
+        {
+          "type": "phrase",
+          "rule": "задание сделано"
+        },
+        {
+          "type": "phrase",
+          "rule": "готово"
+        },
+        {
+          "type": "phrase",
+          "rule": "выполнено"
         }
       ],
       "variables": {}

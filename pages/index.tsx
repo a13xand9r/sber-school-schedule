@@ -35,7 +35,7 @@ export default function Home() {
     schedule: state.schedule,
     isAddTaskMode: state.isAddTaskMode,
     isAddSubjectMode: state.isAddSubjectMode,
-    isShowTaskMode: !!state.showTaskMode
+    showTaskMode: state.showTaskMode
   }
   useEffect(() => {
     assistantRef.current = initializeAssistant(() => assistantStateRef.current)

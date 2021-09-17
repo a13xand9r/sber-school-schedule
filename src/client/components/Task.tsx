@@ -7,14 +7,14 @@ export const Task: FC<PropsType> = ({showTaskMode, onDelete, onDone}) => {
   return <>
     <Body1>{showTaskMode.task}</Body1>
     <div className={style.deleteTaskButton}>
-      <Button onClick={onDone} style={{display: 'block', marginRight: '1rem'}} view='success'>Сделано</Button>
-      <Button onClick={onDelete} style={{display: 'block', marginLeft: '1rem'}} view='critical'>Удалить</Button>
+      <Button onClick={() => onDone(showTaskMode.id)} style={{display: 'block', marginRight: '1rem'}} view='success'>Сделано</Button>
+      <Button onClick={() => onDelete(showTaskMode.id)} style={{display: 'block', marginLeft: '1rem'}} view='critical'>Удалить</Button>
     </div>
   </>
 }
 
 type PropsType = {
   showTaskMode: HomeTaskType
-  onDelete: () => void
-  onDone: () => void
+  onDelete: (id: string) => void
+  onDone: (id: string) => void
 }
