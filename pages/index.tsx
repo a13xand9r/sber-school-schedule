@@ -157,7 +157,7 @@ export default function Home() {
           {
             <CSSTransition
               in={state.isFetching}
-              timeout={150}
+              timeout={200}
               classNames='loader'
               unmountOnExit
             >
