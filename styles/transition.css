@@ -14,8 +14,26 @@
 }
 .formTransition-exit-active {
   opacity: 0;
-  /* transform: scale(0.9); */
   transform: translateY(100px);
   /* transition: opacity 300ms, transform 300ms; */
-  transition: 200ms ease-in;
+  transition: 150ms ease-in;
+}
+
+
+.loader-enter {
+  opacity: 0;
+  transform: scale(0.4);
+}
+.loader-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: 150ms ease-in;
+}
+.loader-exit {
+  opacity: 1;
+}
+.loader-exit-active {
+  opacity: 0;
+  transform: scale(0.4);
+  transition: 150ms ease-in;
 }

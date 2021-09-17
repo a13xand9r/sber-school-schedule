@@ -8,7 +8,7 @@ const StyledDiv = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  background-color: #0000006c;
+  background-color: #0000009e;
   width: 5rem;
   height: 5rem;
   position: fixed;
@@ -17,7 +17,7 @@ const StyledDiv = styled.div`
   top: 47%;
 `
 
-export const Fetching = () => {
+export const Loader = () => {
   return (
     <StyledDiv>
       <Spinner />

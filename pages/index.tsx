@@ -12,7 +12,8 @@ import { HomeTasks } from '../src/client/components/HomeTasks'
 import { initAssistant, initializeAssistant } from '../src/client/assistant'
 import { AssistantState, StateType } from '../src/types'
 import { CharacterContext } from '../src/client/context'
-import { Fetching } from '../src/client/components/Fetching'
+import { Loader } from '../src/client/components/Loader'
+import { CSSTransition } from 'react-transition-group'
 
 const tabs = ['Расписание', 'Домашка'] as const
 
@@ -154,7 +155,15 @@ export default function Home() {
               selectTab()
           }
           {
-            state.isFetching && <Fetching />
+            <CSSTransition
+              in={state.isFetching}
+              timeout={150}
+              classNames='loader'
+              unmountOnExit
+            >
+              <Loader />
+            </CSSTransition>
+
           }
         </div>
       </Container>
