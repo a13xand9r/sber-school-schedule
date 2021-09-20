@@ -24,7 +24,7 @@
   margin-bottom: 0.5rem;
 }
 .editButton{
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 .addButton{
   margin: 0 auto;
@@ -122,7 +122,7 @@
 .submitChangeButtonContainer{
   /* position: fixed; */
   margin: 0 auto;
-  margin-top: 3rem;
+  margin-top: 1rem;
   margin-bottom: 3rem;
   max-width: 38rem;
   padding: 1rem;

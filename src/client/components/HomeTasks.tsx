@@ -17,6 +17,11 @@ export const HomeTasks: FC<PropsType> = ({ homeTasks, dispatch, showTaskMode, is
   const onTaskClickHandler = useCallback((id: string) => {
     dispatch(actions.setShowTaskMode(id))
   }, [])
+
+  useEffect(() => {
+    isAddTaskMode && setIsAddTaskModeTransition(true)
+  }, [])
+
   const userIdRef = useRef<string | null>()
   userIdRef.current = userId
   const onDeleteTaskHandler = useCallback(async (id: string) => {

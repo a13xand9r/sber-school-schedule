@@ -45,6 +45,7 @@ export const noMatchHandler: SaluteHandler = ({ req, res }) => {
   const keyset = req.i18n(dictionary)
   res.setPronounceText(keyset('404'))
   res.appendSuggestions([getRandomFromArray(buttons.general)])
+  console.log('currentState',req.currentState)
 }
 
 export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
