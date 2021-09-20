@@ -30,10 +30,9 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
     selectedSubject,
     dateValue
   }
-
   const onFormSubmit = async (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
-    if (taskRef.current.selectedSubject && taskRef.current.taskText && taskRef.current.userId) {
+    if (taskRef.current?.selectedSubject && taskRef.current?.taskText && taskRef.current?.userId) {
       const newHomeTask = {
         subject: taskRef.current.selectedSubject.subject,
         icon: taskRef.current.selectedSubject.icon,
@@ -57,6 +56,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
   useEffect(() => {
     assistant.on('data', ({ smart_app_data }: any) => {
       if (smart_app_data) {
+        console.log(smart_app_data)
         if (smart_app_data.type === 'ADD_SUBJECT_FORM') {
           setSubjectInput(smart_app_data.subject)
           setSelectedSubject(allSubjects.filter(item => item.subject === smart_app_data.subject)[0])
@@ -73,6 +73,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
     return () => {
       const unsubscribe = assistant.sendAction({type: 'unsubscribe', payload: {}})
       unsubscribe()
+      taskRef.current = null
     }
   }, [])
   const getDatePicker = () => (
