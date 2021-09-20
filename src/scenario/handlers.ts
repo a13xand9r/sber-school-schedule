@@ -109,10 +109,11 @@ export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
     if (state.tabPage === 'Домашка' && !state.isAddTaskMode){
       res.setPronounceText(keyset('newHomeTask'))
       res.setAutoListening(true)
-    } else if (state.tabPage === 'Домашка' && state.isAddTaskMode){
-      res.setPronounceText(keyset('addHomeTaskText'))
-      res.setAutoListening(true)
     }
+    // else if (state.tabPage === 'Домашка' && state.isAddTaskMode){
+    //   res.setPronounceText(keyset('addHomeTaskText'))
+    //   res.setAutoListening(true)
+    // }
   }
 }
 
