@@ -6,6 +6,7 @@ import style from '../../../styles/schedule.module.css'
 import { ActionsType, SubjectConstType, SubjectWithIconsType, SubSubjectConstType } from '../../types'
 import { allSubjects } from '../../utils/constants'
 import { changeHomeTasks } from '../apiRequests'
+import { CharacterContext } from '../context'
 import { SubjectListModeMemo } from './SubjectListMode'
 import { SubjectSelectButtonMemo } from './SubjectsSelectButton'
 
@@ -21,7 +22,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
     setSelectedSubject(null)
     setSubjectInput(str)
   }, [])
-
+  const { character } = useContext(CharacterContext)
   const taskRef = useRef<any>()
   taskRef.current = {
     userId,
@@ -124,7 +125,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
           <Body1 className={style.label}>Задание:</Body1>
           <TextArea
             value={taskText}
-            placeholder={'Введите задание'}
+            placeholder={character === 'joy' ? 'Введи задание' : 'Введите задание'}
             className={`${style.taskText} ${isError && !!selectedSubject && style.taskTextError}`}
             resize='vertical'
             disabled={false}
