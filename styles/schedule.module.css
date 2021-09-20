@@ -196,11 +196,13 @@
   transform: rotate(-45deg);
 }
 .deleteTaskButton{
+  margin: 2rem auto;
+  max-width: 18rem;
   display: flex;
   justify-content: space-around;
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
+  /* position: fixed; */
+  /* bottom: 2rem; */
+  /* left: 50%; */
 
-  transform: translate(-50%, -50%);
+  /* transform: translate(-50%, -50%); */
 }
