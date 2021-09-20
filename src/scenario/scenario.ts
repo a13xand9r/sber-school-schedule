@@ -95,19 +95,9 @@ const userScenario = createUserScenario({
     children: {
       taskText: {
         match: match(
-          (req) => {
-            console.log('original_text', req.message?.original_text)
-            console.log('currentState', req.currentState)
-            return !!req.message?.original_text
-          },
-          (req) => {
-            console.log(req.state?.isAddTaskMode)
-            return req.state?.isAddTaskMode as boolean
-          },
-          (req) => {
-            console.log(req.currentState)
-            return req.currentState?.path[0] !== 'addHomeTask'
-          }
+          (req) => !!req.message?.original_text,
+          (req) => req.state?.isAddTaskMode as boolean,
+          (req) => req.currentState?.path[0] !== 'addHomeTask'
         ),
         handle: addHomeTaskTextHandler,
         children: {

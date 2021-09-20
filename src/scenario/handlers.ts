@@ -18,6 +18,38 @@ export const runAppHandler: SaluteHandler = ({ req, res }) => {
   }
 }
 
+export const noMatchHandler: SaluteHandler = ({ req, res }) => {
+  const keyset = req.i18n(dictionary)
+  const state = req.state as AssistantState
+  if (state.tabPage === 'Расписание' && !state.isEditMode && !state.isAddSubjectMode){
+    res.setPronounceText(keyset('noMatchSchedulePage'))
+    if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
+      res.appendSuggestions([getRandomFromArray(buttons.generalSberBox)])
+    } else res.appendSuggestions([getRandomFromArray(buttons.schedulePage)])
+  } else if (state.tabPage === 'Расписание' && state.isEditMode && !state.isAddSubjectMode){
+    res.setPronounceText(keyset('noMatchEditScheduleMode'))
+    res.appendSuggestions([getRandomFromArray(buttons.schedulePageEditMode)])
+  } else if (state.tabPage === 'Расписание' && state.isEditMode && state.isAddSubjectMode){
+    res.setPronounceText(keyset('noMatchAddSubjectMode'))
+  } else if (state.tabPage === 'Домашка' && !state.isAddTaskMode && !state.showTaskMode){
+    res.setPronounceText(keyset('noMatchHomeTasksPage'))
+    if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
+      res.appendSuggestions([getRandomFromArray(buttons.generalSberBox)])
+    } else res.appendSuggestions([getRandomFromArray(buttons.general)])
+  } else if (state.tabPage ==='Домашка' && !state.isAddTaskMode && !!state.showTaskMode){
+    res.setPronounceText(keyset('noMatchTaskMode'))
+    res.appendSuggestions(['Сделано', 'Удалить'])
+  }else if (state.tabPage ==='Домашка' && state.isAddTaskMode && !state.showTaskMode){
+    res.setPronounceText(keyset('noMatchAddTaskMode'))
+    res.appendSuggestions(['Запиши задание', 'Добавить'])
+  } else {
+    res.setPronounceText(keyset('404'))
+    if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
+      res.appendSuggestions([getRandomFromArray(buttons.generalSberBox)])
+    } else res.appendSuggestions([getRandomFromArray(buttons.general)])
+  }
+}
+
 export const changeTabPageHandler: SaluteHandler = ({req, res}, dispatch) => {
   //@ts-ignore
   if(req.serverAction?.payload.tabPage === 'Расписание'){
@@ -41,16 +73,11 @@ export const changeIsEditModeHandler: SaluteHandler = ({req, res}) => {
   }
 }
 
-export const noMatchHandler: SaluteHandler = ({ req, res }) => {
-  const keyset = req.i18n(dictionary)
-  res.setPronounceText(keyset('404'))
-  res.appendSuggestions([getRandomFromArray(buttons.general)])
-}
-
 export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
   const subject = req.variables.subject ? JSON.parse(req.variables.subject as string).name : ''
   const timestamp = req.variables.date ? JSON.parse(req.variables.date as string).timestamp : null
   const keyset = req.i18n(dictionary)
+  const state = req.state as AssistantState
   if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
     res.setPronounceText('Добавить домашнее задание можно в приложении Салют или на СберПортале')
     res.appendBubble('Добавить домашнее задание можно в приложении Салют или на СберПортале')
@@ -79,8 +106,11 @@ export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
         timestamp
       })
     }
-    if (req.state?.tabPage === 'Домашка'){
+    if (state.tabPage === 'Домашка' && !state.isAddTaskMode){
       res.setPronounceText(keyset('newHomeTask'))
+      res.setAutoListening(true)
+    } else if (state.tabPage === 'Домашка' && state.isAddTaskMode){
+      res.setPronounceText(keyset('addHomeTaskText'))
       res.setAutoListening(true)
     }
   }
