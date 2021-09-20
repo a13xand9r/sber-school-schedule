@@ -4,5 +4,9 @@ export function getRandomFromArray<T>(arr: T[]): T{
 }
 
 export function capitalizeFirstLetter(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+export function deleteSpaceBeforeFinishDot(str: string) {
+  return str.slice(0, str.length - 2) + str.slice(str.length - 1)
 }

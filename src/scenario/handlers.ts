@@ -1,6 +1,6 @@
 import { SaluteHandler } from '@salutejs/scenario'
 import * as dictionary from './system.i18n'
-import {capitalizeFirstLetter, getRandomFromArray } from '../utils/utils'
+import {capitalizeFirstLetter, deleteSpaceBeforeFinishDot, getRandomFromArray } from '../utils/utils'
 import { AssistantState, DayType, ScheduleType } from '../types'
 import { buttons } from '../utils/constants'
 
@@ -45,7 +45,6 @@ export const noMatchHandler: SaluteHandler = ({ req, res }) => {
   const keyset = req.i18n(dictionary)
   res.setPronounceText(keyset('404'))
   res.appendSuggestions([getRandomFromArray(buttons.general)])
-  console.log('currentState',req.currentState)
 }
 
 export const addHomeTaskHandler: SaluteHandler = async ({ req, res }) => {
@@ -130,11 +129,11 @@ export const deleteHomeTaskHandler: SaluteHandler = ({req, res}) => {
 }
 
 export const addHomeTaskTextHandler: SaluteHandler = ({req, res}) => {
-  const text = req.message.tokenized_elements_list.map((word, i) => {
+  let text = req.message.tokenized_elements_list.map((word, i) => {
     if (i === 0 || !!word.composite_token_type) return capitalizeFirstLetter(word.text)
     return word.text
   }).join(' ')
-  console.log(req.message.tokenized_elements_list)
+  text = deleteSpaceBeforeFinishDot(text)
   res.appendCommand({
     type: 'SET_HOME_TASK_TEXT_FORM',
     text: text
