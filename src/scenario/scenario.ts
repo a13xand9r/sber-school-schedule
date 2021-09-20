@@ -1,7 +1,7 @@
 import { SmartAppBrainRecognizer } from '@salutejs/recognizer-smartapp-brain'
 import { createIntents, createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
 import { SaluteMemoryStorage } from '@salutejs/storage-adapter-memory'
-import { addHomeTaskHandler, addHomeTaskTextHandler, addSubjectHandler, changeIsEditModeHandler, changeTabPageHandler, deleteHomeTaskHandler, deleteSubjectHandler, getDailyScheduleHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, saveHomeTaskHandler, saveScheduleHandler, scheduleNavigationHandler, setHomeTaskDoneHandler } from './handlers'
+import { addHomeTaskHandler, addHomeTaskTextHandler, addSubjectHandler, changeIsEditModeHandler, changeTabPageHandler, deleteHomeTaskHandler, deleteSubjectHandler, getDailyScheduleHandler, helpHandler, homeTaskDoneHandler, homeTasksNavigationHandler, noMatchHandler, runAppHandler, saveHomeTaskHandler, saveScheduleHandler, scheduleNavigationHandler, setHomeTaskDoneHandler } from './handlers'
 import model from '../intents.json'
 
 const storage = new SaluteMemoryStorage()
@@ -80,6 +80,10 @@ const userScenario = createUserScenario({
   saveSchedule: {
     match: match(intent('/Сохранить расписание', { confidence: 0.2 }), (req) => req.state?.isEditMode as boolean),
     handle: saveScheduleHandler
+  },
+  help: {
+    match: intent('/Помощь', {confidence: 0.2}),
+    handle: helpHandler
   },
   deleteHomeTask: {
     match: match(intent('/Удалить', { confidence: 0.2 }), (req) => !!req.state?.showTaskMode),

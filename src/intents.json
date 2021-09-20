@@ -89,6 +89,15 @@
       ],
       "variables": {}
     },
+    "/Помощь": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "помощь"
+        }
+      ],
+      "variables": {}
+    },
     "/sum": {
       "matchers": [
         {
@@ -256,6 +265,10 @@
         {
           "type": "phrase",
           "rule": "открой дз"
+        },
+        {
+          "type": "phrase",
+          "rule": "перейти в раздел домашка"
         }
       ],
       "variables": {}

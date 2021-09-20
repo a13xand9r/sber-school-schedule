@@ -50,6 +50,38 @@ export const noMatchHandler: SaluteHandler = ({ req, res }) => {
   }
 }
 
+export const helpHandler: SaluteHandler = ({ req, res }) => {
+  const keyset = req.i18n(dictionary)
+  const state = req.state as AssistantState
+  if (state.tabPage === 'Расписание' && !state.isEditMode && !state.isAddSubjectMode){
+    res.setPronounceText(keyset('helpSchedulePage'))
+    if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
+      res.appendSuggestions([getRandomFromArray(buttons.generalSberBox)])
+    } else res.appendSuggestions([getRandomFromArray(buttons.schedulePage)])
+  } else if (state.tabPage === 'Расписание' && state.isEditMode && !state.isAddSubjectMode){
+    res.setPronounceText(keyset('helpEditScheduleMode'))
+    res.appendSuggestions([getRandomFromArray(buttons.schedulePageEditMode)])
+  } else if (state.tabPage === 'Расписание' && state.isEditMode && state.isAddSubjectMode){
+    res.setPronounceText(keyset('helpAddSubjectMode'))
+  } else if (state.tabPage === 'Домашка' && !state.isAddTaskMode && !state.showTaskMode){
+    res.setPronounceText(keyset('helpHomeTasksPage'))
+    if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
+      res.appendSuggestions([getRandomFromArray(buttons.generalSberBox)])
+    } else res.appendSuggestions([getRandomFromArray(buttons.general)])
+  } else if (state.tabPage ==='Домашка' && !state.isAddTaskMode && !!state.showTaskMode){
+    res.setPronounceText(keyset('helpTaskMode'))
+    res.appendSuggestions(['Сделано', 'Удалить'])
+  }else if (state.tabPage ==='Домашка' && state.isAddTaskMode && !state.showTaskMode){
+    res.setPronounceText(keyset('helpAddTaskMode'))
+    res.appendSuggestions(['Запиши задание', 'Добавить'])
+  } else {
+    res.setPronounceText(keyset('404'))
+    if (req.request.payload.device?.surface === 'SBERBOX' && process.env.NODE_ENV === 'production'){
+      res.appendSuggestions([getRandomFromArray(buttons.generalSberBox)])
+    } else res.appendSuggestions([getRandomFromArray(buttons.general)])
+  }
+}
+
 export const changeTabPageHandler: SaluteHandler = ({req, res}, dispatch) => {
   //@ts-ignore
   if(req.serverAction?.payload.tabPage === 'Расписание'){
