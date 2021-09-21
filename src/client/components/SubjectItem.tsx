@@ -1,5 +1,5 @@
 import { accent } from '@sberdevices/plasma-tokens'
-import { Body1, Footnote1 } from '@sberdevices/plasma-ui'
+import { Body1, Card, CardContent, Cell, Col, Footnote1, TextBox } from '@sberdevices/plasma-ui'
 import Image from 'next/image'
 import React, { FC } from 'react'
 import styled from 'styled-components'
@@ -25,7 +25,7 @@ const ItemWrapper = styled.div`
   /* &:active, &::visited{
     transform: scale(0.98);
   } */
-  &:focus-visible, &:focus {
+  &:focus-visible, &:focus, &:hover {
     border-radius: 10px;
     outline: ${accent} solid 1px;
   }
@@ -39,21 +39,41 @@ export const SubjectItem: FC<PropsType> = (props) => {
     id && deleteItem && deleteItem(id)
   }
 
-  return <ItemWrapper tabIndex={1} onClick={() => !!onClick ? onClick(id as string) : null}>
-    <Image priority={true} loading='eager' src={icon} alt='' layout='fixed' width={35} height={35} />
-    <div className={style.subjectText}>
-      <Body1>{subject}</Body1>
-      {
-        tab === 'Домашка' ?
-          <Footnote1 className={style.subjectFooter}>
-            На {`${date?.getDate()} ${monthsArray[date?.getMonth() as number]}, ${date?.getFullYear()} (${dateDaysArray[date?.getDay() as number].toLowerCase()})`}
-          </Footnote1> :
-          <Footnote1 className={style.subjectFooter}>{cabinet && `Кабинет ${cabinet} ${"\u2022"}`} {teacher && teacher}</Footnote1>
-      }
-    </div>
-    {(isEditMode && tab === 'Расписание') &&
-      <span onClick={onDeleteHandler} className={style.deleteItem}></span>}
-  </ItemWrapper>
+  return( 
+    <ItemWrapper tabIndex={1}>
+      {/* <Card>
+      <CardContent compact>
+        <Cell
+          content={
+            <TextBox title={subject}
+              subTitle={
+                tab === 'Домашка' ?
+                  `На ${date?.getDate()} ${monthsArray[date?.getMonth() as number]}, ${date?.getFullYear()} (${dateDaysArray[date?.getDay() as number].toLowerCase()})` :
+                  `${!!cabinet && 'Кабинет '} ${!!cabinet && cabinet} ${"\u2022"} ${teacher && teacher}`
+              }
+              //@ts-ignore
+              contentLeft={<Image priority={true} loading='eager' src={icon} alt='' layout='fixed' width={35} height={35} />}
+            />
+          }
+        />
+      </CardContent>
+    </Card> */}
+
+      <Image priority={true} loading='eager' src={icon} alt='' layout='fixed' width={35} height={35} />
+      <div className={style.subjectText}>
+        <Body1>{subject}</Body1>
+        {
+          tab === 'Домашка' ?
+            <Footnote1 className={style.subjectFooter}>
+              На {`${date?.getDate()} ${monthsArray[date?.getMonth() as number]}, ${date?.getFullYear()} (${dateDaysArray[date?.getDay() as number].toLowerCase()})`}
+            </Footnote1> :
+            <Footnote1 className={style.subjectFooter}>{cabinet && `Кабинет ${cabinet} ${"\u2022"}`} {teacher && teacher}</Footnote1>
+        }
+      </div>
+      {(isEditMode && tab === 'Расписание') &&
+        <span onClick={onDeleteHandler} className={style.deleteItem}></span>}
+    </ItemWrapper>
+  )
 }
 
 export const SubjectItemMemo = React.memo(SubjectItem)
