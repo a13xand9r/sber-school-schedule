@@ -1,5 +1,5 @@
 import { accent } from '@sberdevices/plasma-tokens'
-import { Body1, Card, CardContent, Cell, Col, Footnote1, TextBox } from '@sberdevices/plasma-ui'
+import { Body1, Card, CardContent, Cell, Checkbox, Col, Footnote1, Radiobox, TextBox } from '@sberdevices/plasma-ui'
 import Image from 'next/image'
 import React, { FC } from 'react'
 import styled from 'styled-components'
@@ -47,7 +47,16 @@ export const SubjectItem: FC<PropsType> = (props) => {
     id && deleteItem && deleteItem(id)
   }
 
-  return( 
+  return( <>
+  <Radiobox
+        // tabIndex={1}
+        label="Самовывоз"
+        description="м. Пролетарская, ул. Талалихина, 41, стр. 57"
+        defaultChecked={false}
+        id='Самовывоз'
+        value='Самовывоз'
+        name='delivery'
+      />
     <ItemWrapper tabIndex={1}>
       {/* <Card>
       <CardContent compact>
@@ -66,7 +75,6 @@ export const SubjectItem: FC<PropsType> = (props) => {
         />
       </CardContent>
     </Card> */}
-
       <Image priority={true} loading='eager' src={icon} alt='' layout='fixed' width={35} height={35} />
       <div className={style.subjectText}>
         <Body1>{subject}</Body1>
@@ -81,7 +89,7 @@ export const SubjectItem: FC<PropsType> = (props) => {
       {(isEditMode && tab === 'Расписание') &&
         <span onClick={onDeleteHandler} className={style.deleteItem}></span>}
     </ItemWrapper>
-  )
+  </>)
 }
 
 export const SubjectItemMemo = React.memo(SubjectItem)
