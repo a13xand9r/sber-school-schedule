@@ -30,12 +30,14 @@ const ItemWrapper = styled.div`
     outline: ${accent} solid 1px;
   } */
   &:focus{
-    border-radius: 10px;
-    outline: ${accent} solid 1px;
+    /* border-radius: 10px; */
+    outline: none;
+    border: ${accent} solid 1px;
   }
   &:hover{
-    border-radius: 10px;
-    outline: ${accent} solid 1px;
+    /* border-radius: 10px; */
+    outline: none;
+    border: ${accent} solid 1px;
   }
 `;
 
@@ -47,16 +49,7 @@ export const SubjectItem: FC<PropsType> = (props) => {
     id && deleteItem && deleteItem(id)
   }
 
-  return( <>
-  <Radiobox
-        // tabIndex={1}
-        label="Самовывоз"
-        description="м. Пролетарская, ул. Талалихина, 41, стр. 57"
-        defaultChecked={false}
-        id='Самовывоз'
-        value='Самовывоз'
-        name='delivery'
-      />
+  return(
     <ItemWrapper tabIndex={1}>
       {/* <Card>
       <CardContent compact>
@@ -89,7 +82,7 @@ export const SubjectItem: FC<PropsType> = (props) => {
       {(isEditMode && tab === 'Расписание') &&
         <span onClick={onDeleteHandler} className={style.deleteItem}></span>}
     </ItemWrapper>
-  </>)
+  )
 }
 
 export const SubjectItemMemo = React.memo(SubjectItem)
