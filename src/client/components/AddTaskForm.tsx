@@ -1,6 +1,7 @@
 import { createAssistant } from '@sberdevices/assistant-client'
 import { Body1, Button, DatePicker, TextArea } from '@sberdevices/plasma-ui'
 import React, { Dispatch, FC, FormEvent, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
 import { actions } from '../../../store'
 import style from '../../../styles/schedule.module.css'
 import { ActionsType, SubjectConstType, SubjectWithIconsType, SubSubjectConstType } from '../../types'
@@ -9,6 +10,12 @@ import { changeHomeTasks } from '../apiRequests'
 import { CharacterContext } from '../context'
 import { SubjectListModeMemo } from './SubjectListMode'
 import { SubjectSelectButtonMemo } from './SubjectsSelectButton'
+
+const StylesTextArea = styled(TextArea)`
+  & textarea{
+    white-space: normal;
+  }
+`
 
 export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, assistant }) => {
   const [isSubjectListMode, setIsSubjectListMode] = useState(false)
@@ -124,7 +131,7 @@ export const AddTaskForm: FC<PropsType> = ({ dispatch, finishAdding, userId, ass
           <Body1 className={style.label}>Дата сдачи:</Body1>
           {isShowDatePicker && getDatePicker()}
           <Body1 className={style.label}>Задание:</Body1>
-          <TextArea
+          <StylesTextArea
             value={taskText}
             placeholder={character === 'joy' ? 'Введи задание' : 'Введите задание'}
             className={`${style.taskText} ${isError && !!selectedSubject && style.taskTextError}`}
