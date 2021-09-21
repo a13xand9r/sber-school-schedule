@@ -1,5 +1,5 @@
 import { accent } from '@sberdevices/plasma-tokens'
-import { Body1, Card, CardContent, Cell, Checkbox, Col, Footnote1, Radiobox, TextBox } from '@sberdevices/plasma-ui'
+import { Body1, Footnote1 } from '@sberdevices/plasma-ui'
 import Image from 'next/image'
 import React, { FC } from 'react'
 import styled from 'styled-components'
@@ -29,7 +29,7 @@ const ItemWrapper = styled.div`
     border-radius: 10px;
     outline: ${accent} solid 1px;
   } */
-  &:focus, &:hover{
+  &:focus{
     /* border-radius: 10px; */
     /* outline: none; */
     outline: ${accent} solid 1px;
