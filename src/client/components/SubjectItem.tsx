@@ -25,10 +25,10 @@ const ItemWrapper = styled.div`
   &:active, &::visited{
     transform: scale(0.98);
   }
-  /* &:focus-visible{
+  &:focus-visible{
     border-radius: 10px;
     outline: ${accent} solid 1px;
-  } */
+  }
   &:focus{
     /* border-radius: 10px; */
     /* outline: none; */
