@@ -10,11 +10,11 @@ import { dateDaysArray, monthsArray } from '../../utils/constants'
 
 const ItemWrapper = styled.div`
   margin: 0 auto;
-  max-width: 38rem;
+  max-width: 27rem;
   display: flex;
-  height: 3.3rem;
+  height: 55px;//3.3rem;
   align-items: center;
-  margin-top: 0.2rem;
+  margin-top: 2px;
   position: relative;
   /* border: 1px solid gray; */
   border-radius: 10px;
