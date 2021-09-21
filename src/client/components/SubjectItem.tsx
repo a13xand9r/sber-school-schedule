@@ -45,7 +45,7 @@ export const SubjectItem: FC<PropsType> = (props) => {
   }
 
   return(
-    <ItemWrapper tabIndex={1} onClick={() => !!onClick ? onClick(id as string) : null}>
+    <ItemWrapper tabIndex={0} onClick={() => !!onClick ? onClick(id as string) : null}>
       <Image priority={true} loading='eager' src={icon} alt='' layout='fixed' width={35} height={35} />
       <div className={style.subjectText}>
         <Body1>{subject}</Body1>
