@@ -12,7 +12,7 @@ const ItemWrapper = styled.div`
   margin: 0 auto;
   max-width: 27rem;
   display: flex;
-  height: 55px;//3.3rem;
+  height: 3.3rem;
   align-items: center;
   margin-top: 2px;
   position: relative;
