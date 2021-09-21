@@ -29,15 +29,10 @@ const ItemWrapper = styled.div`
     border-radius: 10px;
     outline: ${accent} solid 1px;
   } */
-  &:focus{
+  &:focus, &:hover{
     /* border-radius: 10px; */
-    outline: none;
-    border: ${accent} solid 1px;
-  }
-  &:hover{
-    /* border-radius: 10px; */
-    outline: none;
-    border: ${accent} solid 1px;
+    /* outline: none; */
+    outline: ${accent} solid 1px;
   }
 `;
 
@@ -51,23 +46,6 @@ export const SubjectItem: FC<PropsType> = (props) => {
 
   return(
     <ItemWrapper tabIndex={1} onClick={() => !!onClick ? onClick(id as string) : null}>
-      {/* <Card>
-      <CardContent compact>
-        <Cell
-          content={
-            <TextBox title={subject}
-              subTitle={
-                tab === 'Домашка' ?
-                  `На ${date?.getDate()} ${monthsArray[date?.getMonth() as number]}, ${date?.getFullYear()} (${dateDaysArray[date?.getDay() as number].toLowerCase()})` :
-                  `${!!cabinet && 'Кабинет '} ${!!cabinet && cabinet} ${"\u2022"} ${teacher && teacher}`
-              }
-              //@ts-ignore
-              contentLeft={<Image priority={true} loading='eager' src={icon} alt='' layout='fixed' width={35} height={35} />}
-            />
-          }
-        />
-      </CardContent>
-    </Card> */}
       <Image priority={true} loading='eager' src={icon} alt='' layout='fixed' width={35} height={35} />
       <div className={style.subjectText}>
         <Body1>{subject}</Body1>
