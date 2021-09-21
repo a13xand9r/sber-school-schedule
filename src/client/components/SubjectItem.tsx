@@ -20,11 +20,11 @@ const ItemWrapper = styled.div`
   border-radius: 10px;
   padding-left: 1rem;
   cursor: pointer;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  /* -webkit-tap-highlight-color: rgba(0,0,0,0); */
   transition: 0.2s;
-  &:active, &::visited{
+  /* &:active, &::visited{
     transform: scale(0.98);
-  }
+  } */
   &:focus-visible, &:focus {
     border-radius: 10px;
     outline: ${accent} solid 1px;

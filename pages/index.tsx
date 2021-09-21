@@ -15,6 +15,11 @@ import { CharacterContext } from '../src/client/context'
 import { Loader } from '../src/client/components/Loader'
 import { CSSTransition } from 'react-transition-group'
 
+if (process.browser){
+  //@ts-ignore
+  import('@sberdevices/spatial-navigation')
+}
+
 const tabs = ['Расписание', 'Домашка'] as const
 
 export default function Home() {
