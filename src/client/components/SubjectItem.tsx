@@ -50,7 +50,7 @@ export const SubjectItem: FC<PropsType> = (props) => {
   }
 
   return(
-    <ItemWrapper tabIndex={1}>
+    <ItemWrapper tabIndex={1} onClick={() => !!onClick ? onClick(id as string) : null}>
       {/* <Card>
       <CardContent compact>
         <Cell
